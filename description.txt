@@ -1,0 +1,16 @@
+Ophoiod is a mod focused on a (soon to be more) boss that cuts down on soul griding in hardmode after the mecha bosses.
+Supports Boss Checklist and Yet Another Boss Healthbar
+Requires IdgLibrary (search on the mod browser or go here http://javid.ddns.net/tModLoader/download.php?Down=mods/Idglibrary.tmod)
+
+Current Content:
+-2 summoning items for both evil biomes
+-1 Boss (With trophy and mask)
+
+
+Version History :
+
+V1.07
+-Fixed Projectiles not appearing for clients in network games
+
+V1.05
+-Mod release
