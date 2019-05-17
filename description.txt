@@ -9,6 +9,9 @@ Current Content:
 
 Version History :
 
+V1.93
+-Is now linked with GitHub! Link is on the 2nd post in the homepage.
+
 V1.07
 -Fixed Projectiles not appearing for clients in network games
 
