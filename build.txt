@@ -1,5 +1,5 @@
 author = Kranot & IDGCaptainRussia
-version = 1.93
+version = 1.94
 displayName = Ophioid: A Boss fight mod
 homepage = https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/
 buildIgnore = .vs\*, .git\*, ignore\*, .gitignore, .gitattributes, *.MD, *.csproj, *.user, obj\*, bin\*

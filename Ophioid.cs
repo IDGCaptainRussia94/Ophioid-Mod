@@ -183,47 +183,6 @@ namespace Ophioid
 
     }
 
-
-        [AutoloadBossHead]
-    public class OphiopedeHead2 : OphiopedeHead
-    {
-
-
-        public override string Texture
-        {
-            get { return("Ophioid/wormmiscparts"); }
-        }
-        
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Ophiopede");
-            Main.npcFrameCount[npc.type] = 4;
-        }
-        public override void SetDefaults()
-        {
-            npc.width = 70;
-            npc.height = 70;
-            npc.damage = 120;
-            npc.defense = 0;
-            npc.lifeMax = 42000;
-            npc.HitSound = SoundID.NPCHit1;
-            npc.DeathSound = SoundID.NPCDeath1;
-            npc.value = 0f;
-            npc.knockBackResist = 0f;
-            npc.aiStyle = -1;
-            npc.boss=true;
-            aiType = NPCID.Wraith;
-            animationType = 0;
-            npc.behindTiles = true;
-            npc.noTileCollide = true;
-            npc.noGravity = true;
-            music = MusicID.Boss2;
-            npc.value = 90000f;
-        }
-
-
-    }
-
 	    public class OphiopedeTail : OphiopedeBody
     {
 
@@ -491,8 +450,8 @@ namespace Ophioid
                     npc.active = false;
                 }else{
                 if (Main.npc[(int)npc.ai[2]].GetType().Name=="OphiopedeHead2")
-                npc.defense=60;
-
+                npc.defense=75;
+                npc.damage=80;
                 }
             }
 
@@ -610,7 +569,7 @@ namespace Ophioid
 		{
 
 			framevar=(int)npc.ai[1]>99 ? 0 : (int)npc.ai[1];
-			npc.frame.Y=framevar*46;
+			npc.frame.Y=framevar*frameHeight;
 		}
 
 		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
@@ -637,13 +596,18 @@ namespace Ophioid
     	public bool collision=false;
     	public int phase=0;
 
-	        public virtual int RaycastDown(int x, int y)
+	        public int RaycastDown(int x, int y)
         {
             while (!((Main.tile[x, y] != null && (Main.tile[x, y].nactive() && (Main.tileSolid[(int)Main.tile[x, y].type] || Main.tileSolidTop[(int)Main.tile[x, y].type] && (int)Main.tile[x, y].frameY == 0)))))
             {
                 y++;
             }
             return y;
+        }
+
+        public virtual void StartPhaseTwo()
+        {
+        //null
         }
 
 		public override string Texture
@@ -849,6 +813,7 @@ namespace Ophioid
             	if (npc.ai[0]<-9900)
             	npc.velocity+=new Vector2(0,1f);
             	if (npc.ai[0]<-9750 && npc.ai[0]>-9900){
+                StartPhaseTwo();
             	npc.velocity-=new Vector2(0,0.96f);
             	npc.velocity=new Vector2(npc.velocity.X*0.95f,npc.velocity.Y);
            		 }

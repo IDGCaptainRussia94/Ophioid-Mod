@@ -9,6 +9,9 @@ Current Content:
 
 Version History :
 
+V1.94
+-Fixed messed up body sprites, the WIP version of the boss has been buffed...
+
 V1.93
 -Is now linked with GitHub! Link is on the 2nd post in the homepage.
 
