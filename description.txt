@@ -1,13 +1,21 @@
 Ophoiod is a mod focused on a (soon to be more) boss that cuts down on soul griding in hardmode after the mecha bosses.
 Supports Boss Checklist and Yet Another Boss Healthbar
 Requires IdgLibrary (search on the mod browser or go here http://javid.ddns.net/tModLoader/download.php?Down=mods/Idglibrary.tmod)
+Source code available on github
+
 
 Current Content:
--2 summoning items for both evil biomes
--1 Boss (With trophy and mask)
+-2 summoning items for both evil biomes and 1 for the rematch fight
+-2 Bosses (With trophy and mask and a pet item!)
 
 
 Version History :
+
+V2.0
+-Alrighty here it is! The big update that finally adds the part 2 of the fight!
+-just be warning while you can fight it after golem, it's tougher than you may be prepared for...
+-I'll be rolling out minor updates with feedback and bug fixes as I discover them, thank you for waiting... WAY too long for this!
+-Fixed the Infested Compost not working in a Crimson World
 
 V1.94
 -Fixed messed up body sprites, the WIP version of the boss has been buffed...

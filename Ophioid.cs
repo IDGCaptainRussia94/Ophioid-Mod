@@ -21,6 +21,20 @@ using Idglibrary;
 
 namespace Ophioid
 {
+
+ public static class Vector2Extension {
+     public static Vector2 Rotate(this Vector2 v, float degrees) {
+         float radians = (float)(degrees + 2.0* Math.PI);
+         float sin = (float)Math.Sin(radians);
+         float cos = (float)Math.Cos(radians);
+         
+         float tx = (float)v.X;
+         float ty = (float)v.Y;
+ 
+         return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
+     }
+ }
+
 	class Ophioid: Mod
 	{
 		public static Ophioid Instance;
@@ -54,7 +68,7 @@ namespace Ophioid
 			if (bossList != null)
 			{
 				bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
-                bossList.Call("AddBossWithInfo", "Ophiopede (Rematch)", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
+                bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
 			}
 
             //Idglib = ModLoader.GetMod("Idglib");
@@ -83,6 +97,19 @@ namespace Ophioid
                 yabhb.Call("hbSetBossHeadCentre", 80, 32);
                 yabhb.Call("hbSetFillDecoOffsetSmall", 20);
                 yabhb.Call("hbFinishSingle", NPCType("OphiopedeHead2"));
+
+                yabhb.Call("hbStart");
+                yabhb.Call("hbSetTexture",
+                GetTexture("healtbar_left"),
+                GetTexture("healtbar_frame"),
+                GetTexture("healtbar_right"),
+                GetTexture("healtbar_fill"));
+                yabhb.Call("hbSetMidBarOffset", -32, 12);
+                yabhb.Call("hbSetBossHeadCentre", 80, 32);
+                yabhb.Call("hbSetFillDecoOffsetSmall", 20);
+                yabhb.Call("hbFinishMultiple",NPCType("FlyMinionCacoon"),NPCType("FlyMinionCacoon"));
+
+
 			}
 		}
 
@@ -130,6 +157,16 @@ namespace Ophioid
         }}
         }}
 
+    }
+
+    public class OphioidPlayer: ModPlayer
+    {
+    public bool PetBuff=false;
+
+        public override void ResetEffects()
+        {
+            PetBuff = false;
+        }
 
     }
 
@@ -142,12 +179,13 @@ namespace Ophioid
 
         static public bool OphioidBoss
         {
-            get {return IdgNPC.FindNPCsMultitype(new ushort[] {(ushort)Ophioid.Instance.NPCType("OphiopedeHead"),(ushort)Ophioid.Instance.NPCType("OphiopedeHead2")}).Count>0;}
+            get {return IdgNPC.FindNPCsMultitype(new ushort[] {(ushort)Ophioid.Instance.NPCType("OphiopedeHead"),(ushort)Ophioid.Instance.NPCType("Ophiofly"),(ushort)Ophioid.Instance.NPCType("Ophiocoon"),(ushort)Ophioid.Instance.NPCType("OphiopedeHead2")}).Count>0;}
         }
 
         public override void Initialize()
         {
             downedOphiopede = false;
+            downedOphiopede2 = false;
         }
 
                 public override TagCompound Save()
@@ -443,7 +481,7 @@ namespace Ophioid
 
             if (Main.netMode != 1)
             {
-                if (!Main.npc[(int)npc.ai[2]].active)
+                if (!Main.npc[(int)npc.ai[2]].active || (Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeHead") && Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeHead2") && Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeBody")))
                 {
                     npc.life = 0;
                     npc.HitEffect(0, 10.0);
@@ -639,8 +677,15 @@ namespace Ophioid
             npc.noTileCollide = true;
 			npc.noGravity = true;
 			music = MusicID.Boss2;
-			npc.value = 90000f;
+			npc.value = Item.buyPrice(1, 25, 0, 0);
 		}
+
+        public override void BossLoot(ref string name, ref int potionType)
+        {
+        potionType=ItemID.GreaterHealingPotion;
+        if (NPC.downedMoonlord)
+        potionType=ItemID.SuperHealingPotion;
+        }
 
         public override void NPCLoot()
         {
@@ -1156,7 +1201,12 @@ return false;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Infested Compost");
-            Tooltip.SetDefault("'An amalgamation of organic vileness \nSummons Ophiopede? (WIP)\nSave this item for later, the boss it summons right now is largely the same as the original");
+            Tooltip.SetDefault("'An amalgamation of organic vileness \nSummons Ophiopede?");
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            return !OphioidWorld.OphioidBoss;
         }
 
         public override bool UseItem(Player player)
@@ -1339,6 +1389,89 @@ return false;
         }
     }
 
+    public class SporeInfestedEgg : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Spore Infested Egg");
+            Tooltip.SetDefault("'Looks like this egg didn't hatch yet to attack me...");
+        }
 
+        public override void SetDefaults()
+        {
+            item.CloneDefaults(ItemID.ZephyrFish);
+            item.rare = 10;
+            item.shoot = mod.ProjectileType("BabyFlyPet");
+            item.buffType = mod.BuffType("BabyOphioflyBuff");
+        }
+
+        public override void UseStyle(Player player)
+        {
+            if(player.whoAmI == Main.myPlayer && player.itemTime == 0)
+            {
+                player.AddBuff(item.buffType, 3600, true);
+            }
+        }
+
+    }
+
+    public class BabyOphioflyBuff: ModBuff
+    {
+        public override void SetDefaults()
+        {
+            DisplayName.SetDefault("Baby Ophioid Fly");
+            Description.SetDefault("Gross but, oddly cute");
+            Main.buffNoTimeDisplay[Type] = true;
+            Main.vanityPet[Type] = true;
+        }
+
+        public override void Update(Player player, ref int buffIndex)
+        {
+            player.buffTime[buffIndex] = 18000;
+            OphioidPlayer modPlayer = (OphioidPlayer)player.GetModPlayer(mod, "OphioidPlayer");
+            modPlayer.PetBuff=true;
+            bool petProjectileNotSpawned = player.ownedProjectileCounts[mod.ProjectileType("BabyFlyPet")] <= 0;
+            if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
+            {
+                Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, mod.ProjectileType("BabyFlyPet"), 0, 0f, player.whoAmI, 0f, 0f);
+            }
+        }
+
+    }
+
+    public class BabyFlyPet : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Gross but cute Fly");
+        }
+
+        public override string Texture
+        {
+            get { return("Ophioid/baby_ophiofly_frames");}
+        }
+
+        public override void SetDefaults()
+        {
+            projectile.CloneDefaults(ProjectileID.BabyHornet);
+            aiType = ProjectileID.BabyHornet;
+            Main.projFrames[projectile.type] = 4;
+            Main.projPet[projectile.type] = true;
+        }
+
+        public override void AI()
+        {
+            Player player = Main.player[projectile.owner];
+            OphioidPlayer modPlayer = (OphioidPlayer)player.GetModPlayer(mod, "OphioidPlayer");
+            if(player.dead)
+            {
+                modPlayer.PetBuff = false;
+            }
+            if(modPlayer.PetBuff)
+            {
+                projectile.timeLeft = 2;
+            }
+        }
+    }
 
 }
