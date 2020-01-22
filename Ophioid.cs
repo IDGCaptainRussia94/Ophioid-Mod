@@ -286,7 +286,7 @@ namespace Ophioid
                 Main.npc[him].defense*=2;
                 Main.npc[him].lifeMax*=3;
                 Main.npc[him].life=Main.npc[him].lifeMax-100;
-                Main.npc[him].GetGlobalNPC<OphioidNPC>(mod).fallthrough = (Main.expertMode==true ? 2000 : 1000);
+                Main.npc[him].GetGlobalNPC<OphioidNPC>().fallthrough = (Main.expertMode==true ? 2000 : 1000);
                 Main.npc[him].lifeMax*=3; Main.npc[him].life=Main.npc[him].lifeMax;
                 Main.npc[him].ai[0] = (float)(-1000 * Main.rand.Next(3));
                 Main.npc[him].ai[1] = 0f;

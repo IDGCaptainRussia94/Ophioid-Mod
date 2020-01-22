@@ -1284,7 +1284,7 @@ public void sludgefield()
         string[] lasers={"Ophioid/frame_1","Ophioid/frame2","Ophioid/frame_3"};
         Vector2 scale = new Vector2(MathHelper.Clamp((float)projectile.timeLeft/20,0f,1f),1f);
         Idglib.DrawTether(lasers[(int)projectile.localAI[0]%3],hitspot,projectile.Center,projectile.Opacity,scale.X,scale.Y);
-        Texture2D captex=ModLoader.GetTexture("Ophioid/ichor_cap");
+        Texture2D captex=ModContent.GetTexture("Ophioid/ichor_cap");
         Main.spriteBatch.Draw(captex, projectile.Center - Main.screenPosition, null, lightColor*projectile.Opacity, (projectile.velocity).ToRotation()-((float)Math.PI/2f), new Vector2(captex.Width/2,captex.Height/2), new Vector2(scale.X,scale.Y), SpriteEffects.None, 0.0f);
         Main.spriteBatch.Draw(captex, hitspot - Main.screenPosition, null, lightColor*projectile.Opacity, projectile.velocity.ToRotation()+((float)Math.PI/2f), new Vector2(captex.Width/2,captex.Height/2), new Vector2(scale.X,scale.Y), SpriteEffects.None, 0.0f);
 
@@ -1378,7 +1378,7 @@ public void sludgefield()
         string[] lasers={"Ophioid/beam_1","Ophioid/beam_2","Ophioid/beam_3"};
         Vector2 scale = new Vector2(MathHelper.Clamp((float)projectile.timeLeft/20,0f,1f),1f);
         Idglib.DrawTether(lasers[(int)projectile.localAI[0]%3],hitspot,projectile.Center,projectile.Opacity,scale.X,scale.Y);
-        Texture2D captex=ModLoader.GetTexture("Ophioid/end_and_start");
+        Texture2D captex= ModContent.GetTexture("Ophioid/end_and_start");
         Main.spriteBatch.Draw(captex, projectile.Center - Main.screenPosition, null, lightColor*projectile.Opacity, (projectile.velocity).ToRotation()-((float)Math.PI/2f), new Vector2(captex.Width/2,captex.Height/2), new Vector2(scale.X,scale.Y), SpriteEffects.None, 0.0f);
         Main.spriteBatch.Draw(captex, hitspot - Main.screenPosition, null, lightColor*projectile.Opacity, projectile.velocity.ToRotation()+((float)Math.PI/2f), new Vector2(captex.Width/2,captex.Height/2), new Vector2(scale.X,scale.Y), SpriteEffects.None, 0.0f);
 
