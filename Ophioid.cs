@@ -982,7 +982,7 @@ namespace Ophioid
 
       		Vector2 capvelo=npc.velocity;
             capvelo.Normalize();
-            npc.velocity=capvelo*Math.Min(Math.Max(npc.velocity.Length(),6f*speedboost),30f*speedboost);
+            npc.velocity=capvelo*Math.Min(Math.Max(npc.velocity.Length(),6f*speedboost),25f*speedboost);
 
             if (npc.ai[0]>1000){
             npc.ai[0]=-10000;
@@ -990,6 +990,11 @@ namespace Ophioid
 
       			}else{
       			npc.velocity+=new Vector2(0,0.2f);
+                    if ((Main.player[npc.target].Center - npc.Center).Length() > 1600)
+                    {
+                        npc.velocity.X *= 0.99f;
+                        npc.timeLeft += 1;
+                    }
 
 
       			}

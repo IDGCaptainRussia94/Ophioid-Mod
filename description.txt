@@ -11,6 +11,12 @@ Current Content:
 
 Version History :
 
+V2.03
+The Worm phase has received a slightly stronger velocity cap when charging at the player. Furthermore, when airborne, if Ophoiopede is too far away from the player, his X velocity will slow down and he will become less likely to despawn
+
+V2.01
+Updated to the new TMODLoader
+
 V2.0
 -Alrighty here it is! The big update that finally adds the part 2 of the fight!
 -just be warning while you can fight it after golem, it's tougher than you may be prepared for...
