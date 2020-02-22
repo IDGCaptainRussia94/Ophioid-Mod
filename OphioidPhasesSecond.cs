@@ -134,7 +134,7 @@ namespace Ophioid
             npc.behindTiles = true;
             npc.noTileCollide = true;
             npc.noGravity = true;
-            music = MusicID.Boss2;
+            music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             npc.value = 90000f;
         }
     }
@@ -240,6 +240,7 @@ namespace Ophioid
             npc.aiStyle = -1;
             npc.noTileCollide = true;
             npc.boss=true;
+            music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_The_Fly");
             aiType = -1;
             animationType = -1;
         }
@@ -886,6 +887,7 @@ public void sludgefield()
             npc.boss=true;
             npc.dontTakeDamage=true;
             npc.immortal=true;
+            music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             aiType = -1;
             animationType = -1;
         }

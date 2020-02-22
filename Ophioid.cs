@@ -107,6 +107,17 @@ namespace Ophioid
                 yabhb.Call("hbSetMidBarOffset", -32, 12);
                 yabhb.Call("hbSetBossHeadCentre", 80, 32);
                 yabhb.Call("hbSetFillDecoOffsetSmall", 20);
+                yabhb.Call("hbFinishSingle", NPCType("Ophiofly"));
+
+                yabhb.Call("hbStart");
+                yabhb.Call("hbSetTexture",
+                GetTexture("healtbar_left"),
+                GetTexture("healtbar_frame"),
+                GetTexture("healtbar_right"),
+                GetTexture("healtbar_fill"));
+                yabhb.Call("hbSetMidBarOffset", -32, 12);
+                yabhb.Call("hbSetBossHeadCentre", 80, 32);
+                yabhb.Call("hbSetFillDecoOffsetSmall", 20);
                 yabhb.Call("hbFinishMultiple",NPCType("FlyMinionCacoon"),NPCType("FlyMinionCacoon"));
 
 
@@ -987,6 +998,7 @@ namespace Ophioid
             if (npc.ai[0]>1000){
             npc.ai[0]=-10000;
             }
+
 
       			}else{
       			npc.velocity+=new Vector2(0,0.2f);
