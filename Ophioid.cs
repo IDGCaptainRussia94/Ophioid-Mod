@@ -124,6 +124,20 @@ namespace Ophioid
 			}
 		}
 
+        public override void UpdateMusic(ref int music, ref MusicPriority priority)
+        {
+            if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active)
+            {
+                return;
+            }
+            if (NPC.CountNPCS(NPCType("OphiopedeHead2")) > 0)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+                priority = MusicPriority.BossMedium;
+            }
+        }
+
+
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             MessageType type = (MessageType)reader.ReadByte();
@@ -211,9 +225,9 @@ namespace Ophioid
         public override void Load(TagCompound tag)
         {
             var Ophioidsavedata = tag.GetList<string>("Ophioidsavedata");
-            downedOphiopede = Ophioidsavedata.Contains("downedOphiopede");
-            downedOphiopede2 = Ophioidsavedata.Contains("downedOphiopede2");
-       }
+            downedOphiopede = tag.GetBool("downedOphiopede");
+            downedOphiopede2 = tag.GetBool("downedOphiopede2");
+        }
 
                 public override void NetSend(BinaryWriter writer)
         {
@@ -792,7 +806,6 @@ namespace Ophioid
             npc.netUpdate=true;
 
             if (npc.ai[0]==0){
-            		npc.ai[0]=1;
             		int lastnpc=npc.whoAmI;
             		int latest=lastnpc;
                     int randomWormLength = (Main.expertMode ? 40 : 35);
@@ -813,7 +826,8 @@ namespace Ophioid
                         Main.npc[(int)latest].ai[3] = npc.whoAmI;
                         Main.npc[(int)latest].ai[0] = Main.rand.Next(0,80);
                         Main.npc[(int)latest].ai[1] = 250;
-            }
+                    npc.ai[0] = 1;
+                }
             npc.netUpdate=true;
 
        	 }
@@ -1231,6 +1245,7 @@ return false;
             if (!OphioidWorld.downedOphiopede2 && Main.netMode!=1)
             Idglib.Chat("The air becomes stale and moist around you.",100,225,100);
             //Idglib.Chat("The air becomes stale and moist around you.",30,180,15);
+            //NPC.NewNPC((int)player.Center.X, (int)player.Center.Y + 800, mod.NPCType("OphiopedeHead2"));
             NPC.SpawnOnPlayer(player.whoAmI, mod.NPCType("OphiopedeHead2"));
             Main.PlaySound(SoundID.Roar, player.position, 0);
             return true;
@@ -1278,6 +1293,7 @@ return false;
             if (!OphioidWorld.downedOphiopede && Main.netMode!=1)
             Idglib.Chat("The air becomes stale and moist around you.",100,225,100);
             //Idglib.Chat("The air becomes stale and moist around you.",30,180,;
+            //NPC.NewNPC((int)player.Center.X, (int)player.Center.Y - 800, mod.NPCType("OphiopedeHead"));
             NPC.SpawnOnPlayer(player.whoAmI, mod.NPCType("OphiopedeHead"));
             Main.PlaySound(SoundID.Roar, player.position, 0);
             return true;

@@ -10,9 +10,10 @@ Current Content:
 
 Version History :
 
-V2.05
-So remember when I said there wouldn't be a treasure bag? Well as it turns out he DID make one and I forgot to add it, so here you go! It only drops from the rematch however
+V2.06
+So remember when I said there wouldn't be a treasure bag? Well as it turns out Kranot DID make one and I forgot to add it, so here you go! It only drops from the rematch however
 Did a sort of hard-counter to make the music play properly
+Discovered a bug, it's rare and how to cause it: by having no NPCs in your world. Something that's bound to not happen anyways, but if there are no NPCs, the boss with spawn with only 1 segment. So if you have this problem, this is why.
 
 
 V2.04

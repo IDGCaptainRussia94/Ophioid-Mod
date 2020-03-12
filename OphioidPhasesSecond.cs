@@ -243,6 +243,7 @@ namespace Ophioid
             music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_The_Fly");
             aiType = -1;
             animationType = -1;
+            bossBag = ModContent.ItemType<TreasureBagOphioid>();
         }
 
 
@@ -601,24 +602,33 @@ public void sludgefield()
 
         public override void NPCLoot()
         {
-                if (Main.rand.Next(0,100)<31)
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Ophiopedetrophyitem"));
-                if (Main.rand.Next(0,100)<31)
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("OphiopedeMask"));
+            if (!Main.expertMode)
+            {
+                if (Main.rand.Next(0, 100) < 31)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Ophiopedetrophyitem"));
+                if (Main.rand.Next(0, 100) < 31)
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("OphiopedeMask"));
 
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("SporeInfestedEgg"));
 
-            List<int> types=new List<int>();
-            types.Insert(types.Count,ItemID.SoulofMight); types.Insert(types.Count,ItemID.SoulofFright); types.Insert(types.Count,ItemID.SoulofSight); types.Insert(types.Count,ItemID.SoulofNight); types.Insert(types.Count,ItemID.SoulofLight); types.Insert(types.Count,ItemID.SoulofNight); types.Insert(types.Count,ItemID.SoulofLight);
-            for (int f = 0; f < (Main.expertMode ? 200 : 120); f=f+1){
-        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, types[Main.rand.Next(0,types.Count)]);
-        }
+                List<int> types = new List<int>();
+                types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
+                for (int f = 0; f < (Main.expertMode ? 200 : 120); f = f + 1)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, types[Main.rand.Next(0, types.Count)]);
+                }
 
-            types=new List<int>();
-            types.Insert(types.Count,ItemID.SoulofFlight); types.Insert(types.Count,ItemID.SoulofFlight); types.Insert(types.Count,ItemID.FragmentStardust); types.Insert(types.Count,ItemID.FragmentSolar); types.Insert(types.Count,ItemID.FragmentVortex); types.Insert(types.Count,ItemID.FragmentNebula);
-            for (int f = 0; f < (Main.expertMode ? 100 : 50); f=f+1){
-        Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, types[Main.rand.Next(0,types.Count)]);
-        }
+                types = new List<int>();
+                types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.FragmentStardust); types.Insert(types.Count, ItemID.FragmentSolar); types.Insert(types.Count, ItemID.FragmentVortex); types.Insert(types.Count, ItemID.FragmentNebula);
+                for (int f = 0; f < (Main.expertMode ? 100 : 50); f = f + 1)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, types[Main.rand.Next(0, types.Count)]);
+                }
+            }
+            else
+            {
+                npc.DropBossBags();
+            }
 
         if (!OphioidWorld.downedOphiopede2){
         if (Main.netMode!=1)
@@ -1079,8 +1089,11 @@ public void sludgefield()
         npc.ai[0]+=1;
         npc.velocity/=1.015f;
         NPC Master = Main.npc[(int)npc.ai[1]];
-        if (!Master.active || npc.ai[1]<1)
-        npc.active=false;
+            if (!Master.active)
+            {
+                npc.active = false;
+                return;
+            }
 
         if (npc.target < 0 || npc.target == 255 || Main.player[npc.target].dead || !Main.player[npc.target].active){
         npc.TargetClosest(true);
@@ -1251,6 +1264,7 @@ public void sludgefield()
             projectile.hostile = true;
             projectile.timeLeft = 90;
             projectile.damage = 15;
+            projectile.tileCollide = true;
         }
 
         public override void SetStaticDefaults()
@@ -1267,7 +1281,8 @@ public void sludgefield()
         {
         //projectile.velocity+=new Vector2(projectile.velocity.X>0 ? 0.04f : -0.04f,0f);
         projectile.localAI[0]+=0.2f;
-        base.AI();
+            projectile.tileCollide = true;
+            base.AI();
         }
 
         public override void MoreAI(Vector2 dustspot)
@@ -1308,6 +1323,7 @@ public void sludgefield()
             projectile.hostile = true;
             projectile.timeLeft = 90;
             projectile.damage = 40;
+            projectile.tileCollide = true;
         }
 
         public override void SetStaticDefaults()
@@ -1322,7 +1338,8 @@ public void sludgefield()
 
         public override void AI()
         {
-        projectile.velocity+=new Vector2(projectile.velocity.X>0 ? 0.04f : -0.04f,0f);
+            projectile.tileCollide = true;
+            projectile.velocity+=new Vector2(projectile.velocity.X>0 ? 0.04f : -0.04f,0f);
         projectile.localAI[0]+=0.2f;
         projectile.ai[1]+=1;
         base.AI();
@@ -1389,6 +1406,64 @@ public void sludgefield()
 
     }
 
+    public class TreasureBagOphioid : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Treasure Bag");
+            Tooltip.SetDefault("Right click to open");
+        }
+        public override void SetDefaults()
+        {
+            item.maxStack = 999;
+            item.consumable = true;
+            item.width = 32;
+            item.height = 32;
+            item.expert = true;
+            item.rare = -12;
+        }
+
+
+        public override int BossBagNPC
+        {
+            get
+            {
+                return mod.NPCType("Ophiofly");
+            }
+        }
+
+
+        public override bool CanRightClick()
+        {
+            return true;
+        }
+        public override void OpenBossBag(Player player)
+        {
+            player.TryGettingDevArmor();
+            if (Main.rand.Next(0, 100) < 31)
+                player.QuickSpawnItem(mod.ItemType("Ophiopedetrophyitem"));
+            if (Main.rand.Next(0, 100) < 31)
+                player.QuickSpawnItem(mod.ItemType("OphiopedeMask"));
+
+            player.QuickSpawnItem(mod.ItemType("SporeInfestedEgg"));
+
+            List<int> types = new List<int>();
+            types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
+            for (int f = 0; f < (Main.expertMode ? 200 : 120); f = f + 1)
+            {
+                player.QuickSpawnItem(types[Main.rand.Next(0, types.Count)]);
+            }
+
+            types = new List<int>();
+            types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.FragmentStardust); types.Insert(types.Count, ItemID.FragmentSolar); types.Insert(types.Count, ItemID.FragmentVortex); types.Insert(types.Count, ItemID.FragmentNebula);
+            for (int f = 0; f < (Main.expertMode ? 100 : 50); f = f + 1)
+            {
+                player.QuickSpawnItem(types[Main.rand.Next(0, types.Count)]);
+            }
+
+        }
+
+    }
 
 
 }
