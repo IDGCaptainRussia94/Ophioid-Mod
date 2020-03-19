@@ -1,7 +1,7 @@
 author = Kranot & IDGCaptainRussia
 version = 2.07
 displayName = Ophioid: A Boss fight mod
-homepage = https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/
+homepage = https://github.com/IDGCaptainRussia94/Ophioid-Mod/wiki
 buildIgnore = .vs\*, .git\*, ignore\*, .gitignore, .gitattributes, *.MD, *.csproj, *.user, obj\*, bin\*
 includePDB = true
 hideCode = false
