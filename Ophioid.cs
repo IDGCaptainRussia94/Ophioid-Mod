@@ -673,7 +673,12 @@ namespace Ophioid
         //null
         }
 
-		public override string Texture
+        public override bool CheckActive()
+        {
+            return (npc.target < 0 || npc.target == 255 || Main.player[npc.target].dead || !Main.player[npc.target].active);
+        }
+
+        public override string Texture
         {
             get { return("Ophioid/wormmiscparts"); }
         }
@@ -798,6 +803,10 @@ namespace Ophioid
             if (npc.target < 0 || npc.target == 255 || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
             collision=false;
+                if (npc.Center.Y > Main.maxTilesY * 16)
+                {
+                    npc.active = false;
+                }
             }
 
             if (Main.netMode != 1)

@@ -6,9 +6,12 @@ Source code available on github
 
 Current Content:
 -2 summoning items for both evil biomes and 1 for the rematch fight
--2 Bosses (With trophy and mask and a pet item!)
+-2(2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
 
 Version History :
+
+V2.08
+Made it so the Worm phase cannot despawn as long as atleast player is alive for it to target
 
 V2.07
 This isn't really an update to the mod, but rather an update to information about the mod. The mod's homepage has been moved to my github as the Terraria forums staff will not give me control over the mod's thread without Kranot's approval (who practically doesn't exist at this point so you see the problem here), so I am unable to update any of out of date info on the mod's homepage.
