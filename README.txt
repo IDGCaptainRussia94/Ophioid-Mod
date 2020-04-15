@@ -10,6 +10,9 @@ Current Content:
 
 Version History :
 
+V2.08
+Made it so the Worm phase cannot despawn as long as atleast player is alive for it to target
+
 V2.07
 This isn't really an update to the mod, but rather an update to information about the mod. The mod's homepage has been moved to my github as the Terraria forums staff will not give me control over the mod's thread without Kranot's approval (who practically doesn't exist at this point so you see the problem here), so I am unable to update any of out of date info on the mod's homepage.
 So now the homepage links to a wiki page on my github, where you can find UPDATED info on the mod as well as other things you may want to know about, the forum page is still a valid place to leave feedback for me as I still read there, but this update is really just a PSA.
