@@ -6,9 +6,13 @@ Source code available on github
 
 Current Content:
 -2 summoning items for both evil biomes and 1 for the rematch fight
--2 Bosses (With trophy and mask and a pet item!)
+-2(2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
 
 Version History :
+
+V2.09
+Fly minions now fly off when the boss is not longer alive
+Ophiodpede (rematch) becames invulnerable at 5% HP, and his body segments are now properly buffed
 
 V2.08
 Made it so the Worm phase cannot despawn as long as atleast player is alive for it to target

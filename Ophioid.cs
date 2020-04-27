@@ -506,15 +506,19 @@ namespace Ophioid
 
             if (Main.netMode != 1)
             {
-                if (!Main.npc[(int)npc.ai[2]].active || (Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeHead") && Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeHead2") && Main.npc[(int)npc.ai[2]].type!=mod.NPCType("OphiopedeBody")))
+                NPC MyHead = Main.npc[(int)npc.ai[2]];
+                if (!MyHead.active || (MyHead.type!=mod.NPCType("OphiopedeHead") && MyHead.type!=mod.NPCType("OphiopedeHead2") && MyHead.type!=mod.NPCType("OphiopedeBody")))
                 {
                     npc.life = 0;
                     npc.HitEffect(0, 10.0);
                     npc.active = false;
                 }else{
-                if (Main.npc[(int)npc.ai[2]].GetType().Name=="OphiopedeHead2")
-                npc.defense=75;
-                npc.damage=80;
+                    if (NPC.CountNPCS(mod.NPCType("OphiopedeHead2"))>0)
+                    {
+                        npc.defense = 75;
+                        npc.damage = 80;
+                        npc.dontTakeDamage = MyHead.dontTakeDamage;
+                    }
                 }
             }
 
@@ -744,6 +748,15 @@ namespace Ophioid
 
 			public override bool PreAI()
 		{
+
+            if (GetType() == typeof(OphiopedeHead2))
+            {
+                if (npc.life < (int)(npc.lifeMax * 0.05f))
+                {
+                    npc.dontTakeDamage = true;
+                    npc.life = (int)(npc.lifeMax * 0.05f);
+                }
+            }
 
 			int belowground=0;
 			bool outofbounds=false;

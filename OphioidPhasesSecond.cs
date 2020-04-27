@@ -1065,6 +1065,11 @@ public void sludgefield()
             animationType = -1;
         }
 
+        public override bool CheckActive()
+        {
+            return !Main.npc[(int)npc.ai[1]].active;
+        }
+
         public override string Texture
         {
             get { return("Ophioid/baby_ophiofly_frames");}
@@ -1085,14 +1090,13 @@ public void sludgefield()
 
         public override void AI()
         {
-
+            bool nomaster = false;
         npc.ai[0]+=1;
         npc.velocity/=1.015f;
         NPC Master = Main.npc[(int)npc.ai[1]];
-            if (!Master.active)
+            if (!Master.active || Master.boss==false)
             {
-                npc.active = false;
-                return;
+                nomaster = true;
             }
 
         if (npc.target < 0 || npc.target == 255 || Main.player[npc.target].dead || !Main.player[npc.target].active){
@@ -1106,9 +1110,13 @@ public void sludgefield()
         npc.netUpdate=true;
         }
 
-        Vector2 masterloc=Master.Center-new Vector2(0,-96);
-        if (npc.ai[0]<0 && !ply.dead)
-        masterloc=ply.Center-new Vector2(0,0);
+            Vector2 masterloc = new Vector2(npc.Center.X, -160); ;
+            if (!nomaster)
+            {
+                masterloc = Master.Center - new Vector2(0, -96);
+                if (npc.ai[0] < 0 && !ply.dead)
+                    masterloc = ply.Center - new Vector2(0, 0);
+            }
         Vector2 masterdist=(masterloc-npc.Center);
         Vector2 masternormal=masterdist; masternormal.Normalize();
 

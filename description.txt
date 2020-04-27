@@ -10,8 +10,9 @@ Current Content:
 
 Version History :
 
-V2.08
-Made it so the Worm phase cannot despawn as long as atleast player is alive for it to target
+V2.09
+Fly minions now fly off when the boss is not longer alive
+Ophiodpede (rematch) becames invulnerable at 5% HP, and his body segments are now properly buffed
 
 V2.07
 This isn't really an update to the mod, but rather an update to information about the mod. The mod's homepage has been moved to my github as the Terraria forums staff will not give me control over the mod's thread without Kranot's approval (who practically doesn't exist at this point so you see the problem here), so I am unable to update any of out of date info on the mod's homepage.
