@@ -10,6 +10,9 @@ Current Content:
 
 Version History :
 
+V2.10
+Proper Boss-checklist support!
+
 V2.09
 Fly minions now fly off when the boss is not longer alive
 Ophiodpede (rematch) becames invulnerable at 5% HP, and his body segments are now properly buffed

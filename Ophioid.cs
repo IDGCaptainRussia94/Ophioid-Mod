@@ -67,13 +67,20 @@ namespace Ophioid
 			Mod bossList = ModLoader.GetMod("BossChecklist");
 			if (bossList != null)
 			{
-				bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
-                bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
-			}
+                //bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
+                //bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
+                bossList.Call("AddBoss", 9.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {Ophioid.Instance.ItemType("Ophiopedetrophyitem"), Ophioid.Instance.ItemType("OphiopedeMask") }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ItemType("Livingcarrion"), ItemType("Deadfungusbug") }, 
+                    "Use a [i:" + Ophioid.Instance.ItemType("Deadfungusbug") + "] or [i:" + Ophioid.Instance.ItemType("Livingcarrion") + "] at anytime", "Ophiopede Tunnels away", "Ophioid/BCLPede");
+                bossList.Call("AddBoss", 11.50f, ModContent.NPCType<Ophiofly>(), this, "Ophioid", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { Ophioid.Instance.ItemType("Ophiopedetrophyitem"), Ophioid.Instance.ItemType("OphiopedeMask"), Ophioid.Instance.ItemType("SporeInfestedEgg") }, 
+                    new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
+                    "Use an [i:" + Ophioid.Instance.ItemType("Infestedcompost") + "] at anytime after beating Ophiopede", "Ophioid slinks back into its hidden nest", "Ophioid/BCLFly");
+
+
+            }
 
             //Idglib = ModLoader.GetMod("Idglib");
 
-		Mod yabhb = ModLoader.GetMod("FKBossHealthBar");
+            Mod yabhb = ModLoader.GetMod("FKBossHealthBar");
 			if(yabhb != null)
 			{
      			yabhb.Call("hbStart");
