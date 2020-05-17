@@ -15,6 +15,7 @@ using Terraria.GameContent.UI;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using System;
+using System.Linq;
 using Idglibrary;
 
 
@@ -730,7 +731,22 @@ namespace Ophioid
 
         public override void NPCLoot()
         {
-                if (Main.rand.Next(0,100)<11)
+            Vector2 where = npc.position;
+            List<Vector2> parts = new List<Vector2>();
+            for (int i = 0; i < Main.maxNPCs; i += 1)
+            {
+                NPC npc2 = Main.npc[i];
+                if ((npc2.type == ModContent.NPCType<OphiopedeBody>() || npc2.type == ModContent.NPCType<OphiopedeTail>() ||
+                    npc2.type == ModContent.NPCType<OphiopedeHead>() || npc2.type == ModContent.NPCType<OphiopedeHead2>()) && npc2.active && npc2.life > 0)
+                {
+                    parts.Add(new Vector2(i, (npc2.Center - Main.player[npc.target].Center).Length()));
+                }
+            }
+            parts = parts.OrderBy((x) => x.Y).ToList();
+
+            npc.position = Main.npc[(int)parts[0].X].position;
+
+            if (Main.rand.Next(0,100)<11)
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Ophiopedetrophyitem"));
                 if (Main.rand.Next(0,100)<11)
                 Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("OphiopedeMask"));
@@ -745,6 +761,8 @@ namespace Ophioid
         if (!OphioidWorld.downedOphiopede && Main.netMode!=1)
         Idglib.Chat("The infested worm is defeated, but you can still feel the presence of the "+(WorldGen.crimson ? "Crimson" : "Corruption")+"'s abomination",100,225,100);
         OphioidWorld.downedOphiopede=true;
+
+            npc.position = where;
         }
 
 		public override void ScaleExpertStats(int numPlayers, float bossLifeScale)

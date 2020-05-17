@@ -10,6 +10,9 @@ Current Content:
 
 Version History :
 
+V2.11
+Ophiodpede drops his items at the body segment closest to who he was targeting
+
 V2.10
 Proper Boss-checklist support!
 
