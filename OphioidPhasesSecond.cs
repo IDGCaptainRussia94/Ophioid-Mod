@@ -602,6 +602,18 @@ public void sludgefield()
 
         public override void NPCLoot()
         {
+            float NPCVX = 0f;float NPCVY = 0f;
+            npc.velocity += new Vector2(NPCVX, NPCVY) * 0.075f;
+            npc.velocity *= 0.95f;
+            if (npc.velocity.Length() > new Vector2(NPCVX, NPCVY).Length())
+            {
+                npc.velocity.Normalize();
+                npc.velocity *= new Vector2(NPCVX, NPCVY).Length();
+            }
+
+
+
+
             if (!Main.expertMode)
             {
                 if (Main.rand.Next(0, 100) < 31)

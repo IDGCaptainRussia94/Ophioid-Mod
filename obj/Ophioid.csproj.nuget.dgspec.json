@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid\\Ophioid.csproj": {}
+    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj": {}
   },
   "projects": {
-    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid\\Ophioid.csproj": {
+    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid\\Ophioid.csproj",
+        "projectUniqueName": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj",
         "projectName": "Ophioid",
-        "projectPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid\\Ophioid.csproj",
+        "projectPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj",
         "packagesPath": "C:\\Users\\IDGCaptainRussia94\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid\\obj\\",
+        "outputPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\IDGCaptainRussia94\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -37,7 +37,13 @@
       },
       "frameworks": {
         "net45": {
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "dependencies": {
+            "tModLoader.CodeAssist": {
+              "target": "Package",
+              "version": "[0.1.*, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

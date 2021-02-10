@@ -1,5 +1,5 @@
 author = Kranot & IDGCaptainRussia
-version = 2.11
+version = 2.13
 displayName = Ophioid: A Boss fight mod
 homepage = https://github.com/IDGCaptainRussia94/Ophioid-Mod/wiki
 buildIgnore = .vs\*, .git\*, ignore\*, .gitignore, .gitattributes, *.MD, *.csproj, *.user, obj\*, bin\*

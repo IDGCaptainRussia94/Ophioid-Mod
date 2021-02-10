@@ -10,6 +10,9 @@ Current Content:
 
 Version History :
 
+V2.13
+God rid of the troublesome FindNPCsMultitype errors, I hope
+
 V2.11
 Ophiodpede drops his items at the body segment closest to who he was targeting
 

@@ -194,6 +194,7 @@ namespace Ophioid
 
     public class OphioidPlayer: ModPlayer
     {
+
     public bool PetBuff=false;
 
         public override void ResetEffects()
@@ -212,7 +213,10 @@ namespace Ophioid
 
         static public bool OphioidBoss
         {
-            get {return IdgNPC.FindNPCsMultitype(new ushort[] {(ushort)Ophioid.Instance.NPCType("OphiopedeHead"),(ushort)Ophioid.Instance.NPCType("Ophiofly"),(ushort)Ophioid.Instance.NPCType("Ophiocoon"),(ushort)Ophioid.Instance.NPCType("OphiopedeHead2")}).Count>0;}
+            get
+            {
+                return NPC.CountNPCS(Ophioid.Instance.NPCType("OphiopedeHead")) + NPC.CountNPCS(Ophioid.Instance.NPCType("Ophiofly")) + NPC.CountNPCS(Ophioid.Instance.NPCType("Ophiocoon")) + NPC.CountNPCS(Ophioid.Instance.NPCType("OphiopedeHead2")) > 0;
+            }
         }
 
         public override void Initialize()

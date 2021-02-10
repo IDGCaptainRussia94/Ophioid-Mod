@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "TfLw5XNxxRu/9gsrRiUG3G6MDW44DKlikJ9N7CV9zCr5Qe8oza1prp/0muxCh1+b4UwZPDT6xAWZp0ahSgscdw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\IDGCaptainRussia94\\.nuget\\packages\\tmodloader.codeassist\\0.1.1\\tmodloader.codeassist.0.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}
