@@ -1,8 +1,9 @@
-Ophoiod is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in hardmode after the mecha bosses.
-Supports Boss Checklist and Yet Another Boss Healthbar
-Requires IdgLibrary (search on the mod browser or go here http://javid.ddns.net/tModLoader/download.php?Down=mods/Idglibrary.tmod)
-Source code available on github
+Now Ported over and rebuild for TModLoader 1.4 Alpha!
+Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in hardmode after the mecha bosses.
+Source code available on github (1.4 branch)
+Please see https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/ for more info on the mod
 
+With the introduction of the 1.4 Port, some things have changed, see V2.15
 
 Current Content:
 -2 summoning items for both evil biomes and 1 for the rematch fight
@@ -10,8 +11,17 @@ Current Content:
 
 Version History :
 
+V2.15
+Is now running on TML 1.4! The following has changed, going forward or only for now:
+-The bosses drop variable ammounts of items and even more in Expert due to how 1.4 handles item drops now, getting a solid 50 items to drop BEFORE luck I havn't figured out yet.
+-There is NO netcode support, all NetCode methods in 1.4 TML appear to be broken and inaccessible.
+-Boss Checklist and Yet Another Boss Healthbar Support has been disabled
+-IDGLib is no longer required by the mod
+-Projectiles don't make you Stinky
+-Any other shanigans 1.4 might have introduced are very likely
+
 V2.13
-God rid of the troublesome FindNPCsMultitype errors, I hope
+Got rid of the troublesome FindNPCsMultitype errors, I hope
 
 V2.11
 Ophiodpede drops his items at the body segment closest to who he was targeting

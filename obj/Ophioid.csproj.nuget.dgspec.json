@@ -1,31 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj": {}
+    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\OphioidMod\\Ophioid.csproj": {}
   },
   "projects": {
-    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj": {
+    "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\OphioidMod\\Ophioid.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj",
-        "projectName": "Ophioid",
-        "projectPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\Ophioid.csproj",
+        "projectUniqueName": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\OphioidMod\\Ophioid.csproj",
+        "projectName": "OphioidMod",
+        "projectPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\OphioidMod\\Ophioid.csproj",
         "packagesPath": "C:\\Users\\IDGCaptainRussia94\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Ophioid-Mod\\obj\\",
+        "outputPath": "C:\\Users\\IDGCaptainRussia94\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\OphioidMod\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\IDGCaptainRussia94\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net45"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net45": {
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {}
           }
         },
@@ -36,14 +37,30 @@
         }
       },
       "frameworks": {
-        "net45": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
             "tModLoader.CodeAssist": {
               "target": "Package",
               "version": "[0.1.*, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
