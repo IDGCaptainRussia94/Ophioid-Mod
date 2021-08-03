@@ -1,6 +1,6 @@
 Now Ported over and rebuild for TModLoader 1.4 Alpha!
 Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in hardmode after the mecha bosses.
-Source code available on github (1.4 branch)
+Source code available on github (1.4 branch https://github.com/IDGCaptainRussia94/Ophioid-Mod/tree/1.4)
 Please see https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/ for more info on the mod
 
 With the introduction of the 1.4 Port, some things have changed, see V2.15
@@ -15,6 +15,7 @@ V2.15
 Is now running on TML 1.4! The following has changed, going forward or only for now:
 -The bosses drop variable ammounts of items and even more in Expert due to how 1.4 handles item drops now, getting a solid 50 items to drop BEFORE luck I havn't figured out yet.
 -There is NO netcode support, all NetCode methods in 1.4 TML appear to be broken and inaccessible.
+-Music is currently busted in TML, so the mod's OST cannot be heard yet
 -Boss Checklist and Yet Another Boss Healthbar Support has been disabled
 -IDGLib is no longer required by the mod
 -Projectiles don't make you Stinky

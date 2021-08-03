@@ -75,7 +75,6 @@ C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sourc
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\bin\Debug\net5.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\bin\Debug\net5.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\bin\Debug\net5.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\Ophioid.csproj.AssemblyReference.cache
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\Ophioid.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\Ophioid.AssemblyInfoInputs.cache
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\Ophioid.AssemblyInfo.cs
