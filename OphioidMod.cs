@@ -68,12 +68,6 @@ namespace OphioidMod
 		public OphioidMod()
 		{
 
-			Properties = new ModProperties()
-			{
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
 		}
 
         public override void Load()

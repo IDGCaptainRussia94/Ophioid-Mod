@@ -135,7 +135,7 @@ namespace OphioidMod
             NPC.behindTiles = true;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            Music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             NPC.value = 90000f;
         }
     }
@@ -241,7 +241,7 @@ namespace OphioidMod
             NPC.aiStyle = -1;
             NPC.noTileCollide = true;
             NPC.boss = true;
-            Music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_The_Fly");
+            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_The_Fly");
             AIType = -1;
             AnimationType = -1;
             BossBag = ModContent.ItemType<TreasureBagOphioid>();
@@ -973,7 +973,7 @@ else
             NPC.boss=true;
             NPC.dontTakeDamage=true;
             NPC.immortal=true;
-            Music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+            Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             AIType = -1;
             AnimationType = -1;
         }
@@ -1000,7 +1000,7 @@ else
             //Main.npc[num664].life = (int)(NPC.life*0.007);
             //Main.npc[num664].lifeMax = (int)(NPC.lifeMax*0.007);
             Main.npc[num664].netUpdate=true;
-                        if (Main.netMode == 2 && num664 < 200)
+                        if (Main.netMode == NetmodeID.Server && num664 < 200)
                         {
                             NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                         }

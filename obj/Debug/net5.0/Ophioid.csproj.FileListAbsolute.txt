@@ -83,3 +83,6 @@ C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sourc
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\OphioidMod.dll
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\ref\OphioidMod.dll
 C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\OphioidMod.pdb
+C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\obj\Debug\net5.0\Ophioid.csproj.AssemblyReference.cache
+C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\bin\Debug\net5.0\Hjson.dll
+C:\Users\IDGCaptainRussia94\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\OphioidMod\bin\Debug\net5.0\Hjson.xml

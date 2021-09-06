@@ -11,6 +11,11 @@ Current Content:
 
 Version History :
 
+V2.21
+
+-Removed obsolete TML code, mod now works again
+-Music now works, yay!
+
 V2.15
 Is now running on TML 1.4! The following has changed, going forward or only for now:
 -The bosses drop variable ammounts of items and even more in Expert due to how 1.4 handles item drops now, getting a solid 50 items to drop BEFORE luck I havn't figured out yet.
