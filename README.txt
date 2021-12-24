@@ -2,6 +2,7 @@ Now Ported over and rebuild for TModLoader 1.4 Alpha!
 Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in hardmode after the mecha bosses.
 Source code available on github (1.4 branch https://github.com/IDGCaptainRussia94/Ophioid-Mod/tree/1.4)
 Please see https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/ for more info on the mod
+Terraria Mods Wiki page: https://terrariamods.fandom.com/wiki/Ophioid
 
 With the introduction of the 1.4 Port, some things have changed, see V2.15
 
@@ -10,6 +11,11 @@ Current Content:
 -2(2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
 
 Version History :
+
+V2.22
+
+- Fixed TagCompound saving
+- Boss Checklist support has been re-enabled
 
 V2.21
 

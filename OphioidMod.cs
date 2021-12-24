@@ -86,21 +86,19 @@ namespace OphioidMod
 		{
             //Not in 1.4 yet
 
-            /*
-			//Mod bossList = ModLoader.GetMod("BossChecklist");
-			if (bossList != null)
+			if (ModLoader.TryGetMod("BossChecklist", out Mod bossList))
 			{
                 //bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
                 //bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
-                bossList.Call("AddBoss", 9.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {Ophioid.Instance.ItemType("Ophiopedetrophyitem"), Ophioid.Instance.ItemType("OphiopedeMask") }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ItemType("Livingcarrion"), ItemType("Deadfungusbug") }, 
-                    "Use a [i:" + Ophioid.Instance.ItemType("Deadfungusbug") + "] or [i:" + Ophioid.Instance.ItemType("Livingcarrion") + "] at anytime", "Ophiopede Tunnels away", "Ophioid/BCLPede");
-                bossList.Call("AddBoss", 11.50f, ModContent.NPCType<Ophiofly>(), this, "Ophioid", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { Ophioid.Instance.ItemType("Ophiopedetrophyitem"), Ophioid.Instance.ItemType("OphiopedeMask"), Ophioid.Instance.ItemType("SporeInfestedEgg") }, 
+                bossList.Call("AddBoss", 9.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>() }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ModContent.ItemType<Livingcarrion>(), ModContent.ItemType<Deadfungusbug>() }, 
+                    "Use a [i:" + ModContent.ItemType<Deadfungusbug>() + "] or [i:" + ModContent.ItemType<Livingcarrion>() + "] at anytime", "Ophiopede Tunnels away", "Ophioid/BCLPede");
+                bossList.Call("AddBoss", 11.50f, ModContent.NPCType<Ophiofly>(), this, "Ophioid", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>() }, 
                     new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
-                    "Use an [i:" + Ophioid.Instance.ItemType("Infestedcompost") + "] at anytime after beating Ophiopede", "Ophioid slinks back into its hidden nest", "Ophioid/BCLFly");
+                    "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at anytime after beating Ophiopede", "Ophioid slinks back into its hidden nest", "Ophioid/BCLFly");
 
 
             }
-
+            /*
             //Idglib = ModLoader.GetMod("Idglib");
 
             Mod yabhb = ModLoader.GetMod("FKBossHealthBar");
@@ -267,24 +265,33 @@ namespace OphioidMod
             downedOphiopede2 = false;
         }
 
-        public override TagCompound SaveWorldData()
+        public override void OnWorldUnload()
         {
-            TagCompound Ophioidsavedata = new TagCompound();
-            Ophioidsavedata["downedOphiopede"] = downedOphiopede;
-            Ophioidsavedata["downedOphiopede2"] = downedOphiopede2;
+            downedOphiopede = false;
+            downedOphiopede2 = false;
+        }
 
-            return Ophioidsavedata;
+        public override void SaveWorldData(TagCompound tag)
+        {
+            if (downedOphiopede)
+            {
+                tag["downedOphiopede"] = true;
+            }
+            if (downedOphiopede2)
+            {
+                tag["downedOphiopede2"] = true;
+            }
         }
 
         public override void LoadWorldData(TagCompound tag)
         {
-            var Ophioidsavedata = tag.GetList<string>("Ophioidsavedata");
+            //var Ophioidsavedata = tag.GetList<string>("Ophioidsavedata");
             downedOphiopede = tag.GetBool("downedOphiopede");
             downedOphiopede2 = tag.GetBool("downedOphiopede2");
         }
-        /*public override void NetSend(BinaryWriter writer)
+        public override void NetSend(BinaryWriter writer)
         {
-            BitsByte bossdeaths = new BitsByte();
+            var bossdeaths = new BitsByte();
             bossdeaths[0] = downedOphiopede;
             bossdeaths[1] = downedOphiopede2;
             writer.Write(bossdeaths);
@@ -295,7 +302,7 @@ namespace OphioidMod
             BitsByte bossdeaths = reader.ReadByte();
             downedOphiopede = bossdeaths[0];
             downedOphiopede2 = bossdeaths[1];
-        }*/
+        }
 
     }
 
