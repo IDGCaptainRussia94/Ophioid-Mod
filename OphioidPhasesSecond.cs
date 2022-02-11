@@ -6,7 +6,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.UI;
@@ -44,16 +43,16 @@ namespace OphioidMod
         if (NPC.ai[0]>10)
         {
 
-        if (Main.netMode!=1){
+        if (Main.netMode!= NetmodeID.MultiplayerClient){
 
             int x = (int)(NPC.position.X + (float)Main.rand.Next(NPC.width - 32));
             int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
             int num663 = ModContent.NPCType<Ophiocoon>();
 
             int num664 = NPC.NewNPC(x, y, num663);
-                    if (Main.netMode == 2 && num664 < 200)
+                    if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
-                       NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                       NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                     }
 
         }
@@ -79,6 +78,7 @@ namespace OphioidMod
             NPC.immortal=true;
             AIType = -1;
             AnimationType = -1;
+            NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
 
     }
@@ -94,7 +94,7 @@ namespace OphioidMod
         public override void StartPhaseTwo()
         {
         if (NPC.life<(NPC.lifeMax*0.50)){
-        if (Main.netMode!=1){
+        if (Main.netMode!= NetmodeID.MultiplayerClient){
         NPC.boss=false;
         NPC.active=false;
         IDGHelper.Chat("The Ophiopede begins to metamorphosize!",100,225,100);
@@ -104,9 +104,9 @@ namespace OphioidMod
             int num663 = ModContent.NPCType<MetaOphiocoon>();
 
             int num664 = NPC.NewNPC(x, y, num663);
-                    if (Main.netMode == 2 && num664 < 200)
+                    if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
-                       NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                       NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                     }
 
         }}
@@ -137,6 +137,7 @@ namespace OphioidMod
             NPC.noGravity = true;
             Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             NPC.value = 90000f;
+            NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
     }
 
@@ -245,6 +246,7 @@ namespace OphioidMod
             AIType = -1;
             AnimationType = -1;
             BossBag = ModContent.ItemType<TreasureBagOphioid>();
+            NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
 
 
@@ -275,7 +277,7 @@ namespace OphioidMod
             if (spawnminionsat == 0)
                 spawnminionsat = (int)(NPC.lifeMax * 0.8);
 
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NPC.ai[0] = 0;
                 int[] pick = { 0, 1, 2, 2, 3, 4 };
@@ -405,7 +407,7 @@ namespace OphioidMod
                             if (Main.rand.Next(0, 100) < 25)
                             {
                                 Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
-                                int num316 = Dust.NewDust(NPC.Center + new Vector2(num315 * 3, -30), 0, 80, 184, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 4f - Math.Abs(num315) / 15f);
+                                int num316 = Dust.NewDust(NPC.Center + new Vector2(num315 * 3, -30), 0, 80, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 4f - Math.Abs(num315) / 15f);
                                 Main.dust[num316].noGravity = true;
                                 Dust dust3 = Main.dust[num316];
                                 dust3.velocity = (randomcircle * 2.5f * Main.rand.NextFloat());
@@ -442,7 +444,7 @@ namespace OphioidMod
                 Vector2 vecr = randomcircle * 512;
                 vecr *= (1f - (300f / (NPC.ai[0] % 300)));
 
-                int num622 = Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y) + vecr, 0, 0, 184, 0f, 0f, 100, default(Color), 3f);
+                int num622 = Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y) + vecr, 0, 0, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default(Color), 3f);
                 Main.dust[num622].velocity = randomcircle * -16f;
 
                 Main.dust[num622].noGravity = true;
@@ -454,7 +456,7 @@ namespace OphioidMod
             }
 
 
-            if (Main.netMode != 1 && NPC.ai[0] > 100 && NPC.ai[0] % 50 == 0)
+            if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] > 100 && NPC.ai[0] % 50 == 0)
             {
                 int x = (int)(NPC.position.X + (float)Main.rand.Next(NPC.width - 32));
                 int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
@@ -462,9 +464,9 @@ namespace OphioidMod
 
                 int num664 = NPC.NewNPC(x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
                 Main.npc[num664].ai[1] = NPC.whoAmI;
-                if (Main.netMode == 2 && num664 < 200)
+                if (Main.netMode == NetmodeID.Server && num664 < 200)
                 {
-                    NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                 }
             }
 
@@ -478,7 +480,7 @@ namespace OphioidMod
 
             if (NPC.ai[0] % 40 == 0 && NPC.ai[0] > 150)
             {
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int him = NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<OphSporeCloud>(), 0, 0f, 0f, 0f, 0f, 255);
                     Main.npc[him].velocity = new Vector2(Main.rand.Next(10, 18) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-4, 4));
@@ -528,7 +530,7 @@ namespace OphioidMod
                     if (Main.rand.Next(0, 100) < 25)
                     {
                         Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
-                        int num316 = Dust.NewDust(new Vector2(projectile2.position.X - 1, projectile2.position.Y), projectile2.width, projectile2.height, 184, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 1.00f);
+                        int num316 = Dust.NewDust(new Vector2(projectile2.position.X - 1, projectile2.position.Y), projectile2.width, projectile2.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 1.00f);
                         Main.dust[num316].noGravity = true;
                         Dust dust3 = Main.dust[num316];
                         dust3.velocity = (randomcircle * 2.5f * Main.rand.NextFloat());
@@ -582,7 +584,7 @@ namespace OphioidMod
                         if (Main.rand.Next(0, 100) < 25)
                         {
                             Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
-                            int num316 = Dust.NewDust(NPC.Center + new Vector2((-NPC.direction * 20) - 12, 12), 24, 24, 184, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
+                            int num316 = Dust.NewDust(NPC.Center + new Vector2((-NPC.direction * 20) - 12, 12), 24, 24, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
                             Main.dust[num316].noGravity = true;
                             Dust dust3 = Main.dust[num316];
                             dust3.velocity = (randomcircle * 1.5f * Main.rand.NextFloat());
@@ -649,7 +651,7 @@ namespace OphioidMod
 
             if (!OphioidWorld.downedOphiopede2)
             {
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                     IDGHelper.Chat("The " + (WorldGen.crimson ? "Crimson" : "Corruption") + "'s abomination is no longer felt, Ophioid is defeated", 100, 225, 100);
                 OphioidWorld.downedOphiopede2 = true;
             }
@@ -895,7 +897,7 @@ else
                 Vector2 randomcircle=new Vector2(Main.rand.Next(-8000,8000),Main.rand.Next(-8000,8000)); randomcircle.Normalize();
                 Vector2 vecr=randomcircle;
 
-                    int num622 = Dust.NewDust(NPC.position, NPC.width, NPC.height, 184, 0f, 0f, 100, default(Color), 3f);
+                    int num622 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default, 3f);
                     Main.dust[num622].velocity = randomcircle*new Vector2((float)Main.rand.Next(-1000,1000)/100f,(float)Main.rand.Next(-1000,1000)/100f);
 
                     Main.dust[num622].noGravity = true;
@@ -923,7 +925,7 @@ else
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].type] && !Main.tileSolidTop[(int)Main.tile[x, y].type])
+                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -938,7 +940,7 @@ else
         NPC.life = 0;
         NPC.HitEffect(0, 10.0);
 
-        if (Main.netMode!=1){
+        if (Main.netMode!=NetmodeID.MultiplayerClient){
                     IDGHelper.Chat("The Ophifly hatches from the Cocoon!",100,225,100);
 
             int x = (int)(NPC.position.X + (float)Main.rand.Next(NPC.width - 32));
@@ -946,9 +948,9 @@ else
             int num663 = ModContent.NPCType<Ophiofly>();
 
             int num664 = NPC.NewNPC(x, y, num663);
-                    if (Main.netMode == 2 && num664 < 200)
+                    if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
-                       NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                       NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                     }
 
             }
@@ -976,6 +978,7 @@ else
             Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
             AIType = -1;
             AnimationType = -1;
+            NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
 
         public override void AI()
@@ -984,7 +987,7 @@ else
         NPC.ai[0]+=1;
         //ReLogic.Utilities.ReinterpretCast.UIntAsFloat(half.PackedValue);
         if (NPC.ai[0]==25){
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
             for(int i=0;i<7;i+=1)
             {
@@ -1002,7 +1005,7 @@ else
             Main.npc[num664].netUpdate=true;
                         if (Main.netMode == NetmodeID.Server && num664 < 200)
                         {
-                            NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                         }
             }
         }
@@ -1038,7 +1041,7 @@ else
 
         if (NPC.ai[2]%10==0 && NPC.ai[2]>0)
         {
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
             int him=NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                     //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
@@ -1060,7 +1063,7 @@ else
                 NPC.ai[0] = 50;
                 NPC.ai[2] = 150;
 
-                if (Main.netMode != 1 && NPC.CountNPCS(ModContent.NPCType<FlyMinion>()) < 5)
+                if (Main.netMode != NetmodeID.MultiplayerClient && NPC.CountNPCS(ModContent.NPCType<FlyMinion>()) < 5)
                 {
                     int x = (int)(NPC.position.X + (float)Main.rand.Next(NPC.width - 32));
                     int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
@@ -1068,9 +1071,9 @@ else
 
                     int num664 = NPC.NewNPC(x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
                     Main.npc[num664].ai[1] = NPC.whoAmI;
-                    if (Main.netMode == 2 && num664 < 200)
+                    if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
-                        NetMessage.SendData(23, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
                     }
                 }
             }
@@ -1089,7 +1092,7 @@ else
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].type] && !Main.tileSolidTop[(int)Main.tile[x, y].type])
+                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -1182,7 +1185,7 @@ else
         }
         Player ply = Main.player[NPC.target];
 
-        if (Main.rand.Next(0,800)<1 && NPC.ai[0]>300 && Main.netMode!=1)
+        if (Main.rand.Next(0,800)<1 && NPC.ai[0]>300 && Main.netMode!=NetmodeID.MultiplayerClient)
         {
         NPC.ai[0]=(int)(-Main.rand.Next(500,1200));
         NPC.netUpdate=true;
@@ -1291,7 +1294,7 @@ else
         NPC.velocity+=masternormal*0.25f;
         }
 
-        if (Main.rand.Next(0,200)<1 && NPC.ai[2]==0 && Main.netMode!=1){
+        if (Main.rand.Next(0,200)<1 && NPC.ai[2]==0 && Main.netMode!=NetmodeID.MultiplayerClient){
         HalfVector2 half=new HalfVector2(Main.rand.Next(-120,120),Main.rand.Next(-280,20));NPC.ai[2]=ReLogic.Utilities.ReinterpretCast.UIntAsFloat(half.PackedValue);
         NPC.netUpdate=true;
         }
@@ -1299,7 +1302,7 @@ else
         if (NPC.ai[0]%(Main.expertMode ? 450 : 600)==0)
         {
 
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
             int him=NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), NPCID.VileSpit, 0, 0f, 0f, 0f, 0f, 255);
             //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
@@ -1426,7 +1429,7 @@ else
             {
                 if (Main.rand.Next(0,100)<25){
                 Vector2 randomcircle=new Vector2(Main.rand.Next(-8000,8000),Main.rand.Next(-8000,8000)); randomcircle.Normalize();
-                int num316 = Dust.NewDust(new Vector2(Projectile.position.X-1, Projectile.position.Y), Projectile.width, Projectile.height, 184, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
+                int num316 = Dust.NewDust(new Vector2(Projectile.position.X-1, Projectile.position.Y), Projectile.width, Projectile.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
                 Main.dust[num316].noGravity = true;
                 Dust dust3 = Main.dust[num316];
                 dust3.velocity = (randomcircle*2.5f*Main.rand.NextFloat());
@@ -1438,7 +1441,7 @@ else
             {
                 if (Main.rand.Next(0,100)<25){
                 Vector2 randomcircle=new Vector2(Main.rand.Next(-8000,8000),Main.rand.Next(-8000,8000)); randomcircle.Normalize();
-                int num316 = Dust.NewDust(new Vector2(Projectile.position.X-1, Projectile.position.Y), Projectile.width, Projectile.height, 184, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 3.00f);
+                int num316 = Dust.NewDust(new Vector2(Projectile.position.X-1, Projectile.position.Y), Projectile.width, Projectile.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 3.00f);
                 Main.dust[num316].noGravity = true;
                 Dust dust3 = Main.dust[num316];
                 dust3.velocity = (randomcircle*2.5f*Main.rand.NextFloat());
@@ -1450,7 +1453,7 @@ else
             {
                 if (Main.rand.Next(0,100)<25){
                 Vector2 randomcircle=new Vector2(Main.rand.Next(-8000,8000),Main.rand.Next(-8000,8000)); randomcircle.Normalize();
-                int num316 = Dust.NewDust(new Vector2(dustspot.X-1, dustspot.Y)-new Vector2(Projectile.width/2, Projectile.height/2), Projectile.width, Projectile.height, 184, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
+                int num316 = Dust.NewDust(new Vector2(dustspot.X-1, dustspot.Y)-new Vector2(Projectile.width/2, Projectile.height/2), Projectile.width, Projectile.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50,Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
                 Main.dust[num316].noGravity = true;
                 Dust dust3 = Main.dust[num316];
                 dust3.velocity = (randomcircle*2.5f*Main.rand.NextFloat());

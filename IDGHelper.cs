@@ -17,12 +17,12 @@ namespace OphioidMod
     class IDGHelper
     {
         public Color coloroverride = default;
-        public static void DrawTether(string Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default(Color))
+        public static void DrawTether(string Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default)
         {
             DrawTether(ModContent.Request<Texture2D>(Tex).Value, Start, End, Screen, Alpha = 1f, scaleX, scaleY, coloroverride);
         }
 
-        public static void DrawTether(Texture2D Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default(Color))
+        public static void DrawTether(Texture2D Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default)
         {
 
             Texture2D texture = Tex;
@@ -63,7 +63,7 @@ namespace OphioidMod
                     Microsoft.Xna.Framework.Color color2 = Lighting.GetColor((int)position.X / 16, (int)((double)position.Y / 16.0));
                     color2 = new Color(color2.R, color2.G, color2.B);
                     //color2 = npc.GetAlpha(color2);
-                    if (coloroverride != default(Color))
+                    if (coloroverride != default)
                         color2 = coloroverride;
                     Main.spriteBatch.Draw(texture, position - Screen, new Rectangle(0, 0, texture.Width, (int)Math.Min(texture.Height, texture.Height + keepgoing)), color2 * (Alpha), rotation, origin, new Vector2(scaleX, scaleY), SpriteEffects.None, 0.0f);
                 }
@@ -115,7 +115,7 @@ namespace OphioidMod
 
         public static void Chat(string message, byte color1, byte color2, byte color3)
         {
-            if (Main.netMode != 2)
+            if (Main.netMode != NetmodeID.Server)
             {
                 string text = message;
                 Main.NewText(text, color1, color3, color3);
@@ -129,7 +129,7 @@ namespace OphioidMod
 
         public static int RaycastDown(int x, int y)
         {
-            while (!((Main.tile[x, y] != null && Main.tile[x, y].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[x, y].type] || Main.tileSolidTop[(int)Main.tile[x, y].type] && (int)Main.tile[x, y].frameY == 0))))
+            while (!((Main.tile[x, y] != null && Main.tile[x, y].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[x, y].TileType] || Main.tileSolidTop[(int)Main.tile[x, y].TileType] && (int)Main.tile[x, y].TileFrameY == 0))))
             {
                 y++;
             }
