@@ -35,8 +35,8 @@ namespace OphioidMod
     {
         public static bool NactiveButWithABetterName(this Tile tile)
         {
-            return (tile.IsActive && !tile.IsActuated);
-           // return (!tile.IsActive || tile.IsActuated);
+            return (tile.HasTile && !tile.IsActuated);
+           // return (!tile.HasTile || tile.IsActuated);
         }
     }
 
@@ -90,11 +90,11 @@ namespace OphioidMod
 			{
                 //bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
                 //bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
-                bossList.Call("AddBoss", 9.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>() }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ModContent.ItemType<Livingcarrion>(), ModContent.ItemType<Deadfungusbug>() }, 
-                    "Use a [i:" + ModContent.ItemType<Deadfungusbug>() + "] or [i:" + ModContent.ItemType<Livingcarrion>() + "] at anytime", "Ophiopede Tunnels away", "Ophioid/BCLPede");
-                bossList.Call("AddBoss", 11.50f, ModContent.NPCType<Ophiofly>(), this, "Ophioid", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>() }, 
+                bossList.Call("AddBoss", 11.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>() }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ModContent.ItemType<Livingcarrion>(), ModContent.ItemType<Deadfungusbug>() }, 
+                    "Use a [i:" + ModContent.ItemType<Deadfungusbug>() + "] or [i:" + ModContent.ItemType<Livingcarrion>() + "] at any time", "Ophiopede tunnels away", "OphioidMod/BCLPede", "OphioidMod/icon_small");
+                bossList.Call("AddBoss", 13.50f, ModContent.NPCType<Ophiofly>(), this, "Ophiopede & Ophiofly", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>() }, 
                     new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
-                    "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at anytime after beating Ophiopede", "Ophioid slinks back into its hidden nest", "Ophioid/BCLFly");
+                    "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at any time after beating Ophiopede", "Ophioid slinks back into its hidden nest", "OphioidMod/BCLFly");
 
 
             }
@@ -331,7 +331,7 @@ namespace OphioidMod
             NPC.width = 70;
             NPC.height = 70;
             NPC.defense = 0;
-		}
+        }
 
         public override bool StrikeNPC(ref double damage,int defense,ref float knockback,int hitDirection,ref bool crit)
         {
@@ -342,7 +342,7 @@ namespace OphioidMod
         {
         base.PreAI();
 
-            if ((Main.npc[(int)NPC.ai[3]].ai[0] - 100f) % 400 > 280 && Main.npc[(int)NPC.ai[2]].ai[0] > 0 && NPC.ai[0] % (20) == 0 && Main.netMode != 1)
+            if ((Main.npc[(int)NPC.ai[3]].ai[0] - 100f) % 400 > 280 && Main.npc[(int)NPC.ai[2]].ai[0] > 0 && NPC.ai[0] % (20) == 0 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 OphiopedeHead Head = Main.npc[(int)NPC.ai[3]].ModNPC as OphiopedeHead;
                 if (Head.phase == 1)
@@ -457,7 +457,7 @@ namespace OphioidMod
         public override void AI()
         {
 
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (!Main.npc[(int)NPC.ai[3]].active)
                 {
@@ -471,7 +471,7 @@ namespace OphioidMod
             Player ply = Main.player[NPC.target];
             float ownerspeed = 0.25f + Main.npc[(int)NPC.ai[3]].velocity.Length() / 25f;
             NPC.ai[0] += 1;
-            if (NPC.ai[0] % 300 == 0 && Main.netMode != 1)
+            if (NPC.ai[0] % 300 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NPC.ai[2] = NPC.ai[2] + Main.rand.Next(-30, 30);
                 NPC.ai[1] = Main.rand.Next(90, 180);
@@ -543,7 +543,7 @@ namespace OphioidMod
 			Music = MusicID.Boss2;
 			NPC.value = 90000f;
             //NPC.buffImmune[BuffID.Daybreak] = true; NPC.buffImmune[BuffID.Frostburn] = true; NPC.buffImmune[BuffID.Poisoned] = true; NPC.buffImmune[BuffID.Venom] = true;
-		}
+        }
 
 		public override bool CheckActive()
         {
@@ -571,7 +571,7 @@ namespace OphioidMod
         {
 
 
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NPC MyHead = Main.npc[(int)NPC.ai[2]];
                 if (!MyHead.active || (MyHead.type != ModContent.NPCType<OphiopedeHead>() && MyHead.type != ModContent.NPCType<OphiopedeHead2>() && MyHead.type != ModContent.NPCType<OphiopedeBody>()))
@@ -640,7 +640,7 @@ namespace OphioidMod
                 }
 
 
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     if (Main.npc[(int)NPC.ai[3]].ai[0] > -9800 && Main.npc[(int)NPC.ai[3]].ai[0] < -5000)
                     {
@@ -784,7 +784,8 @@ namespace OphioidMod
 			NPC.noGravity = true;
 			Music = MusicID.Boss2;
 			NPC.value = Item.buyPrice(1, 25, 0, 0);
-		}
+            NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
+        }
 
         public override void BossLoot(ref string name, ref int potionType)
         {
@@ -816,7 +817,7 @@ namespace OphioidMod
         public override void OnKill()
         {
 
-            if (!OphioidWorld.downedOphiopede && Main.netMode!=1)
+            if (!OphioidWorld.downedOphiopede && Main.netMode!= NetmodeID.MultiplayerClient)
             IDGHelper.Chat("The infested worm is defeated, but you can still feel the presence of the "+(WorldGen.crimson ? "Crimson" : "Corruption")+"'s abomination",100,225,100);
 
             OphioidWorld.downedOphiopede = true;
@@ -1024,7 +1025,7 @@ namespace OphioidMod
             {
                 for (int j = minTilePosY; j < maxTilePosY; ++j)
                 {
-                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].type] || Main.tileSolidTop[(int)Main.tile[i, j].type] && (int)Main.tile[i, j].frameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
+                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
                     {
                         Vector2 vector2;
                         vector2.X = (float)(i * 16);
@@ -1041,7 +1042,7 @@ namespace OphioidMod
             {
                 for (int j = minTilePosY-4; j < maxTilePosY-4; ++j)
                 {
-                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].type] || Main.tileSolidTop[(int)Main.tile[i, j].type] && (int)Main.tile[i, j].frameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
+                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
                     {
                         Vector2 vector2;
                         vector2.X = (float)(i * 16);
@@ -1064,7 +1065,7 @@ namespace OphioidMod
                 }
             }
 
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
             if (Main.rand.Next(0,30)==0)
             NPC.netUpdate=true;
@@ -1099,7 +1100,7 @@ namespace OphioidMod
        	 	if (phase==0 && NPC.life<NPC.lifeMax*(this.GetType().Name=="OphiopedeHead2" ? 0.75 : 0.5) && NPC.ai[0]>0){
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, NPC.position, 0);
        	 		phase=1;
-           		if (Main.netMode != 1)
+           		if (Main.netMode != NetmodeID.MultiplayerClient)
             	{
             		NPC.ai[0]=1;
             		int lastnpc=NPC.whoAmI;
@@ -1182,10 +1183,10 @@ namespace OphioidMod
                         for (int q = 0; q < 4; q++)
                         {
 
-                            int dust = Dust.NewDust(NPC.Center - new Vector2(8, 40), 16, 12, 89, Main.rand.Next(-100, 100) * 0.1f, Main.rand.Next(-100, -50) * 0.2f, 100, Color.DarkGreen, 2f);
+                            int dust = Dust.NewDust(NPC.Center - new Vector2(8, 40), 16, 12, DustID.GemEmerald, Main.rand.Next(-100, 100) * 0.1f, Main.rand.Next(-100, -50) * 0.2f, 100, Color.DarkGreen, 2f);
                             Main.dust[dust].noGravity = true;
 
-                            int num184 = Dust.NewDust(NPC.Center - new Vector2(8, 40), 16, 12, 89, Main.rand.Next(-100, 100) * 0.1f, Main.rand.Next(-100, -50) * 0.2f, 31, Color.DarkGreen, 2f);
+                            int num184 = Dust.NewDust(NPC.Center - new Vector2(8, 40), 16, 12, DustID.GemEmerald, Main.rand.Next(-100, 100) * 0.1f, Main.rand.Next(-100, -50) * 0.2f, 31, Color.DarkGreen, 2f);
                             Dust dust3 = Main.dust[num184];
                             dust3.alpha += Main.rand.Next(300);
                             dust3 = Main.dust[num184];
@@ -1216,7 +1217,7 @@ namespace OphioidMod
                             }
                         }
 
-                        if (Main.netMode != 1 && NPC.ai[0] % 8 == 0 && phase == 1)
+                        if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] % 8 == 0 && phase == 1)
                         {
 
                             NPC ply = Main.npc[(int)NPC.ai[3]];
@@ -1374,7 +1375,7 @@ namespace OphioidMod
 
 				for (int num328 = 0; num328 < 20; num328 += 1)
 				{
-					int num329 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y + 2f), NPC.width, NPC.height, 18, NPC.velocity.X*1f, NPC.velocity.Y*1f, 100, default(Color), 3f);
+					int num329 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y + 2f), NPC.width, NPC.height, DustID.CorruptGibs, NPC.velocity.X*1f, NPC.velocity.Y*1f, 100, default(Color), 3f);
 					Dust dust = Main.dust[num329];
 					if (Main.rand.Next(15) <12)
 					{
@@ -1399,7 +1400,7 @@ namespace OphioidMod
             NPC.TargetClosest(true);
 				for (int num328 = 0; num328 < 2; num328 += 1)
 				{
-					int num329 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y + 2f), NPC.width, NPC.height, 18, NPC.velocity.X*0.3f, NPC.velocity.Y*0.3f, 100, default(Color), 2f);
+					int num329 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y + 2f), NPC.width, NPC.height, DustID.CorruptGibs, NPC.velocity.X*0.3f, NPC.velocity.Y*0.3f, 100, default(Color), 2f);
 					Dust dust = Main.dust[num329];
 					if (Main.rand.Next(15) <12)
 					{
@@ -1413,7 +1414,8 @@ namespace OphioidMod
 						Main.dust[num329].noGravity = true;
 				}
 
-				if (NPC.ai[0]==0 && Main.rand.Next(0,10)<5 && Main.netMode!=1){
+				if (NPC.ai[0]==0 && Main.rand.Next(0,10)<5 && Main.netMode!= NetmodeID.MultiplayerClient)
+            {
 							float num125 = NPC.velocity.Length();
 							Vector2 vector16 = new Vector2(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
 							float num126 = Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) - vector16.X;
@@ -1476,7 +1478,7 @@ namespace OphioidMod
             for (q = 0; q < 4; q++)
             {
 
-                int dust = Dust.NewDust(Projectile.position - new Vector2(100, 0), 200, 12, 89, 0f, Projectile.velocity.Y * 0.4f, 100, Color.DarkGreen, 1.5f);
+                int dust = Dust.NewDust(Projectile.position - new Vector2(100, 0), 200, 12, DustID.GemEmerald, 0f, Projectile.velocity.Y * 0.4f, 100, Color.DarkGreen, 1.5f);
                 Main.dust[dust].noGravity = true;
             }
 
@@ -1550,10 +1552,10 @@ namespace OphioidMod
             Item.width = 12;
             Item.height = 12;
             Item.maxStack = 99;
-            Item.rare = 3;
+            Item.rare = ItemRarityID.Orange;
             Item.useAnimation = 45;
             Item.useTime = 45;
-            Item.useStyle = 4;
+            Item.useStyle = ItemUseStyleID.HoldUp;
             Item.UseSound = SoundID.Item44;
             Item.consumable = true;
         }
@@ -1629,10 +1631,10 @@ namespace OphioidMod
             Item.autoReuse = true;
             Item.useAnimation = 15;
             Item.useTime = 10;
-            Item.useStyle = 1;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.consumable = true;
             Item.value = 50000;
-            Item.rare = 1;
+            Item.rare = ItemRarityID.Blue;
             Item.createTile = ModContent.TileType<OphiodBossTrophy>();
             Item.placeStyle = 0;
         }
@@ -1649,7 +1651,7 @@ namespace OphioidMod
         {
             Item.width = 20;
             Item.height = 26;
-            Item.rare = 1;
+            Item.rare = ItemRarityID.Blue;
         }
     }
 

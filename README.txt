@@ -1,16 +1,21 @@
 Now Ported over and rebuild for TModLoader 1.4 Alpha!
-Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in hardmode after the mecha bosses.
-Source code available on github (1.4 branch https://github.com/IDGCaptainRussia94/Ophioid-Mod/tree/1.4)
+Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in Hardmode after the Mech Bosses.
+Source code available on github (1.4 branch https://github.com/IDGCaptainRussia94/Ophioid-Mod/tree/1.4 )
 Please see https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/ for more info on the mod
 Terraria Mods Wiki page: https://terrariamods.fandom.com/wiki/Ophioid
 
 With the introduction of the 1.4 Port, some things have changed, see V2.15
 
 Current Content:
--2 summoning items for both evil biomes and 1 for the rematch fight
--2(2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
+- 2 summoning items for both evil biomes and 1 for the rematch fight
+- 2 (2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
 
 Version History :
+
+V2.23
+- Fixed all tile related things that broke in the recent tML update.
+- Updated Boss Checklist stuff
+- Custom boss health bar!
 
 V2.22
 
@@ -24,13 +29,13 @@ V2.21
 
 V2.15
 Is now running on TML 1.4! The following has changed, going forward or only for now:
--The bosses drop variable ammounts of items and even more in Expert due to how 1.4 handles item drops now, getting a solid 50 items to drop BEFORE luck I havn't figured out yet.
+-The bosses drop variable amounts of items and even more in Expert due to how 1.4 handles item drops now, getting a solid 50 items to drop BEFORE luck I haven't figured out yet.
 -There is NO netcode support, all NetCode methods in 1.4 TML appear to be broken and inaccessible.
 -Music is currently busted in TML, so the mod's OST cannot be heard yet
 -Boss Checklist and Yet Another Boss Healthbar Support has been disabled
 -IDGLib is no longer required by the mod
 -Projectiles don't make you Stinky
--Any other shanigans 1.4 might have introduced are very likely
+-Any other shenanigans 1.4 might have introduced are very likely
 
 V2.13
 Got rid of the troublesome FindNPCsMultitype errors, I hope
