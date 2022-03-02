@@ -15,7 +15,8 @@ using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using System;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Bestiary;
 
 namespace OphioidMod
 {
@@ -34,6 +35,11 @@ namespace OphioidMod
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Ophiocoon");
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
         }
 
         public override void AI()
@@ -49,7 +55,7 @@ namespace OphioidMod
             int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
             int num663 = ModContent.NPCType<Ophiocoon>();
 
-            int num664 = NPC.NewNPC(x, y, num663);
+            int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663);
                     if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
@@ -103,7 +109,7 @@ namespace OphioidMod
             int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
             int num663 = ModContent.NPCType<MetaOphiocoon>();
 
-            int num664 = NPC.NewNPC(x, y, num663);
+            int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663);
                     if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
@@ -116,6 +122,16 @@ namespace OphioidMod
         {
             DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 4;
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            {
+                CustomTexturePath = "OphioidMod/BestiaryOphiopede",
+                PortraitPositionYOverride = 5f,
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override void SetDefaults()
         {
@@ -139,6 +155,19 @@ namespace OphioidMod
             NPC.value = 90000f;
             NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // Makes it so whenever you beat the boss associated with it, it will also get unlocked immediately
+            /*int associatedNPCType = ModContent.NPCType<OphiopedeBody>();
+            int associatedNPCType2 = ModContent.NPCType<OphiopedeTail>();
+            bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);*/
+
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement>
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("The second fight against Ophiopede.")
+            });
+        }
     }
 
     public class OphSporeCloud : ModNPC
@@ -149,6 +178,12 @@ namespace OphioidMod
         {
             DisplayName.SetDefault("Ophioid Spore Cloud");
             Main.npcFrameCount[NPC.type] = 5;
+
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
         }
 
         public override string Texture
@@ -180,7 +215,7 @@ namespace OphioidMod
 
         public override bool CheckDead()
         {
-        List<Projectile> projectile22= IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center,NPC.Center+NPC.velocity,new Vector2(0,0),ProjectileID.SporeCloud,50,NPC.velocity.Length()+10f,0,1,true,(float)Main.rand.Next(-100,100)*0.002f,false,240);
+        List<Projectile> projectile22= IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(), NPC.Center,NPC.Center+NPC.velocity,new Vector2(0,0),ProjectileID.SporeCloud,50,NPC.velocity.Length()+10f,0,1,true,(float)Main.rand.Next(-100,100)*0.002f,false,240);
         //IdgProjectile.Sync(projectile22[0].whoAmI);
         return true;
         }
@@ -226,6 +261,18 @@ namespace OphioidMod
         {
             DisplayName.SetDefault("Ophiofly");
             Main.npcFrameCount[NPC.type] = 5;
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            {
+                CustomTexturePath = "OphioidMod/BestiaryOphiofly",
+                PortraitScale = 0.75f, // Portrait refers to the full picture when clicking on the icon in the bestiary
+                PortraitPositionYOverride = 0f,
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+            
         }
 
         public override void SetDefaults()
@@ -237,7 +284,7 @@ namespace OphioidMod
             NPC.defense = 75;
             NPC.lifeMax = 75000;
             NPC.knockBackResist = 0f;
-            NPC.value = 0f;
+            NPC.value = Item.buyPrice(1, 0, 0, 0);
             NPC.noGravity = true;
             NPC.aiStyle = -1;
             NPC.noTileCollide = true;
@@ -245,8 +292,21 @@ namespace OphioidMod
             Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_The_Fly");
             AIType = -1;
             AnimationType = -1;
-            BossBag = ModContent.ItemType<TreasureBagOphioid>();
+            //BossBag = ModContent.ItemType<TreasureBagOphioid>(); Removed
             NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // Makes it so whenever you beat the boss associated with it, it will also get unlocked immediately
+            int associatedNPCType = ModContent.NPCType<Ophiocoon>();
+            bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
+
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement>
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("The fight against Ophiofly.")
+            });
         }
 
 
@@ -329,7 +389,7 @@ namespace OphioidMod
 
                 if (NPC.ai[0] == 400)
                 {
-                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center, NPC.Center + new Vector2(-1 * NPC.direction, 4), new Vector2(0, 0), ModContent.ProjectileType<Ophiobeamichor>(), 15, 1f, 0, 1, true, 0f, false, 150);
+                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(), NPC.Center, NPC.Center + new Vector2(-1 * NPC.direction, 4), new Vector2(0, 0), ModContent.ProjectileType<Ophiobeamichor>(), 15, 1f, 0, 1, true, 0f, false, 150);
                     //Terraria.Audio.SoundEngine.PlaySound(SoundID.Item33, NPC.position);
                     Main.projectile[projectiletrack].netUpdate = true;
                     Terraria.Audio.SoundEngine.PlaySound(29, (int)NPC.position.X, (int)NPC.position.Y, 104, 1f, 0f);
@@ -392,7 +452,7 @@ namespace OphioidMod
 
                         for (float num315 = -10; num315 < 10; num315 = num315 + 2f)
                         {
-                            int num54 = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(),NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
+                            int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
                             Main.projectile[num54].velocity = new Vector2(Main.rand.Next(-8, 8) * (Main.rand.Next(0, 2) == 0 ? 1 : -1) + (num315 / 4f), Main.rand.Next(-15, -3));
                             Main.projectile[num54].damage = (int)(50);
                             Main.projectile[num54].timeLeft = 800;
@@ -462,7 +522,7 @@ namespace OphioidMod
                 int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
                 int num663 = ModContent.NPCType<FlyMinion>();
 
-                int num664 = NPC.NewNPC(x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
+                int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
                 Main.npc[num664].ai[1] = NPC.whoAmI;
                 if (Main.netMode == NetmodeID.Server && num664 < 200)
                 {
@@ -482,7 +542,7 @@ namespace OphioidMod
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    int him = NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<OphSporeCloud>(), 0, 0f, 0f, 0f, 0f, 255);
+                    int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<OphSporeCloud>(), 0, 0f, 0f, 0f, 0f, 255);
                     Main.npc[him].velocity = new Vector2(Main.rand.Next(10, 18) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-4, 4));
                     Main.npc[him].netUpdate = true;
                 }
@@ -520,7 +580,7 @@ namespace OphioidMod
 
             if (NPC.ai[0] > 10 && NPC.ai[0] < 80 && NPC.ai[0] % 5 == 0 && Main.expertMode)
             {
-                List<Projectile> projectile22 = IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center, plyloc, new Vector2(0, -16), ProjectileID.Stinger, 30, 20f, 0, 1, true, (float)Main.rand.Next(-100, 100) * 0.004f, false, 240);
+                List<Projectile> projectile22 = IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(), NPC.Center, plyloc, new Vector2(0, -16), ProjectileID.Stinger, 30, 20f, 0, 1, true, (float)Main.rand.Next(-100, 100) * 0.004f, false, 240);
                 Projectile projectile2 = projectile22[0];
                 //IdgProjectile.Sync(projectile2.whoAmI);
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.Item42, NPC.Center);
@@ -605,7 +665,7 @@ namespace OphioidMod
 
                 if (NPC.ai[0] == 450)
                 {
-                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center, NPC.Center + new Vector2(-1 * NPC.direction, 5), new Vector2(0, 0), ModContent.ProjectileType<Ophiobeam>(), 80, 1f, 0, 1, true, 0f, false, 140);
+                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(), NPC.Center, NPC.Center + new Vector2(-1 * NPC.direction, 5), new Vector2(0, 0), ModContent.ProjectileType<Ophiobeam>(), 80, 1f, 0, 1, true, 0f, false, 140);
                     Terraria.Audio.SoundEngine.PlaySound(29, (int)NPC.position.X, (int)NPC.position.Y, 104, 1f, 0f);
                     //Terraria.Audio.SoundEngine.PlaySound(SoundID.Item33, NPC.position);
                     projectiletrack = itz[0].whoAmI;
@@ -781,7 +841,7 @@ else
                 }
                 if (NPC.ai[0] > 80 && NPC.ai[0] < 220 && NPC.ai[0] % 5 == 0)
                 {
-                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center, NPC.Center, new Vector2(0, 16), ProjectileID.HornetStinger, 30, 15f, 180, 2, false, NPC.ai[0] / 35f, false, 240);
+                    List<Projectile> itz = IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(),NPC.Center, NPC.Center, new Vector2(0, 16), ProjectileID.HornetStinger, 30, 15f, 180, 2, false, NPC.ai[0] / 35f, false, 240);
                 }
 
                 NPC.direction = (plydist.X < 0f).ToDirectionInt();
@@ -801,7 +861,7 @@ else
         }
 
 
-        private SpriteEffects facing
+        private SpriteEffects Facing
         {
             get
             {
@@ -823,10 +883,10 @@ else
             for (int k = oldPos.Length - 1; k >= 0; k -= 2)
             {
                 float alpha = 1f - (float)(k + 1) / (float)(oldPos.Length + 2);
-                spriteBatch.Draw(texture, oldPos[k] - Main.screenPosition, new Rectangle(0, NPC.frame.Y, texture.Width, (texture.Height - 1) / 5), lightColor * alpha, oldrot[k], origin, new Vector2(1f, 1f), facing, 0f);
+                spriteBatch.Draw(texture, oldPos[k] - Main.screenPosition, new Rectangle(0, NPC.frame.Y, texture.Width, (texture.Height - 1) / 5), lightColor * alpha, oldrot[k], origin, new Vector2(1f, 1f), Facing, 0f);
             }
 
-            spriteBatch.Draw(texture, NPC.Center - screenPos, new Rectangle(0, NPC.frame.Y, texture.Width, (texture.Height) / 5), lightColor, NPC.rotation, origin, new Vector2(1f, 1f), facing, 0f);
+            spriteBatch.Draw(texture, NPC.Center - screenPos, new Rectangle(0, NPC.frame.Y, texture.Width, (texture.Height) / 5), lightColor, NPC.rotation, origin, new Vector2(1f, 1f), Facing, 0f);
             return false;
         }
 
@@ -840,7 +900,7 @@ else
 
             int wingframe = (int)(NPC.localAI[0] / 5f);
             wingframe %= 3; wingframe += 2;
-            spriteBatch.Draw(texture, NPC.Center - screenPos, new Rectangle(0, wingframe * ((texture.Height) / 5), texture.Width, (texture.Height) / 5), lightColor * 0.75f, NPC.rotation, origin, new Vector2(1f, 1f), facing, 0f);
+            spriteBatch.Draw(texture, NPC.Center - screenPos, new Rectangle(0, wingframe * ((texture.Height) / 5), texture.Width, (texture.Height) / 5), lightColor * 0.75f, NPC.rotation, origin, new Vector2(1f, 1f), Facing, 0f);
         }
 
         public override void HitEffect(int hitDirection, double damage)
@@ -886,6 +946,26 @@ else
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Ophiocoon");
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            {
+                CustomTexturePath = "OphioidMod/cocoon",
+                PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
+                PortraitPositionYOverride = 0f,
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("Ophiopede metamorphosizes into Ophiofly!")
+            });
         }
 
         public override void HitEffect(int hitDirection, double damage)
@@ -941,13 +1021,13 @@ else
         NPC.HitEffect(0, 10.0);
 
         if (Main.netMode!=NetmodeID.MultiplayerClient){
-                    IDGHelper.Chat("The Ophifly hatches from the Cocoon!",100,225,100);
+                    IDGHelper.Chat("The Ophiofly hatches from the Cocoon!",100,225,100);
 
             int x = (int)(NPC.position.X + (float)Main.rand.Next(NPC.width - 32));
             int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
             int num663 = ModContent.NPCType<Ophiofly>();
 
-            int num664 = NPC.NewNPC(x, y, num663);
+            int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663);
                     if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num664, 0f, 0f, 0f, 0, 0, 0);
@@ -997,7 +1077,7 @@ else
 
             //HalfVector2 half=new HalfVector2(Main.rand.Next(-120,120),Main.rand.Next(-380,240));
 
-            int num664 = NPC.NewNPC(x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
+            int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
             Main.npc[num664].ai[0]=Main.rand.Next(0,3000);
             Main.npc[num664].ai[1]=NPC.whoAmI;
             //Main.npc[num664].life = (int)(NPC.life*0.007);
@@ -1043,7 +1123,7 @@ else
         {
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-            int him=NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
+            int him=NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                     //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
                     if (him >= 0)
                     {
@@ -1069,7 +1149,7 @@ else
                     int y = (int)(NPC.position.Y + (float)Main.rand.Next(NPC.height - 32));
                     int num663 = ModContent.NPCType<FlyMinion>();
 
-                    int num664 = NPC.NewNPC(x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
+                    int num664 = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), x, y, num663, 0, 0f, 0f, 0f, 0f, 255);
                     Main.npc[num664].ai[1] = NPC.whoAmI;
                     if (Main.netMode == NetmodeID.Server && num664 < 200)
                     {
@@ -1160,6 +1240,17 @@ else
         {
             DisplayName.SetDefault("Ophioid Fly Minion");
             Main.npcFrameCount[NPC.type] = 4;
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("Small Ophioid flies")
+            });
         }
 
         public override void FindFrame(int frameHeight)
@@ -1261,6 +1352,17 @@ else
         {
             DisplayName.SetDefault("Coocoon Carriers");
             Main.npcFrameCount[NPC.type] = 4;
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("These small Ophioid flies carry the Ophiocoon to protect the Ophiofly")
+            });
         }
 
         public override void AI()
@@ -1304,7 +1406,7 @@ else
 
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-            int him=NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), NPCID.VileSpit, 0, 0f, 0f, 0f, 0f, 255);
+            int him=NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), NPCID.VileSpit, 0, 0f, 0f, 0f, 0f, 255);
             //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
             Main.npc[him].velocity=new Vector2(Main.rand.Next(5,18)*(Main.rand.Next(0,2)==0 ? 1 : -1), Main.rand.Next(-4,4));
             Main.npc[him].timeLeft = 200;
@@ -1321,7 +1423,7 @@ else
                     NPC.TargetClosest(true);
                     NPC.netUpdate=true;
                     Player target=Main.player[NPC.target];
-                    List<Projectile> itz2=IDGHelper.Shattershots(NPC.GetProjectileSpawnSource(),NPC.Center,target.position,new Vector2(target.width/2,target.height/2),ProjectileID.PoisonSeedPlantera,20,10f,0,1,true,0f,false,300);
+                    List<Projectile> itz2=IDGHelper.Shattershots(NPC.GetSpawnSource_ForProjectile(), NPC.Center,target.position,new Vector2(target.width/2,target.height/2),ProjectileID.PoisonSeedPlantera,20,10f,0,1,true,0f,false,300);
                     Terraria.Audio.SoundEngine.PlaySound(SoundID.Item42,NPC.Center);
         }
 
@@ -1528,26 +1630,26 @@ else
         }
         public override void OpenBossBag(Player player)
         {
-            player.TryGettingDevArmor();
+            player.TryGettingDevArmor(player.GetItemSource_OpenItem(Type));
             if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(ModContent.ItemType<Ophiopedetrophyitem>());
+                player.QuickSpawnItem(player.GetItemSource_OpenItem(Type), ModContent.ItemType<Ophiopedetrophyitem>());
             if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(ModContent.ItemType<OphiopedeMask>());
+                player.QuickSpawnItem(player.GetItemSource_OpenItem(Type), ModContent.ItemType<OphiopedeMask>());
 
-            player.QuickSpawnItem(ModContent.ItemType <SporeInfestedEgg>());
+            player.QuickSpawnItem(player.GetItemSource_OpenItem(Type), ModContent.ItemType <SporeInfestedEgg>());
 
             List<int> types = new List<int>();
             types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
             for (int f = 0; f < (Main.expertMode ? 200 : 120); f = f + 1)
             {
-                player.QuickSpawnItem(types[Main.rand.Next(0, types.Count)]);
+                player.QuickSpawnItem(player.GetItemSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
             }
 
             types = new List<int>();
             types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.FragmentStardust); types.Insert(types.Count, ItemID.FragmentSolar); types.Insert(types.Count, ItemID.FragmentVortex); types.Insert(types.Count, ItemID.FragmentNebula);
             for (int f = 0; f < (Main.expertMode ? 100 : 50); f = f + 1)
             {
-                player.QuickSpawnItem(types[Main.rand.Next(0, types.Count)]);
+                player.QuickSpawnItem(player.GetItemSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
             }
 
         }
