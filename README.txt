@@ -12,6 +12,12 @@ Current Content:
 
 Version History :
 
+V2.24
+- Added new IEntitySource
+- Made the Bestiary better by hiding some NPCs and decorating the boss pages
+- Nerfed the amount of money tier 1 Ophiopede drops (1.25 Platinum -> 50 Gold, which is still a lot)
+- Ophiofly now drops 1 Platinum
+
 V2.23
 - Fixed all tile related things that broke in the recent tML update.
 - Updated Boss Checklist stuff

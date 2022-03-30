@@ -71,7 +71,7 @@ namespace OphioidMod
 
         }
 
-        public static List<Projectile> Shattershots(IProjectileSource source,Vector2 here, Vector2 there, Vector2 widthheight, int type, int damage, float Speed, float spread, int count, bool centershot, float globalangularoffset, bool tilecollidez, int timeleft)
+        public static List<Projectile> Shattershots(IEntitySource source,Vector2 here, Vector2 there, Vector2 widthheight, int type, int damage, float Speed, float spread, int count, bool centershot, float globalangularoffset, bool tilecollidez, int timeleft)
         {
             //if (Main.netMode!=1){
             List<Projectile> returns = new List<Projectile>();

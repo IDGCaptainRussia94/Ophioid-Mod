@@ -14,6 +14,7 @@ using Terraria.GameContent.ItemDropRules;
 using System;
 using System.Linq;
 using static Terraria.GameContent.ItemDropRules.Conditions;
+using Terraria.GameContent.Bestiary;
 
 namespace OphioidMod
 {
@@ -323,7 +324,12 @@ namespace OphioidMod
 		{
 			DisplayName.SetDefault("Ophiopede");
 			Main.npcFrameCount[NPC.type] = 4;
-		}
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
+        }
 
 		public override void SetDefaults()
 		{
@@ -368,7 +374,7 @@ namespace OphioidMod
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
                         Player ply = Main.player[NPC.target];
-                        int him = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, (NPC.ai[0] % (40) == 0 ? NPCID.ToxicSludge : NPCID.SpikedJungleSlime), 0, 0f, 0f, 0f, 0f, 255);
+                        int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, (NPC.ai[0] % (40) == 0 ? NPCID.ToxicSludge : NPCID.SpikedJungleSlime), 0, 0f, 0f, 0f, 0f, 255);
                         Main.npc[him].damage *= 2;
                         Main.npc[him].defense *= 2;
                         Main.npc[him].lifeMax *= 3;
@@ -419,6 +425,8 @@ namespace OphioidMod
         {
             DisplayName.SetDefault("The Seeing");
             Main.npcFrameCount[NPC.type] = 1;
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
         }
         public override void SetDefaults()
         {
@@ -429,7 +437,6 @@ namespace OphioidMod
             NPC.lifeMax = 3000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.value = 0f;
             NPC.knockBackResist = 0.3f;
             NPC.aiStyle = -1;
             NPC.boss = false;
@@ -440,6 +447,15 @@ namespace OphioidMod
             NPC.noGravity = true;
             Music = MusicID.Boss2;
             NPC.value = 90000f;
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("Dislodged Ophiopede eyes")
+            });
         }
 
         public override bool CheckActive()
@@ -521,7 +537,13 @@ namespace OphioidMod
 		{
 			DisplayName.SetDefault("Ophiopede");
 			Main.npcFrameCount[NPC.type] = 7;
-		}
+
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
+        }
 		public override void SetDefaults()
 		{
 			NPC.width = 60;
@@ -531,7 +553,6 @@ namespace OphioidMod
 			NPC.lifeMax = 18000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.value = 0f;
 			NPC.knockBackResist = 0f;
 			NPC.aiStyle = -1;
 			NPC.boss=false;
@@ -649,7 +670,7 @@ namespace OphioidMod
                         {
                             if (!Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
                             {
-                                int him = NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
+                                int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                                 //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
                                 Main.npc[him].velocity = new Vector2(Main.rand.Next(10, 18) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-4, 4));
                                 Main.npc[him].timeLeft = 200;
@@ -695,7 +716,7 @@ namespace OphioidMod
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
                         Player ply = Main.player[NPC.target];
-                        int num54 = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, new Vector2(Main.rand.Next(-2, 2), Main.player[thattarget].Center.Y < NPC.Center.Y ? -8 : 8), ProjectileID.Stinger, 20, 0f);
+                        int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center, new Vector2(Main.rand.Next(-2, 2), Main.player[thattarget].Center.Y < NPC.Center.Y ? -8 : 8), ProjectileID.Stinger, 20, 0f);
                         Main.projectile[num54].damage = (int)(20);
                         Main.projectile[num54].timeLeft = 200;
                         Main.projectile[num54].netUpdate = true;
@@ -763,7 +784,17 @@ namespace OphioidMod
 		{
 			DisplayName.SetDefault("Ophiopede");
 			Main.npcFrameCount[NPC.type] = 4;
-		}
+            // Automatically group with other bosses
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new (0)
+            {
+                CustomTexturePath = "OphioidMod/BestiaryOphiopede",
+                PortraitPositionYOverride = 5f,
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        }
 		public override void SetDefaults()
 		{
 			NPC.width = 70;
@@ -773,7 +804,6 @@ namespace OphioidMod
 			NPC.lifeMax = 18000;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.value = 0f;
             NPC.knockBackResist = 0f;
 			NPC.aiStyle = -1;
 			NPC.boss=true;
@@ -783,8 +813,22 @@ namespace OphioidMod
             NPC.noTileCollide = true;
 			NPC.noGravity = true;
 			Music = MusicID.Boss2;
-			NPC.value = Item.buyPrice(1, 25, 0, 0);
+			NPC.value = Item.buyPrice(0, 50, 0, 0);
             NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
+        }
+
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // Makes it so whenever you beat the boss associated with it, it will also get unlocked immediately
+            /*int associatedNPCType = ModContent.NPCType<OphiopedeBody>();
+            int associatedNPCType2 = ModContent.NPCType<OphiopedeTail>();
+            bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);*/
+
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement>
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
+                new FlavorTextBestiaryInfoElement("The first fight against Ophiopede.")
+            });
         }
 
         public override void BossLoot(ref string name, ref int potionType)
@@ -1076,7 +1120,7 @@ namespace OphioidMod
                     int randomWormLength = (Main.expertMode ? 40 : 35);
                     for (int i = 0; i < randomWormLength; ++i)
                     {
-                        latest = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y,ModContent.NPCType<OphiopedeBody>());
+                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y,ModContent.NPCType<OphiopedeBody>());
                         Main.npc[(int)latest].realLife = NPC.whoAmI;
                         Main.npc[(int)latest].ai[2] = lastnpc;
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
@@ -1085,7 +1129,7 @@ namespace OphioidMod
                         lastnpc=latest;
                         //IdgNPC.AddOnHitBuff((int)latest,BuffID.Stinky,60*15);
                     }
-                        latest = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < OphiopedeTail>());
+                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < OphiopedeTail>());
                         Main.npc[(int)latest].realLife = NPC.whoAmI;
                         Main.npc[(int)latest].ai[2] = lastnpc;
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
@@ -1108,7 +1152,7 @@ namespace OphioidMod
                     int randomWormLength = Main.rand.Next(8, 8);
                     for (int i = 0; i < randomWormLength; ++i)
                     {
-                        latest = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < TheSeeing>());
+                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < TheSeeing>());
                         Main.npc[(int)latest].ai[2] = Main.rand.Next(0,360);
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
                         Main.npc[(int)latest].ai[1] = Main.rand.Next(90,180);
@@ -1206,7 +1250,7 @@ namespace OphioidMod
 
                             if (!Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
                             {
-                                int num54 = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
+                                int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
                                 Main.projectile[num54].velocity = new Vector2(Main.rand.Next(-8, 8) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-10, -3));
                                 Main.projectile[num54].damage = (int)(50);
                                 Main.projectile[num54].timeLeft = 400;
@@ -1222,7 +1266,7 @@ namespace OphioidMod
 
                             NPC ply = Main.npc[(int)NPC.ai[3]];
 
-                            int him = NPC.NewNPC((int)(Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) + Main.rand.Next(-800, 800)), (int)(Main.player[NPC.target].position.Y - 700f), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
+                            int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) + Main.rand.Next(-800, 800)), (int)(Main.player[NPC.target].position.Y - 700f), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                             //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
                             Main.npc[him].velocity = new Vector2(Main.rand.Next(1, 6) * Main.rand.Next(0, 2) == 0 ? 1 : -1, Main.rand.Next(5, 10));
                             Main.npc[him].timeLeft = 200;
@@ -1264,7 +1308,7 @@ namespace OphioidMod
                         if (belowground > 2 && NPC.ai[0] % 30 == 0)
                         {
                             int rayloc = IDGHelper.RaycastDown((int)NPC.Center.X / 16, (int)(NPC.Center.Y - 1000f) / 16) * 16;
-                            int num54 = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center.X, (float)rayloc - (10f), Main.rand.Next(-2, 2), 3, ModContent.ProjectileType<PoisonCloud>(), 1, 0f, 0);
+                            int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center.X, (float)rayloc - (10f), Main.rand.Next(-2, 2), 3, ModContent.ProjectileType<PoisonCloud>(), 1, 0f, 0);
                             Main.projectile[num54].damage = (int)(20);
                             Main.projectile[num54].timeLeft = 200;
                             Main.projectile[num54].velocity = new Vector2(0, 0);
@@ -1346,8 +1390,16 @@ namespace OphioidMod
 
 	public class EvenMoreVileSpit : ModNPC
 	{
+        public override void SetStaticDefaults()
+        {
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
+        }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 				NPC.width = 16;
 				NPC.height = 16;
@@ -1363,7 +1415,7 @@ namespace OphioidMod
 				NPC.scale = 0.9f;
 				NPC.alpha = 80;
 				NPC.aiStyle=-1;
-		}
+        }
 
 				public override string Texture
 		{
@@ -1688,7 +1740,7 @@ namespace OphioidMod
             }
             if (item > 0)
             {
-                Item.NewItem(i * 16, j * 16, 48, 48, item);
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, item);
             }
         }
     }
