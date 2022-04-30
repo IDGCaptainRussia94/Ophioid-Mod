@@ -12,6 +12,10 @@ Current Content:
 
 Version History :
 
+V2.25
+- Updated IEntitySource
+- Fixed some Bestiary entries not unlocking
+
 V2.24
 - Added new IEntitySource
 - Made the Bestiary better by hiding some NPCs and decorating the boss pages
