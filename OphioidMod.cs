@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using static Terraria.GameContent.ItemDropRules.Conditions;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ObjectInteractions;
 
 namespace OphioidMod
 {
@@ -96,9 +97,15 @@ namespace OphioidMod
                 bossList.Call("AddBoss", 13.50f, ModContent.NPCType<Ophiofly>(), this, "Ophiopede & Ophiofly", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>() }, 
                     new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
                     "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at any time after beating Ophiopede", "Ophioid slinks back into its hidden nest", "OphioidMod/BCLFly");
-
-
             }
+
+            /*if (ModLoader.TryGetMod("Fargowiltas", out Mod fargosMutantMod))
+            {
+                fargosMutantMod.Call("AddSummon", 9.05f, "OphioidMod", "Deadfungusbug", (Func<bool>)(() => OphioidWorld.downedOphiopede == true), Item.buyPrice(0, 65, 0, 0));
+                fargosMutantMod.Call("AddSummon", 9.05f, "OphioidMod", "Livingcarrion", (Func<bool>)(() => OphioidWorld.downedOphiopede == true), Item.buyPrice(0, 65, 0, 0));
+                fargosMutantMod.Call("AddSummon", 11.1f, "OphioidMod", "Infestedcompost", (Func<bool>)(() => OphioidWorld.downedOphiopede2 == true), Item.buyPrice(0, 95, 0, 0));
+            }*/
+
             /*
             //Idglib = ModLoader.GetMod("Idglib");
 
@@ -374,7 +381,7 @@ namespace OphioidMod
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
                         Player ply = Main.player[NPC.target];
-                        int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, (NPC.ai[0] % (40) == 0 ? NPCID.ToxicSludge : NPCID.SpikedJungleSlime), 0, 0f, 0f, 0f, 0f, 255);
+                        int him = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, (NPC.ai[0] % (40) == 0 ? NPCID.ToxicSludge : NPCID.SpikedJungleSlime), 0, 0f, 0f, 0f, 0f, 255);
                         Main.npc[him].damage *= 2;
                         Main.npc[him].defense *= 2;
                         Main.npc[him].lifeMax *= 3;
@@ -451,7 +458,10 @@ namespace OphioidMod
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            int associatedNPCType = ModContent.NPCType<Ophiofly>();
+            bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
+
+            bestiaryEntry.Info.AddRange(new List<IBestiaryInfoElement>
             {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
                 new FlavorTextBestiaryInfoElement("Dislodged Ophiopede eyes")
@@ -655,7 +665,7 @@ namespace OphioidMod
                     {
                         NPC.HitEffect(0, 10.0);
                         Vector2 Vect = new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
-                        Gore.NewGore(NPC.Center, Vect, ModContent.Find<ModGore>("OphioidMod/gore_" + Main.rand.Next(5, 9)).Type, 1f);
+                        Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vect, ModContent.Find<ModGore>("OphioidMod/gore_" + Main.rand.Next(5, 9)).Type, 1f);
                     }
                     NPC.netUpdate = true;
                 }
@@ -670,7 +680,7 @@ namespace OphioidMod
                         {
                             if (!Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
                             {
-                                int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
+                                int him = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + (float)(NPC.width / 2) + NPC.velocity.X), (int)(NPC.position.Y + (float)(NPC.height / 2) + NPC.velocity.Y), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                                 //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
                                 Main.npc[him].velocity = new Vector2(Main.rand.Next(10, 18) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-4, 4));
                                 Main.npc[him].timeLeft = 200;
@@ -716,7 +726,7 @@ namespace OphioidMod
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
                         Player ply = Main.player[NPC.target];
-                        int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center, new Vector2(Main.rand.Next(-2, 2), Main.player[thattarget].Center.Y < NPC.Center.Y ? -8 : 8), ProjectileID.Stinger, 20, 0f);
+                        int num54 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.Next(-2, 2), Main.player[thattarget].Center.Y < NPC.Center.Y ? -8 : 8), ProjectileID.Stinger, 20, 0f);
                         Main.projectile[num54].damage = (int)(20);
                         Main.projectile[num54].timeLeft = 200;
                         Main.projectile[num54].netUpdate = true;
@@ -750,7 +760,7 @@ namespace OphioidMod
 		{
 			if (NPC.life <= 0 && NPC.ai[1]<7)
 			{
-				Gore.NewGore(NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/segment_2_gore_" + NPC.ai[1]).Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/segment_2_gore_" + NPC.ai[1]).Type, 1f);
 			}
 		}
 
@@ -1120,7 +1130,7 @@ namespace OphioidMod
                     int randomWormLength = (Main.expertMode ? 40 : 35);
                     for (int i = 0; i < randomWormLength; ++i)
                     {
-                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y,ModContent.NPCType<OphiopedeBody>());
+                        latest = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y,ModContent.NPCType<OphiopedeBody>());
                         Main.npc[(int)latest].realLife = NPC.whoAmI;
                         Main.npc[(int)latest].ai[2] = lastnpc;
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
@@ -1129,7 +1139,7 @@ namespace OphioidMod
                         lastnpc=latest;
                         //IdgNPC.AddOnHitBuff((int)latest,BuffID.Stinky,60*15);
                     }
-                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < OphiopedeTail>());
+                        latest = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < OphiopedeTail>());
                         Main.npc[(int)latest].realLife = NPC.whoAmI;
                         Main.npc[(int)latest].ai[2] = lastnpc;
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
@@ -1152,7 +1162,7 @@ namespace OphioidMod
                     int randomWormLength = Main.rand.Next(8, 8);
                     for (int i = 0; i < randomWormLength; ++i)
                     {
-                        latest = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < TheSeeing>());
+                        latest = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType < TheSeeing>());
                         Main.npc[(int)latest].ai[2] = Main.rand.Next(0,360);
                         Main.npc[(int)latest].ai[3] = NPC.whoAmI;
                         Main.npc[(int)latest].ai[1] = Main.rand.Next(90,180);
@@ -1250,7 +1260,7 @@ namespace OphioidMod
 
                             if (!Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
                             {
-                                int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
+                                int num54 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
                                 Main.projectile[num54].velocity = new Vector2(Main.rand.Next(-8, 8) * (Main.rand.Next(0, 2) == 0 ? 1 : -1), Main.rand.Next(-10, -3));
                                 Main.projectile[num54].damage = (int)(50);
                                 Main.projectile[num54].timeLeft = 400;
@@ -1266,7 +1276,7 @@ namespace OphioidMod
 
                             NPC ply = Main.npc[(int)NPC.ai[3]];
 
-                            int him = NPC.NewNPC(NPC.GetSpawnSourceForNPCFromNPCAI(), (int)(Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) + Main.rand.Next(-800, 800)), (int)(Main.player[NPC.target].position.Y - 700f), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
+                            int him = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) + Main.rand.Next(-800, 800)), (int)(Main.player[NPC.target].position.Y - 700f), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                             //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
                             Main.npc[him].velocity = new Vector2(Main.rand.Next(1, 6) * Main.rand.Next(0, 2) == 0 ? 1 : -1, Main.rand.Next(5, 10));
                             Main.npc[him].timeLeft = 200;
@@ -1308,7 +1318,7 @@ namespace OphioidMod
                         if (belowground > 2 && NPC.ai[0] % 30 == 0)
                         {
                             int rayloc = IDGHelper.RaycastDown((int)NPC.Center.X / 16, (int)(NPC.Center.Y - 1000f) / 16) * 16;
-                            int num54 = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center.X, (float)rayloc - (10f), Main.rand.Next(-2, 2), 3, ModContent.ProjectileType<PoisonCloud>(), 1, 0f, 0);
+                            int num54 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X, (float)rayloc - (10f), Main.rand.Next(-2, 2), 3, ModContent.ProjectileType<PoisonCloud>(), 1, 0f, 0);
                             Main.projectile[num54].damage = (int)(20);
                             Main.projectile[num54].timeLeft = 200;
                             Main.projectile[num54].velocity = new Vector2(0, 0);
@@ -1377,11 +1387,11 @@ namespace OphioidMod
 		{
 			if (NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_2").Type, 1f);
-				Gore.NewGore(NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_3").Type, 1f);
-				Gore.NewGore(NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_4").Type, 1f);
-				Gore.NewGore(NPC.position-new Vector2(10,6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
-				Gore.NewGore(NPC.position-new Vector2(-10,6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_2").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_3").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_4").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position-new Vector2(10,6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position-new Vector2(-10,6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
 
 			}
 		}
@@ -1724,7 +1734,7 @@ namespace OphioidMod
             AddMapEntry(new Color(120, 85, 60), name);
         }
 
-        public override bool HasSmartInteract()
+        public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
         {
             return true;
         }
@@ -1791,7 +1801,7 @@ namespace OphioidMod
             bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<BabyFlyPet>()] <= 0;
             if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
             {
-                Projectile.NewProjectile(player.GetProjectileSource_Buff(buffIndex),player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<BabyFlyPet>(), 0, 0f, player.whoAmI, 0f, 0f);
+                Projectile.NewProjectile(player.GetSource_Buff(buffIndex),player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<BabyFlyPet>(), 0, 0f, player.whoAmI, 0f, 0f);
             }
         }
 
