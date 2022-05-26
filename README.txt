@@ -12,6 +12,10 @@ Current Content:
 
 Version History :
 
+V2.26
+- Updated PlaySound
+- Updated Boss Checklist to the new format
+
 V2.25
 - Updated IEntitySource
 - Fixed some Bestiary entries not unlocking

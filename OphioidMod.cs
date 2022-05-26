@@ -16,6 +16,7 @@ using System.Linq;
 using static Terraria.GameContent.ItemDropRules.Conditions;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Audio;
 
 namespace OphioidMod
 {
@@ -92,11 +93,19 @@ namespace OphioidMod
 			{
                 //bossList.Call("AddBossWithInfo", "Ophiopede", 9.05f, (Func<bool>)(() => OphioidWorld.downedOphiopede), string.Format("Use a [i:{0}] or [i:{1}] anywhere, anytime", ItemType("Deadfungusbug"), ItemType("Livingcarrion")));
                 //bossList.Call("AddBossWithInfo", "Ophioid", 11.50f, (Func<bool>)(() => OphioidWorld.downedOphiopede2), string.Format("Use a [i:{0}] anywhere, anytime", ItemType("Infestedcompost")));
+                /*
                 bossList.Call("AddBoss", 11.05f, ModContent.NPCType<OphiopedeHead>(), this, "Ophiopede", (Func<bool>)(() => (OphioidWorld.downedOphiopede)), ModContent.ItemType<Deadfungusbug>(), new List<int>() {ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>() }, new List<int>() {ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ModContent.ItemType<Livingcarrion>(), ModContent.ItemType<Deadfungusbug>() }, 
                     "Use a [i:" + ModContent.ItemType<Deadfungusbug>() + "] or [i:" + ModContent.ItemType<Livingcarrion>() + "] at any time", "Ophiopede tunnels away", "OphioidMod/BCLPede", "OphioidMod/icon_small");
                 bossList.Call("AddBoss", 13.50f, ModContent.NPCType<Ophiofly>(), this, "Ophiopede & Ophiofly", (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), ModContent.ItemType<Infestedcompost>(), new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>() }, 
                     new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
                     "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at any time after beating Ophiopede", "Ophioid slinks back into its hidden nest", "OphioidMod/BCLFly");
+                */
+                bossList.Call("AddBoss", this, "Ophiopede", ModContent.NPCType<OphiopedeHead>(), 11.05f, (Func<bool>)(() => (OphioidWorld.downedOphiopede)), (Func<bool>)(() => true),
+                    new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ModContent.ItemType<Livingcarrion>(), ModContent.ItemType<Deadfungusbug>() },
+                    new List<int> { ModContent.ItemType<Deadfungusbug>(), ModContent.ItemType<Livingcarrion>() }, "Use a [i:" + ModContent.ItemType<Deadfungusbug>() + "] or [i:" + ModContent.ItemType<Livingcarrion>() + "] at any time", "Ophiopede tunnels away");
+                bossList.Call("AddBoss", this, "Ophiopede & Ophiofly", ModContent.NPCType<Ophiofly>(), 13.05f, (Func<bool>)(() => (OphioidWorld.downedOphiopede2)), (Func<bool>)(() => true),
+                    new List<int>() { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<SporeInfestedEgg>(), ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight, ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust },
+                    ModContent.ItemType<Infestedcompost>(), "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at any time after beating Ophiopede", "Ophioid slinks back into its hidden nest");
             }
 
             /*if (ModLoader.TryGetMod("Fargowiltas", out Mod fargosMutantMod))
@@ -1152,7 +1161,7 @@ namespace OphioidMod
        	 }
 
        	 	if (phase==0 && NPC.life<NPC.lifeMax*(this.GetType().Name=="OphiopedeHead2" ? 0.75 : 0.5) && NPC.ai[0]>0){
-                Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, NPC.position, 0);
+                SoundEngine.PlaySound(SoundID.Roar, NPC.position);
        	 		phase=1;
            		if (Main.netMode != NetmodeID.MultiplayerClient)
             	{
@@ -1304,7 +1313,7 @@ namespace OphioidMod
                     if (NPC.soundDelay == 0)
                     {
                         NPC.soundDelay = 4 + (int)(length / 40f);
-                        Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, (int)NPC.position.X, (int)NPC.position.Y, 1);
+                        SoundEngine.PlaySound(SoundID.WormDig, NPC.position);
                     }
 
                     Vector2 moveto = new Vector2(targetXPos - NPC.Center.X, targetYPos - NPC.Center.Y);
@@ -1337,7 +1346,7 @@ namespace OphioidMod
                     if (NPC.ai[0] % 400 > 250)
                     {
                         if (NPC.ai[0] % 30 == 0)
-                            Terraria.Audio.SoundEngine.PlaySound(SoundID.ZombieMoan, (int)NPC.position.X, (int)NPC.position.Y, 1);
+                            SoundEngine.PlaySound(SoundID.ZombieMoan, NPC.position);
                     }
                     if (NPC.ai[0] % 400 > 300)
                     {
@@ -1591,7 +1600,7 @@ namespace OphioidMod
 
 
             NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<OphiopedeHead2>());
-            Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+            SoundEngine.PlaySound(SoundID.Roar, player.position);
             return true;
         }
         
@@ -1630,7 +1639,7 @@ namespace OphioidMod
         public override bool? UseItem(Player player)
         {
         NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<OphiopedeHead>());
-            Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+            SoundEngine.PlaySound(SoundID.Roar, player.position);
             return true;
         }
         
