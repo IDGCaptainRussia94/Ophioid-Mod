@@ -20,7 +20,7 @@ namespace OphioidMod
 	{
 		public override Asset<Texture2D> GetIconTexture(ref Rectangle? iconFrame)
 		{
-			return ModContent.Request<Texture2D>("OphioidMod/ophioflyfinalform_Head_Boss");
+			return ModContent.Request<Texture2D>("OphioidMod/NPCs/ophioflyfinalform_Head_Boss");
 		}
 	}
 }
