@@ -132,4 +132,30 @@ namespace OphioidMod.Items
             }
         }
     }
+    public class OphioidLarva : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Ophioid Larva");
+            Tooltip.SetDefault("'A little Ophiopede'");
+        }
+
+        public override void SetDefaults()
+        {
+            Item.CloneDefaults(ItemID.ZephyrFish);
+            Item.rare = ItemRarityID.Master;
+            Item.master = true;
+            Item.shoot = ModContent.ProjectileType<BabyOphiopedePet>();
+            Item.buffType = ModContent.BuffType<BabyOphiopedeBuff>();
+            Item.sellPrice(0, 5, 0, 0);
+        }
+
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
+        {
+            if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
+            {
+                player.AddBuff(Item.buffType, 3600, true);
+            }
+        }
+    }
 }

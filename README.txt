@@ -14,6 +14,9 @@ Version History :
 
 V2.27
 - Re-added the Boss Checklist images to Boss Checklist
+- Added Boss Relics for both Ophiopede and Ophiofly
+- Added Music Boxes for both of the songs in the mod
+- Added a Master Mode pet dropped by Ophiofly
 - Spore Infested Egg now sells for 1 gold
 - Ophioid Mask now sells for 75 silver
 - Refactored the code

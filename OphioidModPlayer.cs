@@ -8,10 +8,12 @@ namespace OphioidMod
     {
 
         public bool PetBuff = false;
+        public bool PetBuff2 = false;
 
         public override void ResetEffects()
         {
             PetBuff = false;
+            PetBuff2 = false;
         }
 
         public override void OnHitByProjectile(Projectile proj, int damage, bool crit)

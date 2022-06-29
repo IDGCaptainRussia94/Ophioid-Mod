@@ -249,6 +249,10 @@ namespace OphioidMod.NPCs
                 IItemDropRule pet = ItemDropRule.ByCondition(condo, ModContent.ItemType<SporeInfestedEgg>(), 1);
                 npcLoot.Add(pet);
 
+                npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.OphioflyRelic>()));
+
+                npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<Items.OphioidLarva>(), 4));
+
                 foreach (int itemType in types)
                 {
                     IItemDropRule itemtodrop = ItemDropRule.ByCondition(condo, itemType, 1, 15, 50);
@@ -271,6 +275,8 @@ namespace OphioidMod.NPCs
 
             if (phase2 == false)
             {
+                npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.OphiopedeRelic>()));
+
                 IItemDropRule bossitem1 = ItemDropRule.ByCondition(new CrimsonWorld(), ModContent.ItemType<Deadfungusbug>(), 1, 1, 1);
                 npcLoot.Add(bossitem1);
 

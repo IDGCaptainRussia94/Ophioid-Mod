@@ -26,6 +26,13 @@ namespace OphioidMod.Projectiles
             Main.projPet[Projectile.type] = true;
         }
 
+        public override bool PreAI()
+        {
+            Player player = Main.player[Projectile.owner];
+            player.hornet = false; // Relic from aiType
+            return true;
+        }
+
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
