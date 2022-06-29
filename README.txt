@@ -1,4 +1,4 @@
-Now Ported over and rebuild for TModLoader 1.4 Alpha!
+Now Ported over and rebuild for tModLoader 1.4!
 Ophioid is a mod focused on a boss and a multi-phase rematch later on that cuts down on soul griding in Hardmode after the Mech Bosses.
 Source code available on github (1.4 branch https://github.com/IDGCaptainRussia94/Ophioid-Mod/tree/1.4 )
 Please see https://forums.terraria.org/index.php?threads/the-ophioid-mod.73083/ for more info on the mod
@@ -11,6 +11,19 @@ Current Content:
 - 2 (2nd boss has 3 phases) Bosses (With trophy and mask and a pet item!)
 
 Version History :
+
+V2.27
+- Re-added the Boss Checklist images to Boss Checklist
+- Added Boss Relics for both Ophiopede and Ophiofly
+- Added Music Boxes for both of the songs in the mod
+- Added a Master Mode pet dropped by Ophiofly
+- Spore Infested Egg now sells for 1 gold
+- Ophioid Mask now sells for 75 silver
+- Refactored the code
+
+V2.26
+- Updated PlaySound
+- Updated Boss Checklist to the new format
 
 V2.25
 - Updated IEntitySource
