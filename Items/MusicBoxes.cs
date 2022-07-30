@@ -1,5 +1,6 @@
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 
 namespace OphioidMod.Items
 {
@@ -10,6 +11,7 @@ namespace OphioidMod.Items
 			DisplayName.SetDefault("Music Box (Ophiopede)");
 			Tooltip.SetDefault("Badassbunnyz - Metamorphosis");
 			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis"), Item.type, ModContent.TileType<Tiles.MusicBoxMetamorphosis>());
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults()
@@ -35,6 +37,7 @@ namespace OphioidMod.Items
 			DisplayName.SetDefault("Music Box (Ophiofly)");
 			Tooltip.SetDefault("Badassbunnyz - The Fly");
 			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_The_Fly"), Item.type, ModContent.TileType<Tiles.MusicBoxTheFly>());
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults()

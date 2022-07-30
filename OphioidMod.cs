@@ -35,15 +35,6 @@ namespace OphioidMod
          }
      }
 
-    public static class TileOneDotThree
-    {
-        public static bool NactiveButWithABetterName(this Tile tile)
-        {
-            return (tile.HasTile && !tile.IsActuated);
-           // return (!tile.HasTile || tile.IsActuated);
-        }
-    }
-
     public interface ISinkyBoss
     {
 
@@ -210,20 +201,20 @@ namespace OphioidMod
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
                 priority = MusicPriority.BossMedium;
             }
-        }
+        }*/
 
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             MessageType type = (MessageType)reader.ReadByte();
 
-            if (type == MessageType.OphioidMessage && Main.netMode == 1)
+            if (type == MessageType.OphioidMessage && Main.netMode == NetmodeID.MultiplayerClient)
             {
                 int npcid = reader.ReadInt32();
                 int time = reader.ReadInt32();
                 Main.npc[npcid].GetGlobalNPC<OphioidNPC>().fallthrough = time;
             }
-        }*/
+        }
     }
 
     public enum MessageType : byte

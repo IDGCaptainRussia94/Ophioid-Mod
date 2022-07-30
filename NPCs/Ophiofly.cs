@@ -95,26 +95,26 @@ namespace OphioidMod.NPCs
             });
         }
 
-        /*public override void SendExtraAI(BinaryWriter writer)   
+        public override void SendExtraAI(BinaryWriter writer)   
         {
-        writer.Write(chargesleft);
-        if (ply==null)
-        writer.Write(-1);
-        else
-        writer.Write(ply.whoAmI);
-        writer.Write(poweredup);
-        writer.Write(spawnminionsat);
+            writer.Write(chargesleft);
+            if (ply==null)
+            writer.Write(-1);
+            else
+            writer.Write(ply.whoAmI);
+            writer.Write(poweredup);
+            writer.Write(spawnminionsat);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-        chargesleft=reader.ReadInt32();
-        int ply2=reader.ReadInt32();
-        if (ply2>-1)
-        ply=Main.player[ply2];
-        poweredup=reader.ReadBoolean();
-        spawnminionsat=reader.ReadInt32();
-        }*/
+            chargesleft=reader.ReadInt32();
+            int ply2=reader.ReadInt32();
+            if (ply2>-1)
+            ply=Main.player[ply2];
+            poweredup=reader.ReadBoolean();
+            spawnminionsat=reader.ReadInt32();
+        }
 
         public void Resetattacks()
         {
@@ -234,7 +234,7 @@ namespace OphioidMod.NPCs
                             Main.projectile[num54].timeLeft = 800;
                             Main.projectile[num54].tileCollide = true;
                             Main.projectile[num54].netUpdate = true;
-                            //IdgProjectile.Sync(num54);
+                            IdgProjectile.Sync(num54);
                             //IdgProjectile.AddOnHitBuff(num54, BuffID.Stinky, 60 * 15);
                         }
 
@@ -350,7 +350,7 @@ namespace OphioidMod.NPCs
             {
                 List<Projectile> projectile22 = IDGHelper.Shattershots(NPC.GetSource_FromThis(), NPC.Center, plyloc, new Vector2(0, -16), ProjectileID.Stinger, 30, 20f, 0, 1, true, (float)Main.rand.Next(-100, 100) * 0.004f, false, 240);
                 Projectile projectile2 = projectile22[0];
-                //IdgProjectile.Sync(projectile2.whoAmI);
+                IdgProjectile.Sync(projectile2.whoAmI);
                 SoundEngine.PlaySound(SoundID.Item42, NPC.Center);
 
                 for (int num315 = 1; num315 < 8; num315 = num315 + 1)
@@ -386,10 +386,10 @@ namespace OphioidMod.NPCs
         }
 
 
-        public static readonly SoundStyle Deathray = new("Terraria/Sounds/Zombie_104", 104, 1)
+        public static readonly SoundStyle Deathray = new("Terraria/Sounds/Zombie_104")
         {
             Volume = 1f,
-            PitchRange = (0f, 0f)
+            Pitch = 0f
         };
 
         public void Sludgefield()
@@ -635,15 +635,12 @@ namespace OphioidMod.NPCs
             {
                 return (NPC.direction > 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             }
-
-
         }
 
         Texture2D MyTex => Terraria.GameContent.TextureAssets.Npc[NPC.type].Value;
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-
             Texture2D texture = MyTex;
             Vector2 origin = new Vector2(texture.Width, texture.Height / 5) / 2f;
             if (glowred)

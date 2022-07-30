@@ -3,6 +3,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OphioidMod.NPCs;
+using Terraria.GameContent.Creative;
 
 namespace OphioidMod.Items
 {
@@ -12,6 +13,7 @@ namespace OphioidMod.Items
         {
             DisplayName.SetDefault("Dead Fungusbug");
             Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Corruption world");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
         public override void SetDefaults()
         {
@@ -58,6 +60,7 @@ namespace OphioidMod.Items
         {
             DisplayName.SetDefault("Infested Compost");
             Tooltip.SetDefault("'An amalgamation of organic vileness \nSummons Ophiopede?");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
 
         public override bool CanUseItem(Player player)
@@ -93,6 +96,7 @@ namespace OphioidMod.Items
         {
             DisplayName.SetDefault("Living Carrion");
             Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Crimson world");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
 
         public override bool CanUseItem(Player player)

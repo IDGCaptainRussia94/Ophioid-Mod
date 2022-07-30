@@ -112,7 +112,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -282,7 +282,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
