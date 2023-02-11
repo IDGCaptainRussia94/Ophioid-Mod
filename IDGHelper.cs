@@ -129,7 +129,7 @@ namespace OphioidMod
 
         public static int RaycastDown(int x, int y)
         {
-            while (!((Main.tile[x, y] != null && Main.tile[x, y].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[x, y].TileType] || Main.tileSolidTop[(int)Main.tile[x, y].TileType] && (int)Main.tile[x, y].TileFrameY == 0))))
+            while (!((Main.tile[x, y] != null && Main.tile[x, y].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[x, y].TileType] || Main.tileSolidTop[(int)Main.tile[x, y].TileType] && (int)Main.tile[x, y].TileFrameY == 0))))
             {
                 y++;
             }
@@ -164,7 +164,7 @@ namespace OphioidMod
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("This is a base, you shouldn't see this!");
+            // DisplayName.SetDefault("This is a base, you shouldn't see this!");
         }
 
         public override void SetDefaults()
@@ -252,6 +252,46 @@ namespace OphioidMod
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             return false;
+        }
+
+    }
+    public static class IdgProjectile
+    {
+
+        public static void Sync(int projectileid)
+        {
+            if (Main.netMode == NetmodeID.Server)
+            {
+
+                ModPacket packet = OphioidMod.Instance.GetPacket();
+                packet.Write((byte)MessageType.IdgMessage);
+                packet.Write(-10);
+                packet.Write(projectileid);
+                packet.Write(Main.projectile[projectileid].type);
+                packet.Write(Main.projectile[projectileid].damage);
+                packet.Write(Main.projectile[projectileid].friendly);
+                packet.Write(Main.projectile[projectileid].hostile);
+                packet.Write(Main.projectile[projectileid].usesLocalNPCImmunity);
+                packet.Write(Main.projectile[projectileid].CountsAsClass(DamageClass.Magic));
+                packet.Write(Main.projectile[projectileid].CountsAsClass(DamageClass.Throwing));
+                packet.Write(Main.projectile[projectileid].CountsAsClass(DamageClass.Summon));
+                packet.Write(Main.projectile[projectileid].CountsAsClass(DamageClass.Melee));
+                packet.Write(Main.projectile[projectileid].CountsAsClass(DamageClass.Ranged));
+                packet.Write(Main.projectile[projectileid].penetrate);
+                packet.Write((short)Main.projectile[projectileid].localNPCHitCooldown);
+                packet.Write((int)Main.projectile[projectileid].scale * 100);
+                packet.Write((double)Main.projectile[projectileid].position.X);
+                packet.Write((double)Main.projectile[projectileid].position.Y);
+                packet.Write((double)Main.projectile[projectileid].velocity.X);
+                packet.Write((double)Main.projectile[projectileid].velocity.Y);
+                packet.Write(Main.projectile[projectileid].timeLeft);
+                packet.Send();
+            }
+        }
+
+        public enum MessageType : byte
+        {
+            IdgMessage
         }
 
     }

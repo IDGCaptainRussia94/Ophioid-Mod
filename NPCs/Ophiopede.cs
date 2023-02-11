@@ -24,6 +24,15 @@ namespace OphioidMod.NPCs
         public bool collision = false;
         public int phase = 0;
 
+        public int RaycastDown(int x, int y)
+        {
+            while (!((Main.tile[x, y] != null && (Main.tile[x, y].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[x, y].TileType] || Main.tileSolidTop[(int)Main.tile[x, y].TileType] && (int)Main.tile[x, y].TileFrameY == 0)))))
+            {
+                y++;
+            }
+            return y;
+        }
+
         public virtual void StartPhaseTwo()
         {
             //null
@@ -41,7 +50,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede");
+            // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 4;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -291,9 +300,9 @@ namespace OphioidMod.NPCs
             DoThemDrops(npcLoot, false);
         }
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * bossLifeScale);
+            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * balance);
             NPC.damage = (int)(NPC.damage * 0.6f);
         }
 
@@ -341,7 +350,7 @@ namespace OphioidMod.NPCs
             {
                 for (int j = minTilePosY; j < maxTilePosY; ++j)
                 {
-                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
+                    if (Main.tile[i, j] != null && (Main.tile[i, j].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
                     {
                         Vector2 vector2;
                         vector2.X = (float)(i * 16);
@@ -358,7 +367,7 @@ namespace OphioidMod.NPCs
             {
                 for (int j = minTilePosY - 4; j < maxTilePosY - 4; ++j)
                 {
-                    if (Main.tile[i, j] != null && (Main.tile[i, j].NactiveButWithABetterName() && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
+                    if (Main.tile[i, j] != null && (Main.tile[i, j].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[i, j].TileType] || Main.tileSolidTop[(int)Main.tile[i, j].TileType] && (int)Main.tile[i, j].TileFrameY == 0) || (int)Main.tile[i, j].LiquidAmount > 64))
                     {
                         Vector2 vector2;
                         vector2.X = (float)(i * 16);
@@ -525,7 +534,7 @@ namespace OphioidMod.NPCs
                                 Main.projectile[num54].timeLeft = 400;
                                 Main.projectile[num54].tileCollide = (phase == 0 ? false : true);
                                 Main.projectile[num54].netUpdate = true;
-                                //IdgProjectile.Sync(num54);
+                                IdgProjectile.Sync(num54);
                                 //IdgProjectile.AddOnHitBuff(num54,BuffID.Stinky,60*15);
                             }
                         }
@@ -632,13 +641,13 @@ namespace OphioidMod.NPCs
 
         public override void HitEffect(int hitDirection, double damage)
         {
-            if (NPC.life <= 0)
+            if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_2").Type, 1f);
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_3").Type, 1f);
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_4").Type, 1f);
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(10, 6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(-10, 6), NPC.velocity, ModContent.Find<ModGore>("OphioidMod/gore_1").Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/gore_2").Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/gore_3").Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/gore_4").Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(10, 6), NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/gore_1").Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position - new Vector2(-10, 6), NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/gore_1").Type, 1f);
 
             }
         }
@@ -659,7 +668,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede");
+            // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 7;
 
             NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
@@ -714,8 +723,6 @@ namespace OphioidMod.NPCs
 
         public override bool PreAI()
         {
-
-
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NPC MyHead = Main.npc[(int)NPC.ai[2]];
@@ -779,7 +786,8 @@ namespace OphioidMod.NPCs
                     {
                         NPC.HitEffect(0, 10.0);
                         Vector2 Vect = new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
-                        Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vect, ModContent.Find<ModGore>("OphioidMod/gore_" + Main.rand.Next(5, 9)).Type, 1f);
+                        if (Main.netMode != NetmodeID.Server)
+                            Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vect, ModContent.Find<ModGore>(Mod.Name + "/gore_" + Main.rand.Next(5, 9)).Type, 1f);
                     }
                     NPC.netUpdate = true;
                 }
@@ -845,7 +853,7 @@ namespace OphioidMod.NPCs
                         Main.projectile[num54].timeLeft = 200;
                         Main.projectile[num54].netUpdate = true;
 
-                        //IdgProjectile.Sync(num54);
+                        IdgProjectile.Sync(num54);
                         //IdgProjectile.AddOnHitBuff(num54,BuffID.Stinky,60*15);
 
                     }
@@ -872,9 +880,9 @@ namespace OphioidMod.NPCs
 
         public override void HitEffect(int hitDirection, double damage)
         {
-            if (NPC.life <= 0 && NPC.ai[1] < 7)
+            if (NPC.life <= 0 && NPC.ai[1] < 7 && Main.netMode != NetmodeID.Server)
             {
-                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>("OphioidMod/segment_2_gore_" + NPC.ai[1]).Type, 1f);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/segment_2_gore_" + NPC.ai[1]).Type, 1f);
             }
         }
     }
@@ -895,7 +903,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede");
+            // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 4;
             NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
             {
@@ -920,7 +928,6 @@ namespace OphioidMod.NPCs
         public override bool PreAI()
         {
             base.PreAI();
-
             if ((Main.npc[(int)NPC.ai[3]].ai[0] - 100f) % 400 > 280 && Main.npc[(int)NPC.ai[2]].ai[0] > 0 && NPC.ai[0] % (20) == 0 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 OphiopedeHead Head = Main.npc[(int)NPC.ai[3]].ModNPC as OphiopedeHead;
@@ -960,9 +967,9 @@ namespace OphioidMod.NPCs
 
                         //IdgNPC.AddOnHitBuff(him,BuffID.Stinky,60*15);
 
-                        /*if (Main.netMode == 2)
+                        if (Main.netMode == NetmodeID.Server)
                         {
-                            NetMessage.SendData(23, -1, -1, null, him, 0f, 0f, 0f, 0, 0, 0);
+                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, him, 0f, 0f, 0f, 0, 0, 0);
                             ModPacket packet = Mod.GetPacket();
                             OphioidMod mymod = Mod as OphioidMod;
 
@@ -970,7 +977,7 @@ namespace OphioidMod.NPCs
                             packet.Write(him);
                             packet.Write(Main.expertMode == true ? 2000 : 1000);
                             packet.Send();
-                        }*/
+                        }
                     }
                 }
             }
@@ -1020,7 +1027,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede");
+            // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 4;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);

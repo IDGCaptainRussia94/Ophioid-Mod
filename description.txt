@@ -12,7 +12,15 @@ Current Content:
 
 Version History :
 
+V2.29
+- Updated Treasure Bag
+
+V2.28
+- Nothing changed, just recompiled to work on the July, 2022 build of 1.4 TML
+
 V2.27
+- Updated Treasure Bag
+- Added Journey Mode researching requirements on all items.
 - Re-added the Boss Checklist images to Boss Checklist
 - Added Boss Relics for both Ophiopede and Ophiofly
 - Added Music Boxes for both of the songs in the mod

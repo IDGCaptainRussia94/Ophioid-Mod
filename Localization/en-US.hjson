@@ -1,0 +1,135 @@
+
+Mods: {
+	OphioidMod: {
+		Buffs: {
+			BabyOphioflyBuff: {
+				DisplayName: Baby Ophioid Fly
+				Tooltip: Gross but, oddly cute
+				Description: Mods.OphioidMod.Buffs.BabyOphioflyBuff.Description
+			}
+
+			BabyOphiopedeBuff: {
+				DisplayName: Baby Ophioid Larva
+				Tooltip: Gross but, oddly cute
+				Description: Mods.OphioidMod.Buffs.BabyOphiopedeBuff.Description
+			}
+		}
+
+		Items: {
+			OphiopedeMask: {
+				DisplayName: Ophiopede Mask
+				Tooltip: ""
+			}
+
+			SporeInfestedEgg: {
+				DisplayName: Spore Infested Egg
+				Tooltip: "'Looks like this egg didn't hatch yet to attack me...'"
+			}
+
+			Ophiopedetrophyitem: {
+				DisplayName: Ophiopede Trophy
+				Tooltip: ""
+			}
+
+			TreasureBagOphioid: {
+				DisplayName: Treasure Bag (Ophioid)
+				Tooltip: "{$CommonItemTooltip.RightClickToOpen}"
+			}
+
+			OphioidLarva: {
+				DisplayName: Ophioid Larva
+				Tooltip: "'A little Ophiopede'"
+			}
+
+			MusicBoxMetamorphosis: {
+				DisplayName: Music Box (Ophiopede)
+				Tooltip: Badassbunnyz - Metamorphosis
+			}
+
+			MusicBoxTheFly: {
+				DisplayName: Music Box (Ophiofly)
+				Tooltip: Badassbunnyz - The Fly
+			}
+
+			OphiopedeRelic: {
+				DisplayName: Ophiopede Relic
+				Tooltip: ""
+			}
+
+			OphioflyRelic: {
+				DisplayName: Ophiofly Relic
+				Tooltip: ""
+			}
+
+			Deadfungusbug: {
+				DisplayName: Dead Fungusbug
+				Tooltip:
+					'''
+					'A putrid stench comes from the thing you just made, it might attract something...'
+					Summons Ophiopede in a Corruption world
+					'''
+			}
+
+			Infestedcompost: {
+				DisplayName: Infested Compost
+				Tooltip:
+					'''
+					'An amalgamation of organic vileness'
+					Summons Ophiopede?
+					'''
+			}
+
+			Livingcarrion: {
+				DisplayName: Living Carrion
+				Tooltip:
+					'''
+					'A putrid stench comes from the thing you just made, it might attract something...'
+					Summons Ophiopede in a Crimson world
+					'''
+			}
+		}
+
+		NPCs: {
+			EvenMoreVileSpit.DisplayName: Even More Vile Spit
+			FlyMinion.DisplayName: Ophioid Fly Minion
+			FlyMinionCacoon.DisplayName: Coocoon Carriers
+			Ophiocoon.DisplayName: Ophiocoon
+			MetaOphiocoon.DisplayName: Ophiocoon
+			Ophiofly.DisplayName: Ophiofly
+			OphiopedeHead.DisplayName: Ophiopede
+			OphiopedeBody.DisplayName: Ophiopede
+			OphiopedeTail.DisplayName: Ophiopede
+			OphiopedeHead2.DisplayName: Ophiopede
+			OphSporeCloud.DisplayName: Ophioid Spore Cloud
+			TheSeeing.DisplayName: The Seeing
+		}
+
+		Projectiles: {
+			BabyFlyPet.DisplayName: Gross but cute Fly
+			BabyOphiopedePet.DisplayName: Baby Ophioipede
+			Ophiobeam.DisplayName: Ophiobeam
+			Ophiobeamichor.DisplayName: Ichorbeam
+			PoisonCloud.DisplayName: Poison Cloud
+			ProjectileLaserBase.DisplayName: Projectile Laser Base
+		}
+
+		Tiles: {
+			BossRelics.DisplayName: Boss Relic
+
+			MusicBoxMetamorphosis: {
+				DisplayName: Music Box
+				MapEntry: Music Box Metamorphosis
+			}
+
+			MusicBoxTheFly: {
+				DisplayName: Music Box
+				MapEntry: Music Box The Fly
+			}
+
+			OphiodBossTrophy: {
+				DisplayName: Boss Trophy
+				MapEntry: Ophiod Boss Trophy
+			}
+		}
+	}
+}

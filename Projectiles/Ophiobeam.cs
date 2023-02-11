@@ -23,7 +23,7 @@ namespace OphioidMod.Projectiles
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiobeam");
+            // DisplayName.SetDefault("Ophiobeam");
         }
 
         public override string Texture
@@ -138,7 +138,7 @@ namespace OphioidMod.Projectiles
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ichorbeam");
+            // DisplayName.SetDefault("Ichorbeam");
         }
 
         public override string Texture

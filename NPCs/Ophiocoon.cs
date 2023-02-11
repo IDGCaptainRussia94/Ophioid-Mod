@@ -29,9 +29,9 @@ namespace OphioidMod.NPCs
         bool no2ndphase = false;
         float whichway = 0f;
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * bossLifeScale);
+            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * balance);
             NPC.damage = (int)(NPC.damage * 0.6f);
         }
 
@@ -49,7 +49,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiocoon");
+            // DisplayName.SetDefault("Ophiocoon");
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
 
@@ -112,7 +112,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -282,7 +282,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -318,7 +318,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiocoon");
+            // DisplayName.SetDefault("Ophiocoon");
             NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
             {
                 Hide = true // Hides this NPC from the bestiary

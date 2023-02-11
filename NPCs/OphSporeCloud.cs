@@ -12,7 +12,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophioid Spore Cloud");
+            // DisplayName.SetDefault("Ophioid Spore Cloud");
             Main.npcFrameCount[NPC.type] = 5;
 
             NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
@@ -52,7 +52,7 @@ namespace OphioidMod.NPCs
         public override bool CheckDead()
         {
             List<Projectile> projectile22 = IDGHelper.Shattershots(NPC.GetSource_FromThis(), NPC.Center, NPC.Center + NPC.velocity, new Vector2(0, 0), ProjectileID.SporeCloud, 50, NPC.velocity.Length() + 10f, 0, 1, true, (float)Main.rand.Next(-100, 100) * 0.002f, false, 240);
-            //IdgProjectile.Sync(projectile22[0].whoAmI);
+            IdgProjectile.Sync(projectile22[0].whoAmI);
             return true;
         }
 

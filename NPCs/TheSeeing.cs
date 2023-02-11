@@ -18,7 +18,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Seeing");
+            // DisplayName.SetDefault("The Seeing");
             Main.npcFrameCount[NPC.type] = 1;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);

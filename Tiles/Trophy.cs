@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ObjectData;
@@ -20,8 +21,8 @@ namespace OphioidMod.Tiles
             TileObjectData.newTile.StyleWrapLimit = 36;
             TileObjectData.addTile(Type);
             DustType = 7;
-            ModTranslation name = CreateMapEntryName();
-            name.SetDefault("Boss Trophy");
+            LocalizedText name = CreateMapEntryName();
+            // name.SetDefault("Boss Trophy");
             AddMapEntry(new Color(120, 85, 60), name);
         }
 

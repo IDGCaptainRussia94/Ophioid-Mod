@@ -7,6 +7,10 @@ using OphioidMod.Projectiles;
 using OphioidMod.Tiles;
 using System.Collections.Generic;
 using OphioidMod.NPCs;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Creative;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace OphioidMod.Items
 {
@@ -15,7 +19,8 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede Mask");
+            // DisplayName.SetDefault("Ophiopede Mask");
+            Item.ResearchUnlockCount = 1;
         }
         public override void SetDefaults()
         {
@@ -30,8 +35,9 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Spore Infested Egg");
-            Tooltip.SetDefault("'Looks like this egg didn't hatch yet to attack me...");
+            // DisplayName.SetDefault("Spore Infested Egg");
+            // Tooltip.SetDefault("'Looks like this egg didn't hatch yet to attack me...");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -56,7 +62,8 @@ namespace OphioidMod.Items
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede Trophy");
+            // DisplayName.SetDefault("Ophiopede Trophy");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -80,8 +87,10 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Treasure Bag");
-            Tooltip.SetDefault("Right click to open");
+            // DisplayName.SetDefault("Treasure Bag (Ophioid)");
+            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+            ItemID.Sets.BossBag[Type] = true; // This set is one that every boss bag should have, it, for example, lets our boss bag drop dev armor..
+			Item.ResearchUnlockCount = 3;
         }
         public override void SetDefaults()
         {
@@ -90,54 +99,125 @@ namespace OphioidMod.Items
             Item.width = 32;
             Item.height = 32;
             Item.expert = true;
-            Item.rare = -12;
+            Item.rare = ItemRarityID.Expert;
         }
 
-
-        public override int BossBagNPC
-        {
-            get
-            {
-                return ModContent.NPCType<Ophiofly>();
-            }
-        }
-
+        //public override int BossBagNPC => ModContent.NPCType<Ophiofly>();
 
         public override bool CanRightClick()
         {
             return true;
         }
-        public override void OpenBossBag(Player player)
+        public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            player.TryGettingDevArmor(player.GetSource_OpenItem(Type));
-            if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<Ophiopedetrophyitem>());
-            if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<OphiopedeMask>());
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Ophiopedetrophyitem>(), 3));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<OphiopedeMask>(), 3));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SporeInfestedEgg>(), 1));
 
-            player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<SporeInfestedEgg>());
+            // Expert Drop rates since the bag only drops in Expert Mode+
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentSolar, 1, 12, 22)); // Average of 17
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentVortex, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentNebula, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentStardust, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 46, 66)); // Average of 56
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 46, 66));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 23, 43)); // Average of 33
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofSight, 1, 21, 35)); // Average of 28
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofMight, 1, 21, 35));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFright, 1, 21, 35));
 
-            List<int> types = new List<int>();
-            types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
-            for (int f = 0; f < (Main.expertMode ? 200 : 120); f = f + 1)
+            itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Ophiofly>()));
+        }
+
+        // Below is code for the visuals
+
+        public override Color? GetAlpha(Color lightColor)
+        {
+            // Makes sure the dropped bag is always visible
+            return Color.Lerp(lightColor, Color.White, 0.4f);
+        }
+
+        public override void PostUpdate()
+        {
+            // Spawn some light and dust when dropped in the world
+            Lighting.AddLight(Item.Center, Color.White.ToVector3() * 0.4f);
+
+            if (Item.timeSinceItemSpawned % 12 == 0)
             {
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
+                Vector2 center = Item.Center + new Vector2(0f, Item.height * -0.1f);
+
+                // This creates a randomly rotated vector of length 1, which gets it's components multiplied by the parameters
+                Vector2 direction = Main.rand.NextVector2CircularEdge(Item.width * 0.6f, Item.height * 0.6f);
+                float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
+                Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
+
+                Dust dust = Dust.NewDustPerfect(center + direction * distance, DustID.SilverFlame, velocity);
+                dust.scale = 0.5f;
+                dust.fadeIn = 1.1f;
+                dust.noGravity = true;
+                dust.noLight = true;
+                dust.alpha = 0;
+            }
+        }
+
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            // Draw the periodic glow effect behind the item when dropped in the world (hence PreDrawInWorld)
+            Texture2D texture = TextureAssets.Item[Item.type].Value;
+
+            Rectangle frame;
+
+            if (Main.itemAnimations[Item.type] != null)
+            {
+                // In case this item is animated, this picks the correct frame
+                frame = Main.itemAnimations[Item.type].GetFrame(texture, Main.itemFrameCounter[whoAmI]);
+            }
+            else
+            {
+                frame = texture.Frame();
             }
 
-            types = new List<int>();
-            types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.FragmentStardust); types.Insert(types.Count, ItemID.FragmentSolar); types.Insert(types.Count, ItemID.FragmentVortex); types.Insert(types.Count, ItemID.FragmentNebula);
-            for (int f = 0; f < (Main.expertMode ? 100 : 50); f = f + 1)
+            Vector2 frameOrigin = frame.Size() / 2f;
+            Vector2 offset = new Vector2(Item.width / 2 - frameOrigin.X, Item.height - frame.Height);
+            Vector2 drawPos = Item.position - Main.screenPosition + frameOrigin + offset;
+
+            float time = Main.GlobalTimeWrappedHourly;
+            float timer = Item.timeSinceItemSpawned / 240f + time * 0.04f;
+
+            time %= 4f;
+            time /= 2f;
+
+            if (time >= 1f)
             {
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
+                time = 2f - time;
             }
+
+            time = time * 0.5f + 0.5f;
+
+            for (float i = 0f; i < 1f; i += 0.25f)
+            {
+                float radians = (i + timer) * MathHelper.TwoPi;
+
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 8f).RotatedBy(radians) * time, frame, new Color(90, 70, 255, 50), rotation, frameOrigin, scale, SpriteEffects.None, 0);
+            }
+
+            for (float i = 0f; i < 1f; i += 0.34f)
+            {
+                float radians = (i + timer) * MathHelper.TwoPi;
+
+                spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
+            }
+
+            return true;
         }
     }
     public class OphioidLarva : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophioid Larva");
-            Tooltip.SetDefault("'A little Ophiopede'");
+            // DisplayName.SetDefault("Ophioid Larva");
+            // Tooltip.SetDefault("'A little Ophiopede'");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
