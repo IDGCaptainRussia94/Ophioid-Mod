@@ -19,7 +19,7 @@ namespace OphioidMod
         public Color coloroverride = default;
         public static void DrawTether(string Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default)
         {
-            DrawTether(ModContent.Request<Texture2D>(Tex).Value, Start, End, Screen, Alpha = 1f, scaleX, scaleY, coloroverride);
+            DrawTether(ModContent.Request<Texture2D>(Tex).Value, Start, End, Screen, Alpha, scaleX, scaleY, coloroverride);
         }
 
         public static void DrawTether(Texture2D Tex, Vector2 Start, Vector2 End, Vector2 Screen, float Alpha = 1f, float scaleX = 1f, float scaleY = 1f, Color coloroverride = default)
@@ -31,7 +31,7 @@ namespace OphioidMod
 
             Vector2 position = Start;
             Vector2 mountedCenter = End;
-            Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?();
+            //Microsoft.Xna.Framework.Rectangle? sourceRectangle = new Microsoft.Xna.Framework.Rectangle?();
             float num1 = (float)(texture.Height * (scaleY));
             Vector2 origin = new Vector2((float)texture.Width * 0.5f, (float)texture.Height * 0.5f);
             Vector2 vector2_4 = mountedCenter - position;
@@ -39,7 +39,7 @@ namespace OphioidMod
             Vector2 vector2t = vector2_4;
             vector2t.Normalize();
             position -= vector2t * (num1 * 0.5f);
-            int countup = 0;
+            //int countup = 0;
 
             float rotation = (float)Math.Atan2((double)vector2_4.Y, (double)vector2_4.X) - 1.57f;
             bool flag = true;
@@ -77,7 +77,7 @@ namespace OphioidMod
             List<Projectile> returns = new List<Projectile>();
             Vector2 vector8 = new Vector2(here.X + (0), here.Y + (0));
             float rotation = (float)Math.Atan2(vector8.Y - (there.Y + (widthheight.X * 0.5f)), vector8.X - (there.X + (widthheight.Y * 0.5f)));
-            spread = spread * (0.0174f);
+            spread *= (0.0174f);
             float baseSpeed = (float)Math.Sqrt((float)((Math.Cos(rotation) * Speed) * -1) * (float)((Math.Cos(rotation) * Speed) * -1) + (float)((Math.Sin(rotation) * Speed) * -1) * (float)((Math.Sin(rotation) * Speed) * -1));
             double startAngle = Math.Atan2((float)((Math.Cos(rotation) * Speed) * -1), (float)((Math.Sin(rotation) * Speed) * -1));
             double deltaAngle = spread / count;
@@ -198,12 +198,12 @@ namespace OphioidMod
         {
 
 
-            Vector2 start = Projectile.Center;
+            //Vector2 start = Projectile.Center;
             if (Projectile.tileCollide)
             {
                 for (Distance = MoveDistance; Distance <= MaxDistance; Distance += 5f)
                 {
-                    start = Projectile.Center + Projectile.velocity * Distance;
+                    Vector2 start = Projectile.Center + Projectile.velocity * Distance;
 
                     Lighting.AddLight(start,Color.White.ToVector3()*0.25f);
 
@@ -238,8 +238,8 @@ namespace OphioidMod
         {
             //if (AtMaxCharge)
             //{
-            Player player = Main.player[Projectile.owner];
-            Vector2 unit = Projectile.velocity;
+            //Player player = Main.player[Projectile.owner];
+            //Vector2 unit = Projectile.velocity;
             float point = 0f;
             // Run an AABB versus Line check to look for collisions, look up AABB collision first to see how it works
             // It will look for collisions on the given line using AABB

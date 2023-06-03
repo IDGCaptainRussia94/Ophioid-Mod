@@ -46,7 +46,7 @@ namespace OphioidMod.Projectiles
         public override void MoreAI(Vector2 dustspot)
         {
 
-            for (int num315 = 1; num315 < 8; num315 = num315 + 1)
+            for (int num315 = 1; num315 < 8; num315++)
             {
                 if (Main.rand.Next(0, 100) < 25)
                 {
@@ -60,7 +60,7 @@ namespace OphioidMod.Projectiles
                 }
             }
 
-            for (int num315 = 1; num315 < 2; num315 = num315 + 1)
+            for (int num315 = 1; num315 < 2; num315++)
             {
                 if (Main.rand.Next(0, 100) < 25)
                 {
@@ -74,7 +74,7 @@ namespace OphioidMod.Projectiles
                 }
             }
 
-            for (int num315 = 1; num315 < 8; num315 = num315 + 1)
+            for (int num315 = 1; num315 < 8; num315++)
             {
                 if (Main.rand.Next(0, 100) < 25)
                 {
@@ -159,10 +159,10 @@ namespace OphioidMod.Projectiles
 
         }
 
-        public override void OnHitPlayer(Player player, int damage, bool crit)
-        {
-            player.AddBuff(BuffID.Ichor, 60 * 10, true);
-            player.AddBuff(BuffID.Darkness, 60 * 15, true);
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		{
+			target.AddBuff(BuffID.Ichor, 60 * 10, true);
+			target.AddBuff(BuffID.Darkness, 60 * 15, true);
         }
     }
 }

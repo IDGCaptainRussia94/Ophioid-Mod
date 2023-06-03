@@ -33,8 +33,8 @@ namespace OphioidMod.Projectiles
         public override void AI()
         {
             Projectile.velocity = new Vector2(Projectile.velocity.X, Projectile.velocity.Y * 0.95f);
-            int q = 0;
-            for (q = 0; q < 4; q++)
+            //int q = 0;
+            for (int q = 0; q < 4; q++)
             {
 
                 int dust = Dust.NewDust(Projectile.position - new Vector2(100, 0), 200, 12, DustID.GemEmerald, 0f, Projectile.velocity.Y * 0.4f, 100, Color.DarkGreen, 1.5f);
@@ -42,8 +42,8 @@ namespace OphioidMod.Projectiles
             }
 
             Rectangle rectangle1 = new Rectangle((int)Projectile.position.X - 100, (int)Projectile.position.Y - 25, 200, 50);
-            int maxDistance = 50;
-            bool playerCollision = false;
+            //int maxDistance = 50;
+            //bool playerCollision = false;
             for (int index = 0; index < 255; ++index)
             {
                 if (Main.player[index].active)

@@ -30,20 +30,5 @@ namespace OphioidMod.Tiles
         {
             return true;
         }
-
-        public override void KillMultiTile(int i, int j, int frameX, int frameY)
-        {
-            int item = 0;
-            switch (frameX / 54)
-            {
-                case 0:
-                    item = ModContent.ItemType<Ophiopedetrophyitem>();
-                    break;
-            }
-            if (item > 0)
-            {
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, item);
-            }
-        }
     }
 }

@@ -80,8 +80,8 @@ namespace OphioidMod.NPCs
             //SoundEngine.PlaySound(SoundID.NPCDeath1, NPC.position);
             for (int a = 0; a < 500; a++)
             {
-                Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
-                Vector2 vecr = randomcircle;
+                Vector2 randomcircle = new(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
+                //Vector2 vecr = randomcircle;
 
                 int num622 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default, 3f);
                 Main.dust[num622].velocity = randomcircle * new Vector2((float)Main.rand.Next(-1000, 1000) / 100f, (float)Main.rand.Next(-1000, 1000) / 100f);
@@ -93,7 +93,7 @@ namespace OphioidMod.NPCs
             }
             for (int i = 1; i < 6; i += 1)
             {
-                Vector2 Vect = new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
+                Vector2 Vect = new(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
                 Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vect, ModContent.Find<ModGore>("OphioidMod/cocoon_gore_" + i).Type, 1f);
             }
         }

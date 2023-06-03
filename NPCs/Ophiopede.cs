@@ -514,9 +514,9 @@ namespace OphioidMod.NPCs
                             dust3 = Main.dust[num184];
                             dust3.velocity *= 0.3f;
                             Dust dust24 = Main.dust[num184];
-                            dust24.velocity.X = dust24.velocity.X + (float)Main.rand.Next(-10, 11) * 0.025f;
+                            dust24.velocity.X += (float)Main.rand.Next(-10, 11) * 0.025f;
                             Dust dust25 = Main.dust[num184];
-                            dust25.velocity.Y = dust25.velocity.Y - (0.4f + (float)Main.rand.Next(-3, 14) * 0.15f);
+                            dust25.velocity.Y -= (0.4f + (float)Main.rand.Next(-3, 14) * 0.15f);
                             Main.dust[num184].fadeIn = 1.25f + (float)Main.rand.Next(20) * 0.15f;
                         }
 
@@ -524,7 +524,7 @@ namespace OphioidMod.NPCs
                         if (NPC.ai[0] % 8 == 0)
                         {
 
-                            NPC ply = Main.npc[(int)NPC.ai[3]];
+                            //NPC ply = Main.npc[(int)NPC.ai[3]];
 
                             if (!Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
                             {
@@ -541,7 +541,7 @@ namespace OphioidMod.NPCs
 
                         if (Main.netMode != NetmodeID.MultiplayerClient && NPC.ai[0] % 8 == 0 && phase == 1)
                         {
-                            NPC ply = Main.npc[(int)NPC.ai[3]];
+                            //NPC ply = Main.npc[(int)NPC.ai[3]];
 
                             int him = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2) + Main.rand.Next(-800, 800)), (int)(Main.player[NPC.target].position.Y - 700f), ModContent.NPCType<EvenMoreVileSpit>(), 0, 0f, 0f, 0f, 0f, 255);
                             //NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, mod.ProjectileType("EvenMoreVileSpit"));
@@ -639,7 +639,7 @@ namespace OphioidMod.NPCs
             NPC.frame.Y = framevar * NPC.height;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hitInfo)
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
@@ -705,10 +705,9 @@ namespace OphioidMod.NPCs
         }
 
 
-        public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
-        {
-            damage *= (NPC.ai[1] > 99 ? 0.35 : 0.15) * (Main.expertMode ? 1 : 1.25);
-            return true;
+		public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+		{
+			modifiers.FinalDamage.Flat *= (NPC.ai[1] > 99 ? 0.35f : 0.15f) * (Main.expertMode ? 1 : 1.25f);
         }
 
         public override void UpdateLifeRegen(ref int damage)
@@ -847,7 +846,7 @@ namespace OphioidMod.NPCs
                     }
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
-                        Player ply = Main.player[NPC.target];
+                        //Player ply = Main.player[NPC.target];
                         int num54 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(Main.rand.Next(-2, 2), Main.player[thattarget].Center.Y < NPC.Center.Y ? -8 : 8), ProjectileID.Stinger, 20, 0f);
                         Main.projectile[num54].damage = (int)(20);
                         Main.projectile[num54].timeLeft = 200;
@@ -878,7 +877,7 @@ namespace OphioidMod.NPCs
             return false;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hitInfo)
         {
             if (NPC.life <= 0 && NPC.ai[1] < 7 && Main.netMode != NetmodeID.Server)
             {
@@ -920,10 +919,10 @@ namespace OphioidMod.NPCs
             NPC.defense = 0;
         }
 
-        public override bool StrikeNPC(ref double damage, int defense, ref float knockback, int hitDirection, ref bool crit)
-        {
-            return true;
-        }
+		/*public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+		{
+            return;
+        }*/
 
         public override bool PreAI()
         {
@@ -953,7 +952,7 @@ namespace OphioidMod.NPCs
 
                     if (playerCollision && Collision.CanHitLine(new Vector2(NPC.Center.X, NPC.Center.Y), 8, 8, new Vector2(Main.player[thattarget].Center.X, Main.player[thattarget].Center.Y), 8, 8))
                     {
-                        Player ply = Main.player[NPC.target];
+                        //Player ply = Main.player[NPC.target];
                         int him = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, (NPC.ai[0] % (40) == 0 ? NPCID.ToxicSludge : NPCID.SpikedJungleSlime), 0, 0f, 0f, 0f, 0f, 255);
                         Main.npc[him].damage *= 2;
                         Main.npc[him].defense *= 2;
@@ -971,7 +970,7 @@ namespace OphioidMod.NPCs
                         {
                             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, him, 0f, 0f, 0f, 0, 0, 0);
                             ModPacket packet = Mod.GetPacket();
-                            OphioidMod mymod = Mod as OphioidMod;
+                            //OphioidMod mymod = Mod as OphioidMod;
 
                             packet.Write((byte)MessageType.OphioidMessage);
                             packet.Write(him);

@@ -13,7 +13,10 @@ Current Content:
 Version History :
 
 V2.29
+- Ported to 1.4.4
 - Updated Treasure Bag
+- Fixed Ophiopede Mask not counting as vanity.
+- Fixed offset on Ophiopede Mask
 
 V2.28
 - Nothing changed, just recompiled to work on the July, 2022 build of 1.4 TML

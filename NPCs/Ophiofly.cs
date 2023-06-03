@@ -226,7 +226,7 @@ namespace OphioidMod.NPCs
                         SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
                         SoundEngine.PlaySound(SoundID.Item90, NPC.Center);
 
-                        for (float num315 = -10; num315 < 10; num315 = num315 + 2f)
+                        for (float num315 = -10; num315 < 10; num315 += 2f)
                         {
                             int num54 = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center.X + Main.rand.Next(-8, 8), NPC.Center.Y - 40f, 0f, 0f, ProjectileID.DD2OgreSpit, 1, 0f, 0);
                             Main.projectile[num54].velocity = new Vector2(Main.rand.Next(-8, 8) * (Main.rand.Next(0, 2) == 0 ? 1 : -1) + (num315 / 4f), Main.rand.Next(-15, -3));
@@ -238,7 +238,7 @@ namespace OphioidMod.NPCs
                             //IdgProjectile.AddOnHitBuff(num54, BuffID.Stinky, 60 * 15);
                         }
 
-                        for (float num315 = -40; num315 < 40; num315 = num315 + 0.2f)
+                        for (float num315 = -40; num315 < 40; num315 += 0.2f)
                         {
                             if (Main.rand.Next(0, 100) < 25)
                             {
@@ -276,7 +276,7 @@ namespace OphioidMod.NPCs
                 Vector2 vecr = randomcircle * 512;
                 vecr *= (1f - (300f / (NPC.ai[0] % 300)));
 
-                int num622 = Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y) + vecr, 0, 0, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default(Color), 3f);
+                int num622 = Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y) + vecr, 0, 0, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default, 3f);
                 Main.dust[num622].velocity = randomcircle * -16f;
 
                 Main.dust[num622].noGravity = true;
@@ -353,11 +353,11 @@ namespace OphioidMod.NPCs
                 IdgProjectile.Sync(projectile2.whoAmI);
                 SoundEngine.PlaySound(SoundID.Item42, NPC.Center);
 
-                for (int num315 = 1; num315 < 8; num315 = num315 + 1)
+                for (int num315 = 1; num315 < 8; num315++)
                 {
                     if (Main.rand.Next(0, 100) < 25)
                     {
-                        Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
+                        Vector2 randomcircle = new(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
                         int num316 = Dust.NewDust(new Vector2(projectile2.position.X - 1, projectile2.position.Y), projectile2.width, projectile2.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 1.00f);
                         Main.dust[num316].noGravity = true;
                         Dust dust3 = Main.dust[num316];
@@ -412,11 +412,11 @@ namespace OphioidMod.NPCs
                 if (NPC.ai[0] < 450)
                 {
 
-                    for (int num315 = 1; num315 < 8; num315 = num315 + 1)
+                    for (int num315 = 1; num315 < 8; num315++)
                     {
                         if (Main.rand.Next(0, 100) < 25)
                         {
-                            Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
+                            Vector2 randomcircle = new(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
                             int num316 = Dust.NewDust(NPC.Center + new Vector2((-NPC.direction * 20) - 12, 12), 24, 24, DustID.ScourgeOfTheCorruptor, 0f, 0f, 50, Main.hslToRgb(0.15f, 1f, 1.00f), 2.00f);
                             Main.dust[num316].noGravity = true;
                             Dust dust3 = Main.dust[num316];
@@ -620,11 +620,11 @@ namespace OphioidMod.NPCs
 
         }
 
-        public override void OnHitPlayer(Player player, int damage, bool crit)
-        {
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+		{
             if (NPC.ai[1] == 2)
             {
-                player.AddBuff(BuffID.Rabies, 60 * 15, true);
+				target.AddBuff(BuffID.Rabies, 60 * 15, true);
             }
         }
 
@@ -668,7 +668,7 @@ namespace OphioidMod.NPCs
             spriteBatch.Draw(texture, NPC.Center - screenPos, new Rectangle(0, wingframe * ((texture.Height) / 5), texture.Width, (texture.Height) / 5), lightColor * 0.75f, NPC.rotation, origin, new Vector2(1f, 1f), Facing, 0f);
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hitInfo)
         {
             if (NPC.life < 1)
             {

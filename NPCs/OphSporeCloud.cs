@@ -63,7 +63,7 @@ namespace OphioidMod.NPCs
             NPC.velocity.Normalize();
             NPC.velocity *= 16f - (float)(mytimeisover * 0.015f);
             if (mytimeisover < 1)
-                NPC.StrikeNPCNoInteraction(9999, 0f, NPC.direction, false, false, false);
+                NPC.SimpleStrikeNPC(9999, NPC.direction, noPlayerInteraction: true);
         }
     }
 }

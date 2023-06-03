@@ -111,11 +111,11 @@ namespace OphioidMod.NPCs
             }
         }
 
-        public override void OnHitPlayer(Player player, int damage, bool crit)
-        {
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+		{
             if (Main.rand.Next(0, 3) == 0)
             {
-                player.AddBuff(BuffID.Weak, 60 * 8, true);
+                target.AddBuff(BuffID.Weak, 60 * 8, true);
             }
         }
 

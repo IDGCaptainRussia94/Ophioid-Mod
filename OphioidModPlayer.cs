@@ -16,8 +16,8 @@ namespace OphioidMod
             PetBuff2 = false;
         }
 
-        public override void OnHitByProjectile(Projectile proj, int damage, bool crit)
-        {
+		public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+		{
             /*IProjectileSource source = proj.GetProjectileSource_FromThis();
             Main.NewText(source.GetType().Name);
             if (source is ProjectileSource_NPC)

@@ -61,9 +61,9 @@ namespace OphioidMod.NPCs
             return !Main.npc[(int)NPC.ai[3]].active;
         }
 
-        public override void OnHitPlayer(Player player, int damage, bool crit)
-        {
-            player.AddBuff(BuffID.Darkness, 60 * 4, true);
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+		{
+			target.AddBuff(BuffID.Darkness, 60 * 4, true);
         }
 
 
