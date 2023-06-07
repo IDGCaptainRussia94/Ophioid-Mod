@@ -40,8 +40,8 @@ namespace OphioidMod.NPCs
             NPC.behindTiles = true;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            Music = MusicID.Boss2;
-            NPC.value = 90000f;
+			Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+			NPC.value = 90000f;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

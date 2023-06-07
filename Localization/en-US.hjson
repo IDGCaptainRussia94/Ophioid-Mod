@@ -94,8 +94,27 @@ Mods: {
 			FlyMinionCacoon.DisplayName: Coocoon Carriers
 			Ophiocoon.DisplayName: Ophiocoon
 			MetaOphiocoon.DisplayName: Ophiocoon
-			Ophiofly.DisplayName: Ophiofly
-			OphiopedeHead.DisplayName: Ophiopede
+
+			Ophiofly: {
+				DisplayName: Ophiofly
+
+				BossChecklistIntegration: {
+					EntryName: Ophiopede & Ophiofly
+					SpawnInfo: Use an [i:OphioidMod/Infestedcompost] at any time after beating Ophiopede
+					DespawnMessage: Ophioid slinks back into its hidden nest
+				}
+			}
+
+			OphiopedeHead: {
+				DisplayName: Ophiopede
+
+				BossChecklistIntegration: {
+					SpawnInfo: Use a [i:OphioidMod/Deadfungusbug] or [i:OphioidMod/Livingcarrion] at any time
+					DespawnMessage: Ophiopede tunnels away
+					EntryName: Ophiopede
+				}
+			}
+
 			OphiopedeBody.DisplayName: Ophiopede
 			OphiopedeTail.DisplayName: Ophiopede
 			OphiopedeHead2.DisplayName: Ophiopede

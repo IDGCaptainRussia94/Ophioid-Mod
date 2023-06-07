@@ -80,8 +80,8 @@ namespace OphioidMod.NPCs
             NPC.behindTiles = true;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            Music = MusicID.Boss2;
-            NPC.value = Item.buyPrice(0, 50, 0, 0);
+			Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+			NPC.value = Item.buyPrice(0, 50, 0, 0);
             NPC.BossBar = ModContent.GetInstance<OphioidBossBar>();
         }
 
@@ -313,6 +313,7 @@ namespace OphioidMod.NPCs
             {
                 if (NPC.life < (int)(NPC.lifeMax * 0.05f))
                 {
+                    // Stop taking damage and eventually do the second phase.
                     NPC.dontTakeDamage = true;
                     NPC.life = (int)(NPC.lifeMax * 0.05f);
                 }
@@ -469,6 +470,7 @@ namespace OphioidMod.NPCs
             float speedboost = Math.Min(4f, Math.Max(1f + (charge == true ? 0.5f : 0f), length2 / 500f));
             charge = false;
 
+            // Begin transforming to Ophiocoon
             if (NPC.ai[0] < 0)
             {
                 NPC.ai[0] += 1;
@@ -613,6 +615,7 @@ namespace OphioidMod.NPCs
 
                     if (NPC.ai[0] > 1000)
                     {
+                        // Start to start phase 2
                         NPC.ai[0] = -10000;
                     }
                 }
@@ -694,8 +697,8 @@ namespace OphioidMod.NPCs
             NPC.behindTiles = true;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            Music = MusicID.Boss2;
-            NPC.value = 90000f;
+			Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+			NPC.value = 90000f;
             //NPC.buffImmune[BuffID.Daybreak] = true; NPC.buffImmune[BuffID.Frostburn] = true; NPC.buffImmune[BuffID.Poisoned] = true; NPC.buffImmune[BuffID.Venom] = true;
         }
 
@@ -1073,6 +1076,11 @@ namespace OphioidMod.NPCs
                 new FlavorTextBestiaryInfoElement("The second fight against Ophiopede.")
             });
         }
-    }
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			// Empty so it doesn't inherit the loot.
+		}
+	}
 	#endregion
 }
