@@ -18,7 +18,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("The Seeing");
+            // DisplayName.SetDefault("The Seeing");
             Main.npcFrameCount[NPC.type] = 1;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
@@ -40,8 +40,8 @@ namespace OphioidMod.NPCs
             NPC.behindTiles = true;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
-            Music = MusicID.Boss2;
-            NPC.value = 90000f;
+			Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
+			NPC.value = 90000f;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -61,9 +61,9 @@ namespace OphioidMod.NPCs
             return !Main.npc[(int)NPC.ai[3]].active;
         }
 
-        public override void OnHitPlayer(Player player, int damage, bool crit)
-        {
-            player.AddBuff(BuffID.Darkness, 60 * 4, true);
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+		{
+			target.AddBuff(BuffID.Darkness, 60 * 4, true);
         }
 
 

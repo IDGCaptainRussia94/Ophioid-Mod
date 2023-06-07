@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework;
 using OphioidMod.Buffs;
 using OphioidMod.Projectiles;
 using OphioidMod.Tiles;
-using System.Collections.Generic;
 using OphioidMod.NPCs;
+using Terraria.GameContent.ItemDropRules;
 
 namespace OphioidMod.Items
 {
@@ -15,14 +15,16 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede Mask");
+            // DisplayName.SetDefault("Ophiopede Mask");
+            Item.ResearchUnlockCount = 1;
         }
         public override void SetDefaults()
         {
             Item.width = 20;
             Item.height = 26;
             Item.rare = ItemRarityID.Blue;
-            Item.sellPrice(0, 0, 75, 0);
+            Item.value = Item.sellPrice(0, 0, 75, 0);
+            Item.vanity = true;
         }
     }
 
@@ -30,8 +32,9 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Spore Infested Egg");
-            Tooltip.SetDefault("'Looks like this egg didn't hatch yet to attack me...");
+            // DisplayName.SetDefault("Spore Infested Egg");
+            // Tooltip.SetDefault("'Looks like this egg didn't hatch yet to attack me...");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -40,7 +43,7 @@ namespace OphioidMod.Items
             Item.rare = ItemRarityID.Red;
             Item.shoot = ModContent.ProjectileType<BabyFlyPet>();
             Item.buffType = ModContent.BuffType<BabyOphioflyBuff>();
-            Item.sellPrice(0, 1, 0, 0);
+			Item.value = Item.sellPrice(0, 1, 0, 0);
         }
 
         public override void UseStyle(Player player, Rectangle heldItemFrame)
@@ -56,7 +59,8 @@ namespace OphioidMod.Items
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiopede Trophy");
+            // DisplayName.SetDefault("Ophiopede Trophy");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -80,8 +84,10 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Treasure Bag");
-            Tooltip.SetDefault("Right click to open");
+            // DisplayName.SetDefault("Treasure Bag (Ophioid)");
+            // Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+            ItemID.Sets.BossBag[Type] = true; // This set is one that every boss bag should have, it, for example, lets our boss bag drop dev armor..
+			Item.ResearchUnlockCount = 3;
         }
         public override void SetDefaults()
         {
@@ -90,54 +96,43 @@ namespace OphioidMod.Items
             Item.width = 32;
             Item.height = 32;
             Item.expert = true;
-            Item.rare = -12;
+            Item.rare = ItemRarityID.Expert;
         }
 
-
-        public override int BossBagNPC
-        {
-            get
-            {
-                return ModContent.NPCType<Ophiofly>();
-            }
-        }
-
+        //public override int BossBagNPC => ModContent.NPCType<Ophiofly>();
 
         public override bool CanRightClick()
         {
             return true;
         }
-        public override void OpenBossBag(Player player)
+        public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            player.TryGettingDevArmor(player.GetSource_OpenItem(Type));
-            if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<Ophiopedetrophyitem>());
-            if (Main.rand.Next(0, 100) < 31)
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<OphiopedeMask>());
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Ophiopedetrophyitem>(), 3));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<OphiopedeMask>(), 3));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SporeInfestedEgg>(), 1));
 
-            player.QuickSpawnItem(player.GetSource_OpenItem(Type), ModContent.ItemType<SporeInfestedEgg>());
+            // Expert Drop rates since the bag only drops in Expert Mode+
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentSolar, 1, 12, 22)); // Average of 17
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentVortex, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentNebula, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentStardust, 1, 12, 22));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 46, 66)); // Average of 56
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 46, 66));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 23, 43)); // Average of 33
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofSight, 1, 21, 35)); // Average of 28
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofMight, 1, 21, 35));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFright, 1, 21, 35));
 
-            List<int> types = new List<int>();
-            types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
-            for (int f = 0; f < (Main.expertMode ? 200 : 120); f = f + 1)
-            {
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
-            }
-
-            types = new List<int>();
-            types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.SoulofFlight); types.Insert(types.Count, ItemID.FragmentStardust); types.Insert(types.Count, ItemID.FragmentSolar); types.Insert(types.Count, ItemID.FragmentVortex); types.Insert(types.Count, ItemID.FragmentNebula);
-            for (int f = 0; f < (Main.expertMode ? 100 : 50); f = f + 1)
-            {
-                player.QuickSpawnItem(player.GetSource_OpenItem(Type), types[Main.rand.Next(0, types.Count)]);
-            }
+            itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Ophiofly>()));
         }
     }
     public class OphioidLarva : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophioid Larva");
-            Tooltip.SetDefault("'A little Ophiopede'");
+            // DisplayName.SetDefault("Ophioid Larva");
+            // Tooltip.SetDefault("'A little Ophiopede'");
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -147,7 +142,7 @@ namespace OphioidMod.Items
             Item.master = true;
             Item.shoot = ModContent.ProjectileType<BabyOphiopedePet>();
             Item.buffType = ModContent.BuffType<BabyOphiopedeBuff>();
-            Item.sellPrice(0, 5, 0, 0);
+            Item.value = Item.sellPrice(0, 5, 0, 0);
         }
 
         public override void UseStyle(Player player, Rectangle heldItemFrame)

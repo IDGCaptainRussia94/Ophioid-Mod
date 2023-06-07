@@ -46,7 +46,7 @@ namespace OphioidMod.NPCs
 			get { return "Terraria/Images/NPC_" + NPCID.VileSpit; }
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hitInfo)
 		{
 
 			for (int num328 = 0; num328 < 20; num328 += 1)
@@ -104,13 +104,13 @@ namespace OphioidMod.NPCs
 			NPC.ai[0] += 1;
 			if (Collision.SolidCollision(NPC.position, NPC.width, NPC.height) || NPC.ai[0] > 200)
 			{
-				NPC.StrikeNPCNoInteraction(999, 0f, 0, false, false, false);
+				NPC.SimpleStrikeNPC(999, 0);
 				NPC.HitEffect(0, 10.0);
 			}
 
 			if (NPC.collideX || NPC.collideY || NPC.Distance(Main.player[NPC.target].Center) < 20f)
 			{
-				NPC.StrikeNPCNoInteraction(9999, 0f, NPC.direction, false, false, false);
+				NPC.SimpleStrikeNPC(9999, NPC.direction);
 				NPC.HitEffect(0, 10.0);
 			}
 		}

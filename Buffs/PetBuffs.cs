@@ -9,8 +9,8 @@ namespace OphioidMod.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Baby Ophioid Fly");
-            Description.SetDefault("Gross but, oddly cute");
+            // DisplayName.SetDefault("Baby Ophioid Fly");
+            // Description.SetDefault("Gross but, oddly cute");
             Main.buffNoTimeDisplay[Type] = true;
             Main.vanityPet[Type] = true;
         }
@@ -33,8 +33,8 @@ namespace OphioidMod.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Baby Ophioid Larva");
-            Description.SetDefault("Gross but, oddly cute");
+            // DisplayName.SetDefault("Baby Ophioid Larva");
+            // Description.SetDefault("Gross but, oddly cute");
             Main.buffNoTimeDisplay[Type] = true;
             Main.vanityPet[Type] = true;
         }

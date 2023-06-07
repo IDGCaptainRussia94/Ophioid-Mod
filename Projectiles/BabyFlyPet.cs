@@ -10,7 +10,7 @@ namespace OphioidMod.Projectiles
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Gross but cute Fly");
+            // DisplayName.SetDefault("Gross but cute Fly");
         }
 
         public override string Texture

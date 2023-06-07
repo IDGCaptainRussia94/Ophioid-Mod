@@ -12,7 +12,22 @@ Current Content:
 
 Version History :
 
+V2.29
+- Ported to 1.4.4
+- Updated Treasure Bag
+- Fixed Ophiopede Mask not counting as vanity.
+- Fixed offset on Ophiopede Mask
+- Updated Boss Checklist support
+- Phase 1 Ophiopede now plays the custom music instead of Boss 2
+- Increased the volume of the music
+- Gave the boss bar a shield if the bosses are invulnerable.
+
+V2.28
+- Nothing changed, just recompiled to work on the July, 2022 build of 1.4 TML
+
 V2.27
+- Updated Treasure Bag
+- Added Journey Mode researching requirements on all items.
 - Re-added the Boss Checklist images to Boss Checklist
 - Added Boss Relics for both Ophiopede and Ophiofly
 - Added Music Boxes for both of the songs in the mod

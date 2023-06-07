@@ -3,6 +3,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OphioidMod.NPCs;
+using Terraria.GameContent.Creative;
 
 namespace OphioidMod.Items
 {
@@ -10,8 +11,9 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Dead Fungusbug");
-            Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Corruption world");
+            // DisplayName.SetDefault("Dead Fungusbug");
+            // Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Corruption world");
+            Item.ResearchUnlockCount = 3;
         }
         public override void SetDefaults()
         {
@@ -56,8 +58,9 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Infested Compost");
-            Tooltip.SetDefault("'An amalgamation of organic vileness \nSummons Ophiopede?");
+            // DisplayName.SetDefault("Infested Compost");
+            // Tooltip.SetDefault("'An amalgamation of organic vileness \nSummons Ophiopede?");
+            Item.ResearchUnlockCount = 3;
         }
 
         public override bool CanUseItem(Player player)
@@ -91,8 +94,9 @@ namespace OphioidMod.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Living Carrion");
-            Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Crimson world");
+            // DisplayName.SetDefault("Living Carrion");
+            // Tooltip.SetDefault("'A putrid stench comes from the thing you just made, it might attract something...' \nSummons Ophiopede in a Crimson world");
+            Item.ResearchUnlockCount = 3;
         }
 
         public override bool CanUseItem(Player player)

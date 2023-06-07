@@ -29,9 +29,9 @@ namespace OphioidMod.NPCs
         bool no2ndphase = false;
         float whichway = 0f;
 
-        public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
+        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * bossLifeScale);
+            NPC.lifeMax = (int)(NPC.lifeMax * 0.625f * balance);
             NPC.damage = (int)(NPC.damage * 0.6f);
         }
 
@@ -49,7 +49,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiocoon");
+            // DisplayName.SetDefault("Ophiocoon");
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
 
@@ -80,8 +80,8 @@ namespace OphioidMod.NPCs
             //SoundEngine.PlaySound(SoundID.NPCDeath1, NPC.position);
             for (int a = 0; a < 500; a++)
             {
-                Vector2 randomcircle = new Vector2(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
-                Vector2 vecr = randomcircle;
+                Vector2 randomcircle = new(Main.rand.Next(-8000, 8000), Main.rand.Next(-8000, 8000)); randomcircle.Normalize();
+                //Vector2 vecr = randomcircle;
 
                 int num622 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.ScourgeOfTheCorruptor, 0f, 0f, 100, default, 3f);
                 Main.dust[num622].velocity = randomcircle * new Vector2((float)Main.rand.Next(-1000, 1000) / 100f, (float)Main.rand.Next(-1000, 1000) / 100f);
@@ -93,7 +93,7 @@ namespace OphioidMod.NPCs
             }
             for (int i = 1; i < 6; i += 1)
             {
-                Vector2 Vect = new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
+                Vector2 Vect = new(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2)); Vect.Normalize();
                 Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vect, ModContent.Find<ModGore>("OphioidMod/cocoon_gore_" + i).Type, 1f);
             }
         }
@@ -112,7 +112,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -282,7 +282,7 @@ namespace OphioidMod.NPCs
             {
                 for (int y = y_top_edge; y <= y_bottom_edge; y++)
                 {
-                    if (Main.tile[x, y].NactiveButWithABetterName() && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileSolid[(int)Main.tile[x, y].TileType] && !Main.tileSolidTop[(int)Main.tile[x, y].TileType])
                     {
                         wallblocking = true;
                         break;
@@ -318,7 +318,7 @@ namespace OphioidMod.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Ophiocoon");
+            // DisplayName.SetDefault("Ophiocoon");
             NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
             {
                 Hide = true // Hides this NPC from the bestiary

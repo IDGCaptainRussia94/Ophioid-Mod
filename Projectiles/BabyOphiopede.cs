@@ -12,7 +12,7 @@ namespace OphioidMod.Projectiles
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Baby Ophioipede");
+            // DisplayName.SetDefault("Baby Ophioipede");
         }
 
         public override void SetDefaults()

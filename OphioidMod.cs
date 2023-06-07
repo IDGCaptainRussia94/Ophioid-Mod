@@ -1,24 +1,14 @@
 using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria.ModLoader.IO;
-using Terraria.ObjectData;
-using Terraria.GameContent.ItemDropRules;
 using System;
-using System.Linq;
-using static Terraria.GameContent.ItemDropRules.Conditions;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ObjectInteractions;
-using Terraria.Audio;
 using OphioidMod.NPCs;
 using OphioidMod.Items;
+using OphioidMod.Projectiles;
 
 namespace OphioidMod
 {
@@ -34,15 +24,6 @@ namespace OphioidMod
              return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
          }
      }
-
-    public static class TileOneDotThree
-    {
-        public static bool NactiveButWithABetterName(this Tile tile)
-        {
-            return (tile.HasTile && !tile.IsActuated);
-           // return (!tile.HasTile || tile.IsActuated);
-        }
-    }
 
     public interface ISinkyBoss
     {
@@ -96,6 +77,7 @@ namespace OphioidMod
                     new List<int>() { ItemID.SoulofFright, ItemID.SoulofLight, ItemID.SoulofMight, ItemID.SoulofNight, ItemID.SoulofSight,ItemID.SoulofFlight, ItemID.FragmentSolar, ItemID.FragmentNebula, ItemID.FragmentVortex, ItemID.FragmentStardust }, 
                     "Use an [i:" + ModContent.ItemType<Infestedcompost>() + "] at any time after beating Ophiopede", "Ophioid slinks back into its hidden nest", "OphioidMod/BCLFly");
                 */
+                /*
                 bossList.Call
                 (
                     "AddBoss",
@@ -136,7 +118,51 @@ namespace OphioidMod
                         sb.Draw(texture, centered, color);
                     })
                 );
-            }
+                */
+                bossList.Call
+                (
+                    "LogBoss",
+                    this,
+					nameof(OphiopedeHead),
+                    11.05f,
+                    () => OphioidWorld.downedOphiopede,
+					new List<int> { ModContent.NPCType<OphiopedeHead>(), ModContent.NPCType<OphiopedeBody>(), ModContent.NPCType<OphiopedeTail>() },
+                    new Dictionary<string, object>()
+                    { 
+                        { "spawnItems", new List<int> { ModContent.ItemType<Deadfungusbug>(), ModContent.ItemType<Livingcarrion>() } },
+						{ "collectibles", new List<int> { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<MusicBoxMetamorphosis>() } },
+                        { "customPortrait", (SpriteBatch sb, Rectangle rect, Color color) =>
+					        {
+					            Texture2D texture = ModContent.Request<Texture2D>("OphioidMod/BCLPede").Value;
+					            Vector2 centered = new(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2) - 20);
+					            sb.Draw(texture, centered, color);
+				            }
+                        }
+					}
+				);
+
+				bossList.Call
+				(
+					"LogBoss",
+					this,
+					nameof(Ophiofly),
+					16.05f,
+					() => OphioidWorld.downedOphiopede2,
+					new List<int> { ModContent.NPCType<Ophiofly>(), ModContent.NPCType<OphiopedeHead2>(), ModContent.NPCType<OphiopedeBody>(), ModContent.NPCType<OphiopedeTail>() },
+					new Dictionary<string, object>()
+					{
+						{ "spawnItems", new List<int> { ModContent.ItemType<Infestedcompost>() } },
+						{ "collectibles", new List<int> { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<MusicBoxMetamorphosis>(), ModContent.ItemType<MusicBoxTheFly>(), ModContent.ItemType<SporeInfestedEgg>(), ModContent.ItemType<OphioidLarva>() } },
+						{ "customPortrait", (SpriteBatch sb, Rectangle rect, Color color) =>
+							{
+								Texture2D texture = ModContent.Request<Texture2D>("OphioidMod/BCLFly").Value;
+						        Vector2 centered = new(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2));
+						        sb.Draw(texture, centered, color);
+							}
+						}
+					}
+				);
+			}
 
             /*if (ModLoader.TryGetMod("Fargowiltas", out Mod fargosMutantMod))
             {
@@ -210,20 +236,20 @@ namespace OphioidMod
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/Centipede_Mod_-_Metamorphosis");
                 priority = MusicPriority.BossMedium;
             }
-        }
+        }*/
 
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             MessageType type = (MessageType)reader.ReadByte();
 
-            if (type == MessageType.OphioidMessage && Main.netMode == 1)
+            if (type == MessageType.OphioidMessage && Main.netMode == NetmodeID.MultiplayerClient)
             {
                 int npcid = reader.ReadInt32();
                 int time = reader.ReadInt32();
                 Main.npc[npcid].GetGlobalNPC<OphioidNPC>().fallthrough = time;
             }
-        }*/
+        }
     }
 
     public enum MessageType : byte
