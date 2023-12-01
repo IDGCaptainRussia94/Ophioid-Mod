@@ -54,7 +54,7 @@ namespace OphioidMod.NPCs
             NPCID.Sets.BossBestiaryPriority.Add(Type);
 
             // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 CustomTexturePath = "OphioidMod/NPCs/cocoon",
                 PortraitScale = 0.6f, // Portrait refers to the full picture when clicking on the icon in the bestiary
@@ -319,7 +319,7 @@ namespace OphioidMod.NPCs
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("Ophiocoon");
-            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
             {
                 Hide = true // Hides this NPC from the bestiary
             };

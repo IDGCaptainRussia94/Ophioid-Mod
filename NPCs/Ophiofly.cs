@@ -19,6 +19,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Bestiary;
 using Terraria.Audio;
 using OphioidMod.Projectiles;
+using OphioidMod.Items;
 
 namespace OphioidMod.NPCs
 {
@@ -52,7 +53,7 @@ namespace OphioidMod.NPCs
             NPCID.Sets.BossBestiaryPriority.Add(Type);
 
             // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 CustomTexturePath = "OphioidMod/NPCs/BestiaryOphiofly",
                 PortraitScale = 0.75f, // Portrait refers to the full picture when clicking on the icon in the bestiary
@@ -99,9 +100,9 @@ namespace OphioidMod.NPCs
         {
             writer.Write(chargesleft);
             if (ply==null)
-            writer.Write(-1);
+                writer.Write(-1);
             else
-            writer.Write(ply.whoAmI);
+                writer.Write(ply.whoAmI);
             writer.Write(poweredup);
             writer.Write(spawnminionsat);
         }
@@ -111,7 +112,7 @@ namespace OphioidMod.NPCs
             chargesleft=reader.ReadInt32();
             int ply2=reader.ReadInt32();
             if (ply2>-1)
-            ply=Main.player[ply2];
+                ply=Main.player[ply2];
             poweredup=reader.ReadBoolean();
             spawnminionsat=reader.ReadInt32();
         }
@@ -484,8 +485,9 @@ namespace OphioidMod.NPCs
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     IDGHelper.Chat("The " + (WorldGen.crimson ? "Crimson" : "Corruption") + "'s abomination is no longer felt, Ophioid is defeated", 100, 225, 100);
-                OphioidWorld.downedOphiopede2 = true;
-            }
+				//OphioidWorld.downedOphiopede2 = true;
+				NPC.SetEventFlagCleared(ref OphioidWorld.downedOphiopede2, -1);
+			}
 
             //if (Main.expertMode)
             //    NPC.DropBossBags();
@@ -493,9 +495,34 @@ namespace OphioidMod.NPCs
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            OphiopedeHead.DoThemDrops(npcLoot, true);
+			// OphiopedeHead.DoThemDrops(npcLoot, true);
 
-            /*float NPCVX = 0f; float NPCVY = 0f;
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<TreasureBagOphioid>()));
+
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.OphioflyRelic>()));
+
+			npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<Items.OphioidLarva>(), 4));
+
+			// This code uses LeadingConditionRule to logically nest several rules under it.
+			LeadingConditionRule notExpert = new(new Conditions.NotExpert());
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofMight, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofFright, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofSight, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofNight, 1, 24, 60));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofLight, 1, 24, 60));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofFlight, 1, 24, 60));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.FragmentSolar, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.FragmentVortex, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.FragmentNebula, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.FragmentStardust, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ModContent.ItemType<OphiopedeMask>(), 7));
+			notExpert.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SporeInfestedEgg>(), 10));
+
+			npcLoot.Add(notExpert);
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Ophiopedetrophyitem>(), 10));
+
+			/*float NPCVX = 0f; float NPCVY = 0f;
             NPC.velocity += new Vector2(NPCVX, NPCVY) * 0.075f;
             NPC.velocity *= 0.95f;
             if (NPC.velocity.Length() > new Vector2(NPCVX, NPCVY).Length())
@@ -532,7 +559,7 @@ namespace OphioidMod.NPCs
                 NPC.DropBossBags();
             }
             */
-        }
+		}
 
         public override string Texture
         {
@@ -670,7 +697,7 @@ namespace OphioidMod.NPCs
 
         public override void HitEffect(NPC.HitInfo hitInfo)
         {
-            if (NPC.life < 1)
+            if (NPC.life < 1 && Main.netMode != NetmodeID.Server)
             {
                 for (int i = 1; i < 8; i += 1)
                 {

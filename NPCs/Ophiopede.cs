@@ -54,9 +54,11 @@ namespace OphioidMod.NPCs
             Main.npcFrameCount[NPC.type] = 4;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
+			// Add this in for bosses that have a summon item, requires corresponding code in the item
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
 
-            // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 CustomTexturePath = "OphioidMod/NPCs/BestiaryOphiopede",
                 PortraitPositionYOverride = 5f,
@@ -132,9 +134,11 @@ namespace OphioidMod.NPCs
             if (!OphioidWorld.downedOphiopede && Main.netMode != NetmodeID.MultiplayerClient)
                 IDGHelper.Chat("The infested worm is defeated, but you can still feel the presence of the " + (WorldGen.crimson ? "Crimson" : "Corruption") + "'s abomination", 100, 225, 100);
 
-            OphioidWorld.downedOphiopede = true;
+			//OphioidWorld.downedOphiopede = true;
+			NPC.SetEventFlagCleared(ref OphioidWorld.downedOphiopede, -1);
 
-        }
+		}
+        /*
         public class CrimsonWorld : IItemDropRuleCondition, IProvideItemConditionDescription
         {
             public bool CanDrop(DropAttemptInfo info)
@@ -224,10 +228,12 @@ namespace OphioidMod.NPCs
                 return null;
             }
         }
+        */
 
+        /*
         public static void DoThemDrops(NPCLoot npcLoot, bool phase2)
         {
-            List<int> types = new List<int>();
+            List<int> types = new();
             types.Insert(types.Count, ItemID.SoulofMight); types.Insert(types.Count, ItemID.SoulofFright); types.Insert(types.Count, ItemID.SoulofSight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight); types.Insert(types.Count, ItemID.SoulofNight); types.Insert(types.Count, ItemID.SoulofLight);
 
             //for (int i = 0; i < 1; i += 1)
@@ -286,19 +292,44 @@ namespace OphioidMod.NPCs
             {
                 npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.OphiopedeRelic>()));
 
-                IItemDropRule bossitem1 = ItemDropRule.ByCondition(new CrimsonWorld(), ModContent.ItemType<Deadfungusbug>(), 1, 1, 1);
+                IItemDropRule bossitem1 = ItemDropRule.ByCondition(new CrimsonWorld(), ModContent.ItemType<DeadFungusbug>(), 1, 1, 1);
                 npcLoot.Add(bossitem1);
 
-                IItemDropRule bossitem2 = ItemDropRule.ByCondition(new CorruptionWorld(), ModContent.ItemType<Livingcarrion>(), 1, 1, 1);
+                IItemDropRule bossitem2 = ItemDropRule.ByCondition(new CorruptionWorld(), ModContent.ItemType<LivingCarrion>(), 1, 1, 1);
                 npcLoot.Add(bossitem2);
             }
 
         }
+        */
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            DoThemDrops(npcLoot, false);
-        }
+			// DoThemDrops(npcLoot, false);
+
+			npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Items.OphiopedeRelic>()));
+
+			// This code uses LeadingConditionRule to logically nest several rules under it.
+			LeadingConditionRule notExpert = new(new Conditions.NotExpert());
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofMight, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofFright, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofSight, 1, 12, 30));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofNight, 1, 24, 60));
+			notExpert.OnSuccess(ItemDropRule.Common(ItemID.SoulofLight, 1, 24, 60));
+
+			npcLoot.Add(notExpert);
+
+			LeadingConditionRule expert = new(new Conditions.IsExpert());
+			expert.OnSuccess(ItemDropRule.Common(ItemID.SoulofMight, 1, 15, 50));
+			expert.OnSuccess(ItemDropRule.Common(ItemID.SoulofFright, 1, 15, 50));
+			expert.OnSuccess(ItemDropRule.Common(ItemID.SoulofSight, 1, 15, 50));
+			expert.OnSuccess(ItemDropRule.Common(ItemID.SoulofNight, 1, 30, 100));
+			expert.OnSuccess(ItemDropRule.Common(ItemID.SoulofLight, 1, 30, 100));
+
+			npcLoot.Add(expert);
+
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<OphiopedeMask>(), 7));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Ophiopedetrophyitem>(), 10));
+		}
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)/* tModPorter Note: bossLifeScale -> balance (bossAdjustment is different, see the docs for details) */
         {
@@ -673,8 +704,10 @@ namespace OphioidMod.NPCs
         {
             // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 7;
+			// Add this in for bosses that have a summon item, requires corresponding code in the item
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
 
-            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
             {
                 Hide = true // Hides this NPC from the bestiary
             };
@@ -893,11 +926,6 @@ namespace OphioidMod.NPCs
     #region OphiopedeTail
     public class OphiopedeTail : OphiopedeBody
     {
-        public enum MessageType : byte
-        {
-            OphioidMessage
-        }
-
         public override string Texture
         {
             get { return ("OphioidMod/NPCs/wormmiscparts"); }
@@ -907,7 +935,10 @@ namespace OphioidMod.NPCs
         {
             // DisplayName.SetDefault("Ophiopede");
             Main.npcFrameCount[NPC.type] = 4;
-            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+			// Add this in for bosses that have a summon item, requires corresponding code in the item
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
+
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
             {
                 Hide = true // Hides this NPC from the bestiary
             };
@@ -936,14 +967,14 @@ namespace OphioidMod.NPCs
                 if (Head.phase == 1)
                 {
                     int thattarget = 0;
-                    Rectangle rectangle1 = new Rectangle((int)NPC.position.X, (int)NPC.position.Y + 200, NPC.width, NPC.height + 1200);
+                    Rectangle rectangle1 = new((int)NPC.position.X, (int)NPC.position.Y + 200, NPC.width, NPC.height + 1200);
                     int maxDistance = 450;
                     bool playerCollision = false;
                     for (int index = 0; index < 255; ++index)
                     {
                         if (Main.player[index].active)
                         {
-                            Rectangle rectangle2 = new Rectangle((int)Main.player[index].position.X - maxDistance, (int)Main.player[index].position.Y - 32, maxDistance * 2, 64);
+                            Rectangle rectangle2 = new((int)Main.player[index].position.X - maxDistance, (int)Main.player[index].position.Y - 32, maxDistance * 2, 64);
                             if (rectangle1.Intersects(rectangle2))
                             {
                                 playerCollision = true;
@@ -972,12 +1003,12 @@ namespace OphioidMod.NPCs
                         if (Main.netMode == NetmodeID.Server)
                         {
                             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, him, 0f, 0f, 0f, 0, 0, 0);
-                            ModPacket packet = Mod.GetPacket();
+                            ModPacket packet = ModContent.GetInstance<OphioidMod>().GetPacket();
                             //OphioidMod mymod = Mod as OphioidMod;
 
                             packet.Write((byte)MessageType.OphioidMessage);
                             packet.Write(him);
-                            packet.Write(Main.expertMode == true ? 2000 : 1000);
+                            packet.Write(Main.expertMode ? 2000 : 1000);
                             packet.Send();
                         }
                     }
@@ -1033,9 +1064,11 @@ namespace OphioidMod.NPCs
             Main.npcFrameCount[NPC.type] = 4;
             // Automatically group with other bosses
             NPCID.Sets.BossBestiaryPriority.Add(Type);
+			// Add this in for bosses that have a summon item, requires corresponding code in the item
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
 
-            // Influences how the NPC looks in the Bestiary
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 CustomTexturePath = "OphioidMod/NPCs/BestiaryOphiopede",
                 PortraitPositionYOverride = 5f,

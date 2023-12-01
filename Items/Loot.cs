@@ -67,7 +67,7 @@ namespace OphioidMod.Items
         {
             Item.width = 30;
             Item.height = 30;
-            Item.maxStack = 99;
+            Item.maxStack = Item.CommonMaxStack;
             Item.useTurn = true;
             Item.autoReuse = true;
             Item.useAnimation = 15;
@@ -91,7 +91,7 @@ namespace OphioidMod.Items
         }
         public override void SetDefaults()
         {
-            Item.maxStack = 999;
+            Item.maxStack = Item.CommonMaxStack;
             Item.consumable = true;
             Item.width = 32;
             Item.height = 32;
@@ -112,16 +112,16 @@ namespace OphioidMod.Items
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<SporeInfestedEgg>(), 1));
 
             // Expert Drop rates since the bag only drops in Expert Mode+
-            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentSolar, 1, 12, 22)); // Average of 17
-            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentVortex, 1, 12, 22));
-            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentNebula, 1, 12, 22));
-            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentStardust, 1, 12, 22));
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 46, 66)); // Average of 56
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 46, 66));
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 23, 43)); // Average of 33
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofSight, 1, 21, 35)); // Average of 28
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofMight, 1, 21, 35));
-            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFright, 1, 21, 35));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentSolar, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentVortex, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentNebula, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentStardust, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 30, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 30, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 30, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofSight, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofMight, 1, 15, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFright, 1, 15, 50));
 
             itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<Ophiofly>()));
         }

@@ -129,7 +129,7 @@ namespace OphioidMod
 					new List<int> { ModContent.NPCType<OphiopedeHead>(), ModContent.NPCType<OphiopedeBody>(), ModContent.NPCType<OphiopedeTail>() },
                     new Dictionary<string, object>()
                     { 
-                        { "spawnItems", new List<int> { ModContent.ItemType<Deadfungusbug>(), ModContent.ItemType<Livingcarrion>() } },
+                        { "spawnItems", new List<int> { ModContent.ItemType<DeadFungusbug>(), ModContent.ItemType<LivingCarrion>() } },
 						{ "collectibles", new List<int> { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<MusicBoxMetamorphosis>() } },
                         { "customPortrait", (SpriteBatch sb, Rectangle rect, Color color) =>
 					        {
@@ -151,7 +151,7 @@ namespace OphioidMod
 					new List<int> { ModContent.NPCType<Ophiofly>(), ModContent.NPCType<OphiopedeHead2>(), ModContent.NPCType<OphiopedeBody>(), ModContent.NPCType<OphiopedeTail>() },
 					new Dictionary<string, object>()
 					{
-						{ "spawnItems", new List<int> { ModContent.ItemType<Infestedcompost>() } },
+						{ "spawnItems", new List<int> { ModContent.ItemType<InfestedCompost>() } },
 						{ "collectibles", new List<int> { ModContent.ItemType<Ophiopedetrophyitem>(), ModContent.ItemType<OphiopedeMask>(), ModContent.ItemType<MusicBoxMetamorphosis>(), ModContent.ItemType<MusicBoxTheFly>(), ModContent.ItemType<SporeInfestedEgg>(), ModContent.ItemType<OphioidLarva>() } },
 						{ "customPortrait", (SpriteBatch sb, Rectangle rect, Color color) =>
 							{
@@ -248,6 +248,7 @@ namespace OphioidMod
                 int npcid = reader.ReadInt32();
                 int time = reader.ReadInt32();
                 Main.npc[npcid].GetGlobalNPC<OphioidNPC>().fallthrough = time;
+                //Instance.Logger.DebugFormat("NPC ID is {0}", npcid);
             }
         }
     }

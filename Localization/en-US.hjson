@@ -60,16 +60,16 @@ Mods: {
 				Tooltip: ""
 			}
 
-			Deadfungusbug: {
+			DeadFungusbug: {
 				DisplayName: Dead Fungusbug
 				Tooltip:
 					'''
 					'A putrid stench comes from the thing you just made, it might attract something...'
-					Summons Ophiopede in a Corruption world
+					Summons Ophiopede
 					'''
 			}
 
-			Infestedcompost: {
+			InfestedCompost: {
 				DisplayName: Infested Compost
 				Tooltip:
 					'''
@@ -78,12 +78,12 @@ Mods: {
 					'''
 			}
 
-			Livingcarrion: {
+			LivingCarrion: {
 				DisplayName: Living Carrion
 				Tooltip:
 					'''
 					'A putrid stench comes from the thing you just made, it might attract something...'
-					Summons Ophiopede in a Crimson world
+					Summons Ophiopede
 					'''
 			}
 		}
@@ -100,7 +100,7 @@ Mods: {
 
 				BossChecklistIntegration: {
 					EntryName: Ophiopede & Ophiofly
-					SpawnInfo: Use an [i:OphioidMod/Infestedcompost] at any time after beating Ophiopede
+					SpawnInfo: Use an [i:OphioidMod/InfestedCompost] at any time after beating Ophiopede
 					DespawnMessage: Ophioid slinks back into its hidden nest
 				}
 			}
@@ -109,7 +109,7 @@ Mods: {
 				DisplayName: Ophiopede
 
 				BossChecklistIntegration: {
-					SpawnInfo: Use a [i:OphioidMod/Deadfungusbug] or [i:OphioidMod/Livingcarrion] at any time
+					SpawnInfo: Use a [i:OphioidMod/DeadFungusbug] or [i:OphioidMod/LivingCarrion] at any time
 					DespawnMessage: Ophiopede tunnels away
 					EntryName: Ophiopede
 				}

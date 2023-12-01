@@ -15,7 +15,7 @@ namespace OphioidMod.NPCs
             // DisplayName.SetDefault("Ophioid Spore Cloud");
             Main.npcFrameCount[NPC.type] = 5;
 
-            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
             {
                 Hide = true // Hides this NPC from the bestiary
             };

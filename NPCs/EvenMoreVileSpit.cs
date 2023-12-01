@@ -16,7 +16,7 @@ namespace OphioidMod.NPCs
 	{
 		public override void SetStaticDefaults()
 		{
-			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
 			{
 				Hide = true // Hides this NPC from the bestiary
 			};

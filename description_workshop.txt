@@ -12,11 +12,22 @@ Current Content:
 
 Version History :
 
+V2.30
+- Updated to tModLoader v2022.10
+- Removed Corruption/Crimson restriction on Dead Fungusbug/Living Carrion. You can now use either to summon the 1st Ophiopede.
+- Dead Fungusbug and Living Carrion now Shimmer Transmute into each other.
+- Boss Summon items are now sorted with other boss summon items when sorting chests or in Journey Mode research menu.
+- All items in the mod that are stackable now stack to 9999.
+- Redid the loot on the bosses to make it easier to understand. Updated the Treasure Bag to match.
+- Ophiopede no longer drops the alternate boss summon item.
+- The bosses can now be summoned in multiplayer! There are still some minor issues, but at least it works now.
+
 V2.29
 - Ported to 1.4.4
 - Updated Treasure Bag
 - Fixed Ophiopede Mask not counting as vanity.
 - Fixed offset on Ophiopede Mask
+- Updated Boss Checklist support
 - Phase 1 Ophiopede now plays the custom music instead of Boss 2
 - Increased the volume of the music
 - Gave the boss bar a shield if the bosses are invulnerable.
